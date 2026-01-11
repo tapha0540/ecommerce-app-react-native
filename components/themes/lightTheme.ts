@@ -6,6 +6,8 @@ const lightTheme: Theme = {
   textColor: "black",
   fontFamily: "fira code",
   backgroundColor: "white",
+  errorColor: "red",
+  successColor: "green",
 };
 
 export default lightTheme;

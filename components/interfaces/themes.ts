@@ -5,4 +5,6 @@ export default interface Theme {
     textColor: string;
     backgroundColor: string;
     fontFamily: string;
+    errorColor: string;
+    successColor: string;
 };

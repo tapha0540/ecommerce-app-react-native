@@ -6,6 +6,8 @@ const darkTheme: Theme = {
   textColor: "white",
   fontFamily: "fira code",
   backgroundColor: "black",
+  errorColor: "red",
+  successColor: "green",
 };
 
 export default darkTheme;
