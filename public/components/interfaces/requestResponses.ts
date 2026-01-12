@@ -4,20 +4,21 @@ export default interface SignUpResponse {
   message: string;
 }
 
-export interface SignUpData extends FormData {
+export interface SignUpData  {
   firstName: string;
   lastName: string;
   email: string;
+  phone: string;
   password: string;
 }
 
 export interface LoginResponse {
+  message: string;
   success: boolean;
   token?: string;
-  message: string;
 }
 
-export interface LoginData extends FormData {
+export interface LoginData {
   email: string;
   password: string;
 }

@@ -6,10 +6,11 @@ import { useState } from "react";
 import { StyleSheet, View } from "react-native";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 
+import { LoginData } from "@/components/interfaces/requestResponses";
+import logIn from "@/services/auth/login";
+import validateLogInData from "@/services/validation/login_data_validation";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { OutlineThemeButton } from "../../components/ui/buttons";
-import logIn from "@/utils/auth/login";
-import validateLogInData from "@/utils/validation/login_data_validation";
 
 const LoginScreen = () => {
   const theme = useTheme()!.theme;
@@ -26,20 +27,18 @@ const LoginScreen = () => {
     setLoading(true);
     setTimeout(() => {
       setLoading(false);
-      setEmail(email.trim());
-      setPassword(password.trim());
-      setConfirmPassword(confirmPassword.trim());
       setMessage("");
-      const error = validateLogInData({
-        email,
-        password,
-      });
+      const loginData: LoginData = {
+        email: email.replaceAll(" ", ""),
+        password: password,
+      };
+      const error = validateLogInData(loginData);
       if (error) {
         setMessage(error);
         setSuccess(false);
         return;
       }
-      logIn(email, password).then((response) => {
+      logIn(loginData).then((response) => {
         setLoading(false);
         setMessage(response.message);
         setSuccess(response.success);
@@ -85,7 +84,7 @@ const LoginScreen = () => {
             outlineColor={theme.secondaryColor}
             activeOutlineColor={theme.primaryColor}
             keyboardType="email-address"
-            maxLength={60}
+            maxLength={100}
           />
           <TextInput
             label="Mot de passe"
@@ -111,7 +110,11 @@ const LoginScreen = () => {
             {message}
           </Text>
         )}
-        <OutlineThemeButton text="S'inscrire" onPress={handleSubmit} />
+        <OutlineThemeButton
+          text="S'inscrire"
+          onPress={handleSubmit}
+          theme={theme}
+        />
       </KeyboardAwareScrollView>
     </SafeAreaView>
   );

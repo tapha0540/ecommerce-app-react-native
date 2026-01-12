@@ -27,6 +27,9 @@ export default function TopTabsLayout() {
             width: "90%",
             alignSelf: "center",
             borderRadius: 25,
+            elevation: 5,
+            borderColor: theme.primaryColor,
+            borderWidth: 1
           },
           tabBarIndicatorStyle: {
             width: "49%",
@@ -38,7 +41,6 @@ export default function TopTabsLayout() {
             marginRight: "0.5%",
           },
           sceneStyle: { backgroundColor: theme.backgroundColor },
-          // tabBarContentContainerStyle: { backgroundColor: theme.backgroundColor },
         }}
         style={{
           flex: 1,

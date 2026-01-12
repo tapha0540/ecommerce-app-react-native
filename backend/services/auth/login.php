@@ -2,15 +2,11 @@
 
 function login_user(PDO &$pdo, string $email, string $password) {
 
-    $passwordHash = password_hash($password, PASSWORD_BCRYPT);
+    $user = getUser($pdo, userEmail: $email);
 
-    $stmt = $pdo->prepare("SELECT * FROM users WHERE email = :email");
-    $stmt->bindParam(':email', $email);
-    $stmt->execute();
-    $user = $stmt->fetch(PDO::FETCH_ASSOC);
     if (!$user) {
         return [
-            'message' => 'Utilisateur non trouvé.',
+            'message' => 'Email introuvable',
             'success' => false
         ];
     } else {

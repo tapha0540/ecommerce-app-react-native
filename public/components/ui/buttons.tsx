@@ -2,17 +2,19 @@ import { useTheme } from "@/hooks/useColorsheme";
 import { useState } from "react";
 import { Pressable, StyleSheet, Vibration } from "react-native";
 import { Text } from "react-native-paper";
+import Theme from "../interfaces/themes";
 
 export const ThemeButton = ({
   text,
   icon,
   onPress,
+  theme
 }: {
   text: string;
   icon?: React.ReactNode;
   onPress: () => void;
+  theme: Theme
 }) => {
-  const theme = useTheme()!.theme;
 
   return (
     <Pressable
@@ -31,12 +33,13 @@ export const OutlineThemeButton = ({
   text,
   icon,
   onPress,
+  theme
 }: {
   text: string;
   icon?: React.ReactNode;
   onPress: () => void;
+  theme: Theme
 }) => {
-  const theme = useTheme()!.theme;
   const [activeBgColor, setActiveBgColor] = useState(theme.backgroundColor);
   const [activeTxtColor, setActiveTxtColor] = useState(theme.primaryColor);
   return (

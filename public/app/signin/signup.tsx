@@ -1,11 +1,16 @@
+import { SignUpData } from "@/components/interfaces/requestResponses";
+import ThemeActivityIndicator from "@/components/ui/activity_indicator_container";
+import { COUNTRY_CODES } from "@/constants/contry_calling_codes";
 import { useTheme } from "@/hooks/useColorsheme";
-import signUp from "@/utils/auth/signup";
-import validateSignupData from "@/utils/validation/signup_data_validation";
+import signUp from "@/services/auth/signup";
+import validateSignupData from "@/services/validation/signup_data_validation";
+import AntDesign from "@expo/vector-icons/AntDesign";
 import { router } from "expo-router";
-import { useState } from "react";
-import { StyleSheet, Text, View } from "react-native";
+import React, { useState } from "react";
+import { StyleSheet, Text, Vibration, View } from "react-native";
+import { Dropdown } from "react-native-element-dropdown";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
-import { ActivityIndicator, TextInput } from "react-native-paper";
+import { TextInput } from "react-native-paper";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { OutlineThemeButton } from "../../components/ui/buttons";
 
@@ -17,6 +22,8 @@ const SignUpScreen = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const [phone, setPhone] = useState("");
+  const [countryCallingCode, setCountryCallingCode] = useState("");
 
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false);
@@ -26,25 +33,30 @@ const SignUpScreen = () => {
     setLoading(true);
     setTimeout(() => {
       setLoading(false);
-      setFirstName(firstName.trim());
-      setLastName(lastName.trim());
-      setEmail(email.trim());
-      setPassword(password.trim());
-      setConfirmPassword(confirmPassword.trim());
       setMessage("");
-      const error = validateSignupData({
-        firstName,
-        lastName,
-        email,
+
+      const signUpData: SignUpData = {
+        firstName: firstName.trim(),
+        lastName: lastName.trim(),
+        email: email.replaceAll(" ", ""),
+        phone: `${countryCallingCode}${phone.replaceAll(" ", "")}`,
         password,
+      };
+      const error = validateSignupData({
+        ...signUpData,
         confirmPassword,
       });
+      if (!countryCallingCode) {
+        setMessage("l'indicatif du pays est obligatoire.");
+        setSuccess(false);
+        return;
+      }
       if (error) {
         setMessage(error);
         setSuccess(false);
         return;
       }
-      signUp(firstName, lastName, email, password).then((response) => {
+      signUp(signUpData).then((response) => {
         setLoading(false);
         setMessage(response.message);
         setSuccess(response.success);
@@ -56,7 +68,6 @@ const SignUpScreen = () => {
       }, 4000);
     }, 2000);
   };
-
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <KeyboardAwareScrollView
@@ -67,14 +78,12 @@ const SignUpScreen = () => {
         keyboardShouldPersistTaps="handled"
         showsVerticalScrollIndicator={false}
       >
-        {loading && (
-          <View style={styles.activityIndicatorContainer}>
-            <ActivityIndicator size="large" color={theme.primaryColor} />
-            <Text style={{ color: theme.primaryColor }}>
-              Création de compte...
-            </Text>
-          </View>
-        )}
+        <ThemeActivityIndicator
+          loading={loading}
+          setLoading={setLoading}
+          size="large"
+          theme={theme}
+        />
         <Text style={[styles.heading, { color: theme.textColor }]}>
           Bienvenue Remplit tous les champs pour créer votre compte.
         </Text>
@@ -90,7 +99,7 @@ const SignUpScreen = () => {
             outlineColor={theme.secondaryColor}
             activeOutlineColor={theme.primaryColor}
             keyboardType="default"
-            maxLength={35}
+            maxLength={50}
           />
           <TextInput
             label="Nom"
@@ -103,8 +112,26 @@ const SignUpScreen = () => {
             outlineColor={theme.secondaryColor}
             activeOutlineColor={theme.primaryColor}
             keyboardType="default"
-            maxLength={35}
+            maxLength={50}
           />
+          <View style={[styles.textInputs, styles.telInputContainer]}>
+            <DropdownComponent
+              countryCallingCode={countryCallingCode}
+              setCountryCallingCode={setCountryCallingCode}
+            />
+            <TextInput
+              value={phone}
+              onChangeText={setPhone}
+              placeholder="7X XXX XX XX"
+              style={styles.phone}
+              mode="outlined"
+              textColor={theme.textColor}
+              outlineColor={theme.secondaryColor}
+              activeOutlineColor={theme.primaryColor}
+              keyboardType="number-pad"
+              maxLength={50}
+            />
+          </View>
           <TextInput
             label="Email"
             value={email}
@@ -116,7 +143,7 @@ const SignUpScreen = () => {
             outlineColor={theme.secondaryColor}
             activeOutlineColor={theme.primaryColor}
             keyboardType="email-address"
-            maxLength={60}
+            maxLength={100}
           />
           <TextInput
             label="Mot de passe"
@@ -155,9 +182,80 @@ const SignUpScreen = () => {
             {message}
           </Text>
         )}
-        <OutlineThemeButton text="S'inscrire" onPress={handleSubmit} />
+        <OutlineThemeButton
+          text="S'inscrire"
+          onPress={handleSubmit}
+          theme={theme}
+        />
       </KeyboardAwareScrollView>
     </SafeAreaView>
+  );
+};
+
+const DropdownComponent = ({
+  countryCallingCode,
+  setCountryCallingCode,
+}: {
+  countryCallingCode: string;
+  setCountryCallingCode: React.Dispatch<React.SetStateAction<string>>;
+}) => {
+  const theme = useTheme()!.theme;
+
+  const renderItem = (item: { label: string; value: string }) => {
+    return (
+      <View style={[styles.item, { backgroundColor: theme.backgroundColor }]}>
+        <Text style={[styles.textItem, { color: theme.textColor }]}>
+          {item.label}
+        </Text>
+        {item.value === countryCallingCode && (
+          <AntDesign
+            style={styles.icon}
+            color={theme.primaryColor}
+            name="safety"
+            size={20}
+          />
+        )}
+      </View>
+    );
+  };
+
+  return (
+    <Dropdown
+      style={[styles.dropdown, { backgroundColor: theme.backgroundColor }]}
+      placeholderStyle={[styles.placeholderStyle, { color: "grey" }]}
+      selectedTextStyle={[
+        styles.selectedTextStyle,
+        { color: theme.primaryColor },
+      ]}
+      inputSearchStyle={[
+        styles.inputSearchStyle,
+        { backgroundColor: theme.backgroundColor },
+      ]}
+      data={COUNTRY_CODES}
+      search
+      maxHeight={300}
+      labelField="label"
+      valueField="value"
+      placeholder="Selectionner"
+      searchPlaceholder="Rechercher..."
+      value={countryCallingCode}
+      onChange={(item) => {
+        setCountryCallingCode(item.value);
+        Vibration.vibrate(125);
+      }}
+      renderItem={renderItem}
+      containerStyle={{ backgroundColor: theme.backgroundColor }}
+      renderRightIcon={() =>
+        countryCallingCode ? (
+          <AntDesign
+            style={styles.icon}
+            color={theme.primaryColor}
+            name="safety"
+            size={20}
+          />
+        ) : null
+      }
+    />
   );
 };
 const styles = StyleSheet.create({
@@ -166,7 +264,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
     paddingBottom: 40,
   },
-
   heading: {
     textAlign: "center",
     marginTop: 10,
@@ -189,11 +286,66 @@ const styles = StyleSheet.create({
     fontSize: 14,
     marginTop: 15,
   },
-  activityIndicatorContainer: {
-    alignItems: "center",
+
+  telInputContainer: {
+    flexDirection: "row",
     justifyContent: "center",
-    marginTop: 20,
-    rowGap: 10,
+  },
+  prefix: {
+    width: "25%",
+    textAlign: "center",
+    fontSize: 16,
+    marginRight: "5%",
+  },
+  phone: {
+    width: "55%",
+    backgroundColor: "transparent",
+  },
+  dropdown: {
+    width: "40%",
+    marginRight: "5%",
+    alignSelf: "center",
+    height: 50,
+    borderRadius: 5,
+    shadowColor: "#633c3c",
+    shadowOffset: {
+      width: 0,
+      height: 1,
+    },
+    shadowOpacity: 0.2,
+    shadowRadius: 1.41,
+    elevation: 2,
+    borderWidth: 1,
+    borderColor: "grey",
+  },
+  icon: {
+    marginRight: 5,
+  },
+  item: {
+    paddingVertical: 5,
+    paddingHorizontal: 10,
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+  },
+  textItem: {
+    flex: 1,
+    fontSize: 16,
+  },
+  placeholderStyle: {
+    fontSize: 16,
+    color: "gray",
+    textAlign: "center",
+  },
+  selectedTextStyle: {
+    fontSize: 16,
+  },
+  iconStyle: {
+    width: 20,
+    height: 20,
+  },
+  inputSearchStyle: {
+    fontSize: 16,
   },
 });
 

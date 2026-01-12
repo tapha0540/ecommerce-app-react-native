@@ -1,3 +1,5 @@
+import { emailRegex } from "./regex/regex";
+
 const validateLogInData = ({
   email,
   password,
@@ -5,7 +7,9 @@ const validateLogInData = ({
   email: string;
   password: string;
 }): string | null => {
-  const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+  if (!email && !password) {
+    return "Tous les champs sont obligatoires.";
+  }
   if (!email || !emailRegex.test(email)) {
     return "Veuillez entrer une adresse email valide.";
   }
