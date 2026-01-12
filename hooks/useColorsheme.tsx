@@ -1,6 +1,8 @@
 import Theme from "@/components/interfaces/themes";
+import darkTheme from "@/components/themes/darkTheme";
 import lightTheme from "@/components/themes/lightTheme";
 import React, { createContext, useContext, useState } from "react";
+import { useColorScheme } from "react-native";
 
 const themeContext = createContext<{
   theme: Theme;
@@ -12,7 +14,9 @@ export const ThemeContextProvider = ({
 }: {
   children: React.ReactNode;
 }) => {
-  const [theme, setTheme] = useState<Theme>(lightTheme);
+  const [theme, setTheme] = useState<Theme>(
+    useColorScheme() === "dark" ? darkTheme : lightTheme
+  );
 
   return (
     <themeContext.Provider value={{ theme, setTheme }}>

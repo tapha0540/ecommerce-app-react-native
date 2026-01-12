@@ -1,7 +1,7 @@
 import { LoginResponse } from "@/components/interfaces/requestResponses";
 import ip from "./ip";
 
-const Login = async (
+const logIn = async (
   email: string,
   password: string
 ): Promise<LoginResponse> => {
@@ -34,4 +34,4 @@ const Login = async (
   }
 };
 
-export default Login;
+export default logIn;

@@ -1,19 +1,19 @@
+import { ActivityIndicator, Text, TextInput } from "react-native-paper";
+
 import { useTheme } from "@/hooks/useColorsheme";
-import signUp from "@/utils/auth/signup";
-import validateSignupData from "@/utils/validation/signup_data_validation";
 import { router } from "expo-router";
 import { useState } from "react";
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet, View } from "react-native";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
-import { ActivityIndicator, TextInput } from "react-native-paper";
+
 import { SafeAreaView } from "react-native-safe-area-context";
 import { OutlineThemeButton } from "../../components/ui/buttons";
+import logIn from "@/utils/auth/login";
+import validateLogInData from "@/utils/validation/login_data_validation";
 
-const SignUpScreen = () => {
+const LoginScreen = () => {
   const theme = useTheme()!.theme;
 
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -26,25 +26,20 @@ const SignUpScreen = () => {
     setLoading(true);
     setTimeout(() => {
       setLoading(false);
-      setFirstName(firstName.trim());
-      setLastName(lastName.trim());
       setEmail(email.trim());
       setPassword(password.trim());
       setConfirmPassword(confirmPassword.trim());
       setMessage("");
-      const error = validateSignupData({
-        firstName,
-        lastName,
+      const error = validateLogInData({
         email,
         password,
-        confirmPassword,
       });
       if (error) {
         setMessage(error);
         setSuccess(false);
         return;
       }
-      signUp(firstName, lastName, email, password).then((response) => {
+      logIn(email, password).then((response) => {
         setLoading(false);
         setMessage(response.message);
         setSuccess(response.success);
@@ -52,7 +47,7 @@ const SignUpScreen = () => {
 
       setTimeout(() => {
         setMessage("");
-        if (success) router.push("/signin/login");
+        if (success) router.push("/(tabs)");
       }, 4000);
     }, 2000);
   };
@@ -76,35 +71,9 @@ const SignUpScreen = () => {
           </View>
         )}
         <Text style={[styles.heading, { color: theme.textColor }]}>
-          Bienvenue Remplit tous les champs pour créer votre compte.
+          Bienvenue de nouveau !
         </Text>
         <View style={styles.form}>
-          <TextInput
-            label="Prenom"
-            value={firstName}
-            onChangeText={setFirstName}
-            placeholder="Entrez votre Prenom ici"
-            style={styles.textInputs}
-            mode="outlined"
-            textColor={theme.textColor}
-            outlineColor={theme.secondaryColor}
-            activeOutlineColor={theme.primaryColor}
-            keyboardType="default"
-            maxLength={35}
-          />
-          <TextInput
-            label="Nom"
-            value={lastName}
-            onChangeText={setLastName}
-            placeholder="Entrez votre nom ici"
-            style={styles.textInputs}
-            mode="outlined"
-            textColor={theme.textColor}
-            outlineColor={theme.secondaryColor}
-            activeOutlineColor={theme.primaryColor}
-            keyboardType="default"
-            maxLength={35}
-          />
           <TextInput
             label="Email"
             value={email}
@@ -122,19 +91,6 @@ const SignUpScreen = () => {
             label="Mot de passe"
             value={password}
             onChangeText={setPassword}
-            placeholder="Ex: XXXX"
-            style={styles.textInputs}
-            mode="outlined"
-            textColor={theme.textColor}
-            outlineColor={theme.secondaryColor}
-            activeOutlineColor={theme.primaryColor}
-            keyboardType="visible-password"
-            maxLength={256}
-          />
-          <TextInput
-            label="Confirmer mot de passe"
-            value={confirmPassword}
-            onChangeText={setConfirmPassword}
             placeholder="Ex: XXXX"
             style={styles.textInputs}
             mode="outlined"
@@ -197,4 +153,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default SignUpScreen;
+export default LoginScreen;
