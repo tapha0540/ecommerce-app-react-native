@@ -4,6 +4,7 @@ import theme from "./theme";
 const lightTheme: Theme = {
   ...theme,
   textColor: "#0F0E0E",
+  iconColor: "#0F0E0E",
   backgroundColor: "#FFFFFF",
 };
 

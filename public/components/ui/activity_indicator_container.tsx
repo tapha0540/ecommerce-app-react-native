@@ -1,6 +1,7 @@
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet, View } from "react-native";
 import { ActivityIndicator } from "react-native-paper";
 import Theme from "../interfaces/themes";
+import { BoldText } from "./text";
 
 const ThemeActivityIndicator = ({
   loading,
@@ -16,7 +17,11 @@ const ThemeActivityIndicator = ({
   return loading ? (
     <View style={styles.activityIndicatorContainer}>
       <ActivityIndicator size={size} color={theme.primaryColor} />
-      <Text style={{ color: theme.primaryColor }}>{text}</Text>
+      <BoldText
+        style={{ color: theme.primaryColor }}
+        content={text}
+        theme={theme}
+      />
     </View>
   ) : null;
 };

@@ -1,6 +1,6 @@
+import { UserContextProvider } from "@/hooks/userHooks";
 import { Stack } from "expo-router";
 import { ThemeContextProvider } from "../hooks/useColorsheme";
-import { UserContextProvider } from "@/hooks/userHooks";
 
 const RootLayout = () => {
   return (

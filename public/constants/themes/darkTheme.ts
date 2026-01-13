@@ -4,6 +4,7 @@ import theme from "./theme";
 const darkTheme: Theme = {
   ...theme,
   textColor: "#FFFFFF",
+  iconColor: "#FFFFFF",
   backgroundColor: "#0F0E0E",
 };
 

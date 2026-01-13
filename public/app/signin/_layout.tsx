@@ -1,7 +1,6 @@
 import { useTheme } from "@/hooks/useColorsheme";
 import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
 import { withLayoutContext } from "expo-router";
-import { StatusBar, useColorScheme } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 const { Navigator } = createMaterialTopTabNavigator();
@@ -10,18 +9,12 @@ export const MaterialTopTabs = withLayoutContext(Navigator);
 
 const TopTabsLayout = () => {
   const theme = useTheme()!.theme;
-  const userColorScheme = useColorScheme();
 
   return (
     <SafeAreaView
       style={{ flex: 1, backgroundColor: theme.backgroundColor }}
       edges={["top"]}
     >
-      <StatusBar
-        barStyle={
-          userColorScheme === "light" ? "dark-content" : "light-content"
-        }
-      />
       <MaterialTopTabs
         screenOptions={{
           tabBarActiveTintColor: theme.textColor,

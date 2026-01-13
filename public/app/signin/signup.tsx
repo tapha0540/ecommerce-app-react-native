@@ -1,5 +1,7 @@
 import { SignUpData } from "@/components/interfaces/requestResponses";
+import Theme from "@/components/interfaces/themes";
 import ThemeActivityIndicator from "@/components/ui/activity_indicator_container";
+import { BoldText, ThemedText } from "@/components/ui/text";
 import { COUNTRY_CODES } from "@/constants/contry_calling_codes";
 import { useTheme } from "@/hooks/useColorsheme";
 import signUp from "@/services/auth/signup";
@@ -7,7 +9,7 @@ import validateSignupData from "@/services/validation/auth/signup_data_validatio
 import AntDesign from "@expo/vector-icons/AntDesign";
 import { router } from "expo-router";
 import React, { useState } from "react";
-import { StyleSheet, Text, Vibration, View } from "react-native";
+import { StyleSheet, Vibration, View } from "react-native";
 import { Dropdown } from "react-native-element-dropdown";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import { TextInput } from "react-native-paper";
@@ -84,9 +86,11 @@ const SignUpScreen = () => {
           size="large"
           theme={theme}
         />
-        <Text style={[styles.heading, { color: theme.textColor }]}>
-          Bienvenue Remplit tous les champs pour créer votre compte.
-        </Text>
+        <ThemedText
+          style={[styles.heading, { color: theme.textColor }]}
+          content="Bienvenue Remplit tous les champs pour créer votre compte."
+          theme={theme}
+        />
         <View style={styles.form}>
           <TextInput
             label="Prenom"
@@ -118,6 +122,7 @@ const SignUpScreen = () => {
             <DropdownComponent
               countryCallingCode={countryCallingCode}
               setCountryCallingCode={setCountryCallingCode}
+              theme={theme}
             />
             <TextInput
               value={phone}
@@ -173,14 +178,14 @@ const SignUpScreen = () => {
           />
         </View>
         {message && (
-          <Text
+          <BoldText
             style={[
               styles.message,
               { color: success ? theme.successColor : theme.errorColor },
             ]}
-          >
-            {message}
-          </Text>
+            content={message}
+            theme={theme}
+          />
         )}
         <OutlineThemeButton
           text="S'inscrire"
@@ -195,18 +200,20 @@ const SignUpScreen = () => {
 const DropdownComponent = ({
   countryCallingCode,
   setCountryCallingCode,
+  theme,
 }: {
   countryCallingCode: string;
   setCountryCallingCode: React.Dispatch<React.SetStateAction<string>>;
+  theme: Theme;
 }) => {
-  const theme = useTheme()!.theme;
-
   const renderItem = (item: { label: string; value: string }) => {
     return (
       <View style={[styles.item, { backgroundColor: theme.backgroundColor }]}>
-        <Text style={[styles.textItem, { color: theme.textColor }]}>
-          {item.label}
-        </Text>
+        <BoldText
+          style={[styles.textItem, { color: theme.textColor }]}
+          content={item.label}
+          theme={theme}
+        />
         {item.value === countryCallingCode && (
           <AntDesign
             style={styles.icon}

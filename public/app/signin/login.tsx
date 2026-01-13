@@ -50,7 +50,7 @@ const LoginScreen = () => {
         setMessage("");
         if (success) {
           userHook?.setUser(await getCurrentUser());
-          router.push("/(tabs)");
+          router.push("/(tabs)/home");
         }
       }, 5000);
     }, 2000);
