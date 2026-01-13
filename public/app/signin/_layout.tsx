@@ -8,15 +8,19 @@ const { Navigator } = createMaterialTopTabNavigator();
 
 export const MaterialTopTabs = withLayoutContext(Navigator);
 
-export default function TopTabsLayout() {
+const TopTabsLayout = () => {
   const theme = useTheme()!.theme;
+  const userColorScheme = useColorScheme();
+
   return (
     <SafeAreaView
       style={{ flex: 1, backgroundColor: theme.backgroundColor }}
       edges={["top"]}
     >
-      <StatusBar 
-        barStyle={useColorScheme() === 'light' ? 'dark-content' : 'light-content'}
+      <StatusBar
+        barStyle={
+          userColorScheme === "light" ? "dark-content" : "light-content"
+        }
       />
       <MaterialTopTabs
         screenOptions={{
@@ -29,7 +33,7 @@ export default function TopTabsLayout() {
             borderRadius: 25,
             elevation: 5,
             borderColor: theme.primaryColor,
-            borderWidth: 1
+            borderWidth: 1,
           },
           tabBarIndicatorStyle: {
             width: "49%",
@@ -57,4 +61,6 @@ export default function TopTabsLayout() {
       </MaterialTopTabs>
     </SafeAreaView>
   );
-}
+};
+
+export default TopTabsLayout;

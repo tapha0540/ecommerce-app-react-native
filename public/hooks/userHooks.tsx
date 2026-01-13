@@ -1,9 +1,10 @@
+import User from "@/components/interfaces/user";
 import getCurrentUser from "@/services/auth/get_current_user";
-import React, { createContext, useContext, useEffect, useState } from "react";
-import User from "../components/interfaces/user";
+import { createContext, useContext, useEffect, useState } from "react";
 
 const userContext = createContext<{
   user: User | null;
+  loading: boolean;
   setUser: React.Dispatch<React.SetStateAction<User | null>>;
 } | null>(null);
 
@@ -13,21 +14,24 @@ export const UserContextProvider = ({
   children: React.ReactNode;
 }) => {
   const [user, setUser] = useState<User | null>(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const fn = async () => setUser(await getCurrentUser());
-
+    const fn = async () => {
+      const currentUser = await getCurrentUser();
+      setUser(currentUser);
+      setLoading(false);
+    };
     fn();
   }, []);
 
   return (
-    <userContext.Provider value={{ user, setUser }}>
+    <userContext.Provider value={{ user, loading, setUser }}>
       {children}
     </userContext.Provider>
   );
 };
 
 export const useUser = () => {
-  const userHook = useContext(userContext);
-  return userHook;
+  return useContext(userContext);
 };

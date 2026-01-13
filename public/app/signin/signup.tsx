@@ -3,7 +3,7 @@ import ThemeActivityIndicator from "@/components/ui/activity_indicator_container
 import { COUNTRY_CODES } from "@/constants/contry_calling_codes";
 import { useTheme } from "@/hooks/useColorsheme";
 import signUp from "@/services/auth/signup";
-import validateSignupData from "@/services/validation/signup_data_validation";
+import validateSignupData from "@/services/validation/auth/signup_data_validation";
 import AntDesign from "@expo/vector-icons/AntDesign";
 import { router } from "expo-router";
 import React, { useState } from "react";
@@ -65,7 +65,7 @@ const SignUpScreen = () => {
       setTimeout(() => {
         setMessage("");
         if (success) router.push("/signin/login");
-      }, 4000);
+      }, 5000);
     }, 2000);
   };
   return (

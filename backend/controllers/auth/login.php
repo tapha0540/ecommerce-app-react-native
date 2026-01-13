@@ -55,14 +55,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             session_start();
             // Store user information in session
             $user = $res['user'];
-            $_SESSION['userId'] = $user['id'];
-            $_SESSION['first_name'] = $user['first_name'];
-            $_SESSION['last_name'] = $user['last_name'];
-            $_SESSION['email'] = $user['email'];
-            $_SESSION['phone'] = $user['phone'];
-            $_SESSION['role'] = $user['role'];
-            $_SESSION['created_at'] = $user['created_at'];
-            $_SESSION['updated_at'] = $user['updated_at'];
+            $_SESSION['user'] = [
+                'id' => $user['id'],
+                'firstName' => $user['first_name'],
+                'lastName' => $user['last_name'],
+                'email' => $user['email'],
+                'phone' => $user['phone'],
+                'role' => $user['role'],
+                'created_at' => $user['created_at'],
+                'updated_at' => $user['updated_at']
+            ];
 
         }
         echo json_encode([

@@ -5,20 +5,21 @@ import { router } from "expo-router";
 import { useState } from "react";
 import { StyleSheet, View } from "react-native";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
-
 import { LoginData } from "@/components/interfaces/requestResponses";
 import ThemeActivityIndicator from "@/components/ui/activity_indicator_container";
+import { useUser } from "@/hooks/userHooks";
+import getCurrentUser from "@/services/auth/get_current_user";
 import logIn from "@/services/auth/login";
-import validateLogInData from "@/services/validation/login_data_validation";
+import validateLogInData from "@/services/validation/auth/login_data_validation";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { OutlineThemeButton } from "../../components/ui/buttons";
 
 const LoginScreen = () => {
+  const userHook = useUser();
   const theme = useTheme()!.theme;
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
 
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false);
@@ -45,10 +46,13 @@ const LoginScreen = () => {
         setSuccess(response.success);
       });
 
-      setTimeout(() => {
+      setTimeout(async () => {
         setMessage("");
-        if (success) router.push("/(tabs)");
-      }, 4000);
+        if (success) {
+          userHook?.setUser(await getCurrentUser());
+          router.push("/(tabs)");
+        }
+      }, 5000);
     }, 2000);
   };
 
@@ -113,7 +117,6 @@ const LoginScreen = () => {
           text="Se connecter"
           onPress={handleSubmit}
           theme={theme}
-          
         />
       </KeyboardAwareScrollView>
     </SafeAreaView>

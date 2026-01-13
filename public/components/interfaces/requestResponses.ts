@@ -1,10 +1,11 @@
+import User from "./user";
 
 export default interface SignUpResponse {
   success: boolean;
   message: string;
 }
 
-export interface SignUpData  {
+export interface SignUpData {
   firstName: string;
   lastName: string;
   email: string;
@@ -21,4 +22,10 @@ export interface LoginResponse {
 export interface LoginData {
   email: string;
   password: string;
+}
+
+export interface SessionResponse {
+  message: string;
+  success: boolean;
+  user: User | null;
 }

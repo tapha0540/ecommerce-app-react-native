@@ -24,7 +24,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $email = trim($data['email'] ?? '');
         $password = $data['password'] ?? '';
 
-        if (empty($firstName) || empty($lastName) || empty($email) || empty($password)) {
+        if (empty($firstName) || empty($lastName) || empty($phone) || empty($email) || empty($password)) {
             http_response_code(400);
             echo json_encode([
                 'message' => 'Tous les champs sont requis.',

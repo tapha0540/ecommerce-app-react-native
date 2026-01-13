@@ -1,6 +1,7 @@
 import User from "@/components/interfaces/user";
 import ip from "./ip";
 import getSessionToken from "./session/get_session_token";
+import { SessionResponse } from "@/components/interfaces/requestResponses";
 
 const getCurrentUser = async (): Promise<User | null> => {
   const token = await getSessionToken();
@@ -10,13 +11,14 @@ const getCurrentUser = async (): Promise<User | null> => {
       `http://${ip}/controllers/auth/get_session_user.php`,
       {
         headers: {
-          Authorization: `Bearer ${token}`,
+          authorization: `Bearer ${token}`,
         },
       }
     );
-    const user = (await res.json()) as User;
+    
+    const data: SessionResponse = await res.json();
 
-    return user;
+    return data.user;
   } catch (err) {
     console.error(err);
     return null;

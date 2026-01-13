@@ -2,14 +2,15 @@ import { Redirect } from "expo-router";
 import { useUser } from "../hooks/userHooks";
 
 const Index = () => {
-  const user = useUser()?.user;
-  const isLoggedIn = !!user;
+  const userHook = useUser();
 
-  if (isLoggedIn) {
-    return <Redirect href="/(tabs)" />;
-  } else {
-    return <Redirect href="/signin" />;
-  }
+  if (!userHook || userHook.loading) return null;
+
+  return userHook.user ? (
+    <Redirect href="/(tabs)/home" />
+  ) : (
+    <Redirect href="/signin/login" />
+  );
 };
 
 export default Index;

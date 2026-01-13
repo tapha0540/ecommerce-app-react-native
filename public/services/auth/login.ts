@@ -25,12 +25,12 @@ const logIn = async ({
       } as LoginResponse;
     }
     const data: LoginResponse = await response.json();
-    
+
     console.log(data);
-    
-    if (data.token) {
+
+    if (data.success && data.token) {
       saveSession(data.token);
-    };
+    }
 
     return data;
   } catch (error) {
