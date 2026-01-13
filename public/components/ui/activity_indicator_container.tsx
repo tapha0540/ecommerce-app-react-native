@@ -4,19 +4,19 @@ import Theme from "../interfaces/themes";
 
 const ThemeActivityIndicator = ({
   loading,
-  setLoading,
   size,
   theme,
+  text,
 }: {
   loading: boolean;
-  setLoading: React.Dispatch<React.SetStateAction<boolean>>;
   size: number | "small" | "large";
   theme: Theme;
+  text: string;
 }) => {
   return loading ? (
     <View style={styles.activityIndicatorContainer}>
       <ActivityIndicator size={size} color={theme.primaryColor} />
-      <Text style={{ color: theme.primaryColor }}>Création de compte...</Text>
+      <Text style={{ color: theme.primaryColor }}>{text}</Text>
     </View>
   ) : null;
 };

@@ -80,7 +80,7 @@ const SignUpScreen = () => {
       >
         <ThemeActivityIndicator
           loading={loading}
-          setLoading={setLoading}
+          text="Création de compte..."
           size="large"
           theme={theme}
         />

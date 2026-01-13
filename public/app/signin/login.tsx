@@ -1,4 +1,4 @@
-import { ActivityIndicator, Text, TextInput } from "react-native-paper";
+import { Text, TextInput } from "react-native-paper";
 
 import { useTheme } from "@/hooks/useColorsheme";
 import { router } from "expo-router";
@@ -7,6 +7,7 @@ import { StyleSheet, View } from "react-native";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 
 import { LoginData } from "@/components/interfaces/requestResponses";
+import ThemeActivityIndicator from "@/components/ui/activity_indicator_container";
 import logIn from "@/services/auth/login";
 import validateLogInData from "@/services/validation/login_data_validation";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -61,14 +62,12 @@ const LoginScreen = () => {
         keyboardShouldPersistTaps="handled"
         showsVerticalScrollIndicator={false}
       >
-        {loading && (
-          <View style={styles.activityIndicatorContainer}>
-            <ActivityIndicator size="large" color={theme.primaryColor} />
-            <Text style={{ color: theme.primaryColor }}>
-              Création de compte...
-            </Text>
-          </View>
-        )}
+        <ThemeActivityIndicator
+          loading={loading}
+          size="large"
+          theme={theme}
+          text="Connexion..."
+        />
         <Text style={[styles.heading, { color: theme.textColor }]}>
           Bienvenue de nouveau !
         </Text>
@@ -111,9 +110,10 @@ const LoginScreen = () => {
           </Text>
         )}
         <OutlineThemeButton
-          text="S'inscrire"
+          text="Se connecter"
           onPress={handleSubmit}
           theme={theme}
+          
         />
       </KeyboardAwareScrollView>
     </SafeAreaView>

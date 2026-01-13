@@ -1,21 +1,16 @@
-import { useTheme } from "@/hooks/useColorsheme";
 import { useState } from "react";
 import { Pressable, StyleSheet, Vibration } from "react-native";
 import { Text } from "react-native-paper";
 import Theme from "../interfaces/themes";
 
-export const ThemeButton = ({
-  text,
-  icon,
-  onPress,
-  theme
-}: {
+interface ButtonProps {
   text: string;
   icon?: React.ReactNode;
   onPress: () => void;
-  theme: Theme
-}) => {
+  theme: Theme;
+}
 
+export const ThemeButton = ({ text, icon, onPress, theme }: ButtonProps) => {
   return (
     <Pressable
       style={[styles.buttons, { backgroundColor: theme.primaryColor }]}
@@ -33,13 +28,8 @@ export const OutlineThemeButton = ({
   text,
   icon,
   onPress,
-  theme
-}: {
-  text: string;
-  icon?: React.ReactNode;
-  onPress: () => void;
-  theme: Theme
-}) => {
+  theme,
+}: ButtonProps) => {
   const [activeBgColor, setActiveBgColor] = useState(theme.backgroundColor);
   const [activeTxtColor, setActiveTxtColor] = useState(theme.primaryColor);
   return (
@@ -64,9 +54,7 @@ export const OutlineThemeButton = ({
       }}
     >
       {icon}
-      <Text style={[styles.buttonText, { color: activeTxtColor }]}>
-        {text}
-      </Text>
+      <Text style={[styles.buttonText, { color: activeTxtColor }]}>{text}</Text>
     </Pressable>
   );
 };
@@ -77,8 +65,8 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "space-around",
     alignSelf: "center",
-    maxWidth: 250,
-    width: "35%",
+    maxWidth: 200,
+    width: "45%",
     height: 50,
     padding: 5,
     borderRadius: 10,

@@ -1,4 +1,5 @@
-import React, { createContext, useContext, useState } from "react";
+import getCurrentUser from "@/services/auth/get_current_user";
+import React, { createContext, useContext, useEffect, useState } from "react";
 import User from "../components/interfaces/user";
 
 const userContext = createContext<{
@@ -11,14 +12,13 @@ export const UserContextProvider = ({
 }: {
   children: React.ReactNode;
 }) => {
-  const userTest = {
-    firstName: "Moustapha",
-    id: 1,
-    email: "fmoustapha095@gmail.com",
-    lastName: "Fall",
-  };
-
   const [user, setUser] = useState<User | null>(null);
+
+  useEffect(() => {
+    const fn = async () => setUser(await getCurrentUser());
+
+    fn();
+  }, []);
 
   return (
     <userContext.Provider value={{ user, setUser }}>

@@ -3,7 +3,7 @@ import {
   LoginResponse,
 } from "@/components/interfaces/requestResponses";
 import ip from "./ip";
-import saveSession from "./session/save_session";
+import saveSession from "./session/save_session_token";
 
 const logIn = async ({
   email,
@@ -16,7 +16,7 @@ const logIn = async ({
         "Content-Type": "application/json",
       },
       body: JSON.stringify({ email, password }),
-      credentials: "include",
+      // credentials: "include",
     });
     if (!response.ok) {
       return {
