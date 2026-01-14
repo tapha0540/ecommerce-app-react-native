@@ -8,7 +8,7 @@ import { Feather } from "@expo/vector-icons";
 
 import { Redirect } from "expo-router";
 import { BellIcon, SquareUserRoundIcon } from "lucide-react-native";
-import { Image, StyleSheet, View } from "react-native";
+import { Image, ScrollView, StyleSheet, View } from "react-native";
 import { Card } from "react-native-paper";
 import { SafeAreaView } from "react-native-safe-area-context";
 
@@ -24,9 +24,11 @@ const HomeScreen = () => {
     <SafeAreaView
       style={[styles.container, { backgroundColor: theme.backgroundColor }]}
     >
-      <View style={styles.body}>
-        <TopContainer user={user} theme={theme} />
-      </View>
+      <ScrollView style={{ flex: 1 }} showsVerticalScrollIndicator={false}>
+        <View style={styles.body}>
+          <TopContainer user={user} theme={theme} />
+        </View>
+      </ScrollView>
     </SafeAreaView>
   );
 };
@@ -75,12 +77,14 @@ const TopContainer = ({ user, theme }: { user: User; theme: Theme }) => {
             <BellIcon size={25} color={theme.iconColor} />
           </Card>
 
-          <Card style={styles.card}>
+          <Card
+            style={[styles.card, { backgroundColor: theme.secondaryColor }]}
+          >
             <Feather name="shopping-bag" color={theme.iconColor} size={25} />
           </Card>
         </View>
       </View>
-      {/* search bar */}
+
       <SearchBar theme={theme} />
     </View>
   );
@@ -92,24 +96,31 @@ const styles = StyleSheet.create({
   },
   body: {
     flex: 1,
+    marginTop: 5,
     marginHorizontal: 15,
     padding: 5,
+    rowGap: 25,
   },
   topContainer: {
     width: "auto",
     height: "auto",
+    rowGap: 15,
+    alignItems: "center",
+    justifyContent: "center",
   },
   profileContainer: {
+    width: "100%",
     display: "flex",
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
+    columnGap: 15,
   },
   profileImg: { width: "100%", height: "100%" },
   profileImgContainer: { width: 60, height: 60 },
   iconsContainer: {
     flexDirection: "row",
-    columnGap: 20,
+    columnGap: 15,
     justifyContent: "space-between",
     padding: 5,
   },

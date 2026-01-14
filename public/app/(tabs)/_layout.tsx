@@ -1,5 +1,5 @@
 import { useTheme } from "@/hooks/useColorsheme";
-import { Entypo, Feather, FontAwesome, FontAwesome6, Octicons } from "@expo/vector-icons";
+import { Entypo, Feather, FontAwesome, Octicons } from "@expo/vector-icons";
 import { Tabs } from "expo-router";
 import { CircleUser, HeartIcon } from "lucide-react-native";
 
