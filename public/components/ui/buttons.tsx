@@ -68,9 +68,10 @@ const styles = StyleSheet.create({
     maxWidth: 200,
     width: "45%",
     height: 50,
-    padding: 5,
-    borderRadius: 10,
     marginTop: 20,
+    padding: 15,
+    borderRadius: 15,
+    elevation: 5,
   },
   buttonText: {
     fontWeight: "bold",

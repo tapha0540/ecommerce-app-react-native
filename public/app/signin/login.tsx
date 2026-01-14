@@ -75,7 +75,7 @@ const LoginScreen = () => {
         <Text style={[styles.heading, { color: theme.textColor }]}>
           Bienvenue de nouveau !
         </Text>
-        <View style={styles.form}>
+        <View style={[styles.form, { backgroundColor: theme.secondaryColor}]}>
           <TextInput
             label="Email"
             value={email}
@@ -139,6 +139,9 @@ const styles = StyleSheet.create({
     flexDirection: "column",
     rowGap: 20,
     marginTop: 15,
+    padding: 15,
+    borderRadius: 15,
+    elevation: 5
   },
   textInputs: {
     height: 50,

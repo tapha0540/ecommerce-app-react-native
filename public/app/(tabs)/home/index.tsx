@@ -1,9 +1,11 @@
 import Theme from "@/components/interfaces/themes";
 import User from "@/components/interfaces/user";
+import SearchBar from "@/components/ui/search_bar";
 import { BoldText, LightText } from "@/components/ui/text";
 import { useTheme } from "@/hooks/useColorsheme";
 import { useUser } from "@/hooks/userHooks";
-import { SimpleLineIcons } from "@react-native-vector-icons/simple-line-icons";
+import { Feather } from "@expo/vector-icons";
+
 import { Redirect } from "expo-router";
 import { BellIcon, SquareUserRoundIcon } from "lucide-react-native";
 import { Image, StyleSheet, View } from "react-native";
@@ -49,11 +51,14 @@ const TopContainer = ({ user, theme }: { user: User; theme: Theme }) => {
             />
           )}
           <View style={styles.profileTexts}>
-            <LightText
-              style={[styles.profileUserName]}
-              content={`Hi ${user.firstName} ${user.lastName}`}
-              theme={theme}
-            />
+            <View style={{ flexDirection: "row" }}>
+              <LightText content="Salut " theme={theme} />
+              <LightText
+                style={[styles.profileUserName, { color: theme.primaryColor }]}
+                content={`${user.firstName} ${user.lastName}`}
+                theme={theme}
+              />
+            </View>
             <BoldText
               style={styles.greeting}
               content={new Date().getHours() < 13 ? "Bonjour" : "Bonsoir"}
@@ -63,16 +68,20 @@ const TopContainer = ({ user, theme }: { user: User; theme: Theme }) => {
         </View>
 
         <View style={styles.iconsContainer}>
-          <Card>
-            <BellIcon size={24} color={theme.iconColor} />
+          <Card
+            style={[styles.card, { backgroundColor: theme.secondaryColor }]}
+            onPress={() => {}}
+          >
+            <BellIcon size={25} color={theme.iconColor} />
           </Card>
 
-          <Card>
-            <SimpleLineIcons name="handbag" color={theme.iconColor} />
+          <Card style={styles.card}>
+            <Feather name="shopping-bag" color={theme.iconColor} size={25} />
           </Card>
         </View>
       </View>
       {/* search bar */}
+      <SearchBar theme={theme} />
     </View>
   );
 };
@@ -84,7 +93,7 @@ const styles = StyleSheet.create({
   body: {
     flex: 1,
     marginHorizontal: 15,
-    padding: 10,
+    padding: 5,
   },
   topContainer: {
     width: "auto",
@@ -98,7 +107,15 @@ const styles = StyleSheet.create({
   },
   profileImg: { width: "100%", height: "100%" },
   profileImgContainer: { width: 60, height: 60 },
-  iconsContainer: {},
+  iconsContainer: {
+    flexDirection: "row",
+    columnGap: 20,
+    justifyContent: "space-between",
+    padding: 5,
+  },
+  card: {
+    padding: 10,
+  },
   profile: {
     display: "flex",
     flexDirection: "row",

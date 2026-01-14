@@ -12,7 +12,7 @@ export const ThemedText = ({
 }) => {
   return (
     <Text
-      style={[style, { color: theme.textColor, fontFamily: theme.fontFamily }]}
+      style={[{ color: theme.textColor, fontFamily: theme.fontFamily }, style]}
     >
       {content}
     </Text>
@@ -30,7 +30,7 @@ export const BoldText = ({
 }) => {
   return (
     <ThemedText
-      style={[style, styles.boldText]}
+      style={[styles.boldText, style]}
       theme={theme}
       content={content}
     />
@@ -47,7 +47,7 @@ export const LightText = ({
 }) => {
   return (
     <ThemedText
-      style={[style, styles.lightText]}
+      style={[styles.lightText, style]}
       theme={theme}
       content={content}
     />
