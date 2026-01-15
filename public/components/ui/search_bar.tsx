@@ -21,12 +21,12 @@ const SearchBar = ({ theme }: { theme: Theme }) => {
           onChangeText={setSearch}
           style={styles.textInput}
           maxLength={50}
-          numberOfLines={2}
+          numberOfLines={1}
           multiline
         />
       </View>
 
-      <Card style={{ backgroundColor: theme.secondaryColor, padding: 15 }}>
+      <Card style={{ backgroundColor: theme.secondaryColor, padding: 12 }}>
         <Settings2Icon size={25} color={theme.iconColor} />
       </Card>
     </View>
@@ -40,11 +40,12 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     alignItems: "center",
     width: "100%",
+    padding: 2
   },
   textInput: {
     width: "70%",
-    height: 45,
-    fontSize: 18,
+    height: 40,
+    fontSize: 14,
   },
   txtInputContainer: {
     display: "flex",

@@ -16,7 +16,7 @@ const logIn = async ({
         "Content-Type": "application/json",
       },
       body: JSON.stringify({ email, password }),
-      // credentials: "include",
+      credentials: "include",
     });
     if (!response.ok) {
       return {

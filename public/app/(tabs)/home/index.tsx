@@ -1,5 +1,6 @@
 import Theme from "@/components/interfaces/themes";
 import User from "@/components/interfaces/user";
+import ProductsCategoriesFilter from "@/components/ui/categories_filter_bar";
 import SearchBar from "@/components/ui/search_bar";
 import { BoldText, LightText } from "@/components/ui/text";
 import { useTheme } from "@/hooks/useColorsheme";
@@ -27,6 +28,7 @@ const HomeScreen = () => {
       <ScrollView style={{ flex: 1 }} showsVerticalScrollIndicator={false}>
         <View style={styles.body}>
           <TopContainer user={user} theme={theme} />
+          <MiddleContainer theme={theme} />
         </View>
       </ScrollView>
     </SafeAreaView>
@@ -84,8 +86,15 @@ const TopContainer = ({ user, theme }: { user: User; theme: Theme }) => {
           </Card>
         </View>
       </View>
-
       <SearchBar theme={theme} />
+    </View>
+  );
+};
+
+const MiddleContainer = ({ theme }: { theme: Theme }) => {
+  return (
+    <View>
+      <ProductsCategoriesFilter theme={theme} />
     </View>
   );
 };
@@ -106,7 +115,8 @@ const styles = StyleSheet.create({
     height: "auto",
     rowGap: 15,
     alignItems: "center",
-    justifyContent: "center",
+    justifyContent: "space-between",
+    padding: 3,
   },
   profileContainer: {
     width: "100%",
