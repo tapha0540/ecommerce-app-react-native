@@ -1,4 +1,4 @@
-import { SignUpData } from "@/components/interfaces/requestResponses";
+import { SignUpData } from "@/components/interfaces/api/requestResponses";
 import { emailRegex, numeric } from "./regex/regex";
 
 const validateSignupData = ({

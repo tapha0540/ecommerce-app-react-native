@@ -45,7 +45,7 @@ const styles = StyleSheet.create({
   textInput: {
     width: "70%",
     height: 40,
-    fontSize: 14,
+    fontSize: 16,
   },
   txtInputContainer: {
     display: "flex",

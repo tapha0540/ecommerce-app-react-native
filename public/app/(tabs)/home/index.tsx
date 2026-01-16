@@ -1,5 +1,5 @@
+import User from "@/components/interfaces/api/user";
 import Theme from "@/components/interfaces/themes";
-import User from "@/components/interfaces/user";
 import ProductsCategoriesFilter from "@/components/ui/categories_filter_bar";
 import SearchBar from "@/components/ui/search_bar";
 import { BoldText, LightText } from "@/components/ui/text";
@@ -56,8 +56,8 @@ const TopContainer = ({ user, theme }: { user: User; theme: Theme }) => {
           )}
           <View style={styles.profileTexts}>
             <View style={{ flexDirection: "row" }}>
-              <LightText content="Salut " theme={theme} />
-              <LightText
+              <LightText content="Salut  " theme={theme} />
+              <BoldText
                 style={[styles.profileUserName, { color: theme.primaryColor }]}
                 content={`${user.firstName} ${user.lastName}`}
                 theme={theme}
@@ -154,7 +154,7 @@ const styles = StyleSheet.create({
     fontWeight: "900",
   },
   profileUserName: {
-    fontWeight: "100",
+    letterSpacing: 1.5
   },
 });
 export default HomeScreen;

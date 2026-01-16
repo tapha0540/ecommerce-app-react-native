@@ -1,4 +1,4 @@
-import { SignUpData } from "@/components/interfaces/requestResponses";
+import { SignUpData } from "@/components/interfaces/api/requestResponses";
 import Theme from "@/components/interfaces/themes";
 import ThemeActivityIndicator from "@/components/ui/activity_indicator_container";
 import { BoldText, ThemedText } from "@/components/ui/text";
@@ -67,7 +67,7 @@ const SignUpScreen = () => {
       setTimeout(() => {
         setMessage("");
         if (success) router.push("/signin/login");
-      }, 5000);
+      }, 3500);
     }, 2000);
   };
   return (

@@ -1,7 +1,7 @@
-import User from "@/components/interfaces/user";
+import { SessionResponse } from "@/components/interfaces/api/requestResponses";
+import User from "@/components/interfaces/api/user";
 import ip from "./ip";
 import getSessionToken from "./session/get_session_token";
-import { SessionResponse } from "@/components/interfaces/requestResponses";
 
 const getCurrentUser = async (): Promise<User | null> => {
   const token = await getSessionToken();
@@ -15,7 +15,7 @@ const getCurrentUser = async (): Promise<User | null> => {
         },
       }
     );
-    
+
     const data: SessionResponse = await res.json();
 
     return data.user;

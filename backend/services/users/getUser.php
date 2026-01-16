@@ -25,7 +25,7 @@ function getUser(PDO &$pdo, ?int $userId = null, ?string $userEmail = null, ?str
     }
 
     $sql = "
-        SELECT id, first_name, last_name, email, role, phone, password, created_at, updated_at
+        SELECT id, firstName, lastName, email, role, phone, password, createdAt, updatedAt
         FROM users
         WHERE " . implode(" OR ", $conditions);
 

@@ -1,16 +1,16 @@
 import { Text, TextInput } from "react-native-paper";
 
-import { useTheme } from "@/hooks/useColorsheme";
-import { router } from "expo-router";
-import { useState } from "react";
-import { StyleSheet, View } from "react-native";
-import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
-import { LoginData } from "@/components/interfaces/requestResponses";
+import { LoginData } from "@/components/interfaces/api/requestResponses";
 import ThemeActivityIndicator from "@/components/ui/activity_indicator_container";
+import { useTheme } from "@/hooks/useColorsheme";
 import { useUser } from "@/hooks/userHooks";
 import getCurrentUser from "@/services/auth/get_current_user";
 import logIn from "@/services/auth/login";
 import validateLogInData from "@/services/validation/auth/login_data_validation";
+import { router } from "expo-router";
+import { useState } from "react";
+import { StyleSheet, View } from "react-native";
+import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { OutlineThemeButton } from "../../components/ui/buttons";
 
@@ -44,18 +44,22 @@ const LoginScreen = () => {
         setLoading(false);
         setMessage(response.message);
         setSuccess(response.success);
-      });
-
-      setTimeout(async () => {
-        setMessage("");
-        if (success) {
-          userHook?.setUser(await getCurrentUser());
-          router.push("/(tabs)/home");
+        if (response.success) {
+          setTimeout(async () => {
+            userHook?.setUser(await getCurrentUser());
+            router.push("/(tabs)/home");
+          }, 2500);
         }
+      });
+      setTimeout(() => {
+        setMessage("");
       }, 5000);
     }, 2000);
   };
 
+  if (userHook?.user) {
+    return router.push("/(tabs)/home");
+  }
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <KeyboardAwareScrollView
@@ -75,7 +79,7 @@ const LoginScreen = () => {
         <Text style={[styles.heading, { color: theme.textColor }]}>
           Bienvenue de nouveau !
         </Text>
-        <View style={[styles.form, { backgroundColor: theme.secondaryColor}]}>
+        <View style={[styles.form, { backgroundColor: theme.secondaryColor }]}>
           <TextInput
             label="Email"
             value={email}
@@ -141,7 +145,7 @@ const styles = StyleSheet.create({
     marginTop: 15,
     padding: 15,
     borderRadius: 15,
-    elevation: 5
+    elevation: 5,
   },
   textInputs: {
     height: 50,

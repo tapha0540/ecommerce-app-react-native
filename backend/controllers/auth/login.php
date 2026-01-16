@@ -57,13 +57,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $user = $res['user'];
             $_SESSION['user'] = [
                 'id' => $user['id'],
-                'firstName' => $user['first_name'],
-                'lastName' => $user['last_name'],
+                'firstName' => $user['firstName'],
+                'lastName' => $user['lastName'],
                 'email' => $user['email'],
                 'phone' => $user['phone'],
                 'role' => $user['role'],
-                'created_at' => $user['created_at'],
-                'updated_at' => $user['updated_at']
+                'createdAt' => $user['createdAt'],
+                'updatedAt' => $user['updatedAt']
             ];
 
         }
@@ -74,7 +74,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         ]);
 
     } catch (Exception $e) {
-        error_log("\n Error during signup: " . $e->getMessage(), 3, '../../storage/error_log.log');
+        error_log("\n Error during login: " . $e->getMessage(), 3, '../../storage/error_log.log');
         http_response_code(500);
         echo json_encode([
             'message' => 'Erreur serveur. Veuillez réessayer plus tard.',

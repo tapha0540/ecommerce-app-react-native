@@ -1,4 +1,4 @@
-import User from "@/components/interfaces/user";
+import User from "@/components/interfaces/api/user";
 import getCurrentUser from "@/services/auth/get_current_user";
 import { createContext, useContext, useEffect, useState } from "react";
 

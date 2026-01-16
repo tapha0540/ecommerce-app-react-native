@@ -1,12 +1,12 @@
-CREATE DATABASE ecommerceDb;
+CREATE DATABASE ecommerce_db;
 
-USE ecommerceDb;
+USE ecommerce_db;
 
 -- ------------------------
 -- TABLE users
 -- ------------------------
 CREATE TABLE
-    Users (
+    users (
         id INT AUTO_INCREMENT PRIMARY KEY,
         firstName VARCHAR(50) NOT NULL,
         lastName VARCHAR(50) NOT NULL,
@@ -22,7 +22,7 @@ CREATE TABLE
 -- TABLE categories
 -- ------------------------
 CREATE TABLE
-    Categories (
+    categories (
         id INT AUTO_INCREMENT PRIMARY KEY,
         name VARCHAR(100) NOT NULL,
         description TEXT,
@@ -36,7 +36,7 @@ CREATE TABLE
 -- TABLE products
 -- ------------------------
 CREATE TABLE
-    Products (
+    products (
         id INT AUTO_INCREMENT PRIMARY KEY,
         name VARCHAR(150) NOT NULL,
         description TEXT,
@@ -53,7 +53,7 @@ CREATE TABLE
 -- TABLE orders
 -- ------------------------
 CREATE TABLE
-    Orders (
+    orders (
         id INT AUTO_INCREMENT PRIMARY KEY,
         userId INT NOT NULL,
         status ENUM (
@@ -73,7 +73,7 @@ CREATE TABLE
 -- TABLE order_items
 -- ------------------------
 CREATE TABLE
-    OrderItems (
+    order_items (
         id INT AUTO_INCREMENT PRIMARY KEY,
         orderId INT NOT NULL,
         productId INT NOT NULL,
@@ -87,11 +87,11 @@ CREATE TABLE
 -- TABLE payments
 -- ------------------------
 CREATE TABLE
-    Payments (
+    payments (
         id INT AUTO_INCREMENT PRIMARY KEY,
         orderId INT NOT NULL,
         amount DECIMAL(10, 2) NOT NULL,
-        method ENUM ('card', 'paypal', 'cash') DEFAULT 'card',
+        method ENUM ('wave', 'orange money', 'kpay', 'cash') NOT NULL,
         status ENUM ('pending', 'completed', 'failed') DEFAULT 'pending',
         createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
         CONSTRAINT fk_payment_order FOREIGN KEY (orderId) REFERENCES orders (id)
@@ -101,7 +101,7 @@ CREATE TABLE
 -- TABLE reviews (optionnelle)
 -- ------------------------
 CREATE TABLE
-    Reviews (
+    reviews (
         id INT AUTO_INCREMENT PRIMARY KEY,
         productId INT NOT NULL,
         userId INT NOT NULL,
