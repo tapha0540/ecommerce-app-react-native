@@ -62,11 +62,13 @@ const SignUpScreen = () => {
         setLoading(false);
         setMessage(response.message);
         setSuccess(response.success);
+        if (response.success) {
+          setTimeout(() => router.push("/signin/login"), 3500);
+        }
       });
 
       setTimeout(() => {
         setMessage("");
-        if (success) router.push("/signin/login");
       }, 3500);
     }, 2000);
   };

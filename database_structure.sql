@@ -14,6 +14,7 @@ CREATE TABLE
         password VARCHAR(255) NOT NULL,
         role ENUM ('customer', 'admin') DEFAULT 'customer',
         phone VARCHAR(20) NOT NULL UNIQUE,
+        profileImgUrl VARCHAR() NULL,
         createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
         updatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
     ) ENGINE = InnoDB;

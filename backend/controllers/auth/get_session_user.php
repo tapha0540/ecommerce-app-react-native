@@ -25,6 +25,7 @@ $token = str_replace("Bearer ", "", $headers['authorization']);
 session_id($token);
 session_start();
 
+
 if (!isset($_SESSION['user'])) {
     http_response_code(401);
     echo json_encode([
@@ -33,7 +34,7 @@ if (!isset($_SESSION['user'])) {
     ]);
     exit;
 }
-
+http_response_code(200);
 echo json_encode([
     "message" => "Session recupérée.",
     'success' => true,

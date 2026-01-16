@@ -53,6 +53,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
 
         signup_user($pdo, $firstName, $lastName, $phone, $email, $password);
+        http_response_code(200);
 
         echo json_encode([
             'message' => 'Votre compte a été créé avec succèss',
