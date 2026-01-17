@@ -21,6 +21,7 @@ if ($_SERVER['REQUEST_METHOD'] === "GET") {
             'success' => true,
             'productsCategories' => $productsCategories
         ]);
+    
     } catch (Exception $e) {
         error_log('\n Erreur controllers/products/get_all_products_catgeories.php -> ' . $e->getMessage(), 3, '../../storage/error_log.log');
         echo json_encode([

@@ -1,8 +1,8 @@
 import { Search, Settings2Icon } from "lucide-react-native";
 import { useState } from "react";
 import { StyleSheet, TextInput, View } from "react-native";
-import { Card } from "react-native-paper";
 import Theme from "../interfaces/themes";
+import { ThemedCard } from "./themed_card";
 
 const SearchBar = ({ theme }: { theme: Theme }) => {
   const [search, setSearch] = useState<string>("");
@@ -11,7 +11,11 @@ const SearchBar = ({ theme }: { theme: Theme }) => {
       <View
         style={[
           styles.txtInputContainer,
-          { backgroundColor: theme.secondaryColor },
+          {
+            backgroundColor: theme.secondaryColor,
+            borderWidth: 1,
+            borderColor: theme.primaryColor,
+          },
         ]}
       >
         <Search size={25} color={theme.iconColor} />
@@ -19,16 +23,17 @@ const SearchBar = ({ theme }: { theme: Theme }) => {
           placeholder="Rechercher"
           value={search}
           onChangeText={setSearch}
-          style={styles.textInput}
+          style={[styles.textInput, { color: theme.textColor }]}
           maxLength={50}
           numberOfLines={1}
           multiline
+          placeholderTextColor={theme.textColor}
         />
       </View>
 
-      <Card style={{ backgroundColor: theme.secondaryColor, padding: 12 }}>
+      <ThemedCard theme={theme} style={styles.optionSearch}>
         <Settings2Icon size={25} color={theme.iconColor} />
-      </Card>
+      </ThemedCard>
     </View>
   );
 };
@@ -40,7 +45,7 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     alignItems: "center",
     width: "100%",
-    padding: 2
+    padding: 2,
   },
   textInput: {
     width: "70%",
@@ -57,6 +62,9 @@ const styles = StyleSheet.create({
     padding: 6,
     elevation: 3,
     borderRadius: 15,
+  },
+  optionSearch: {
+    padding: 12,
   },
 });
 

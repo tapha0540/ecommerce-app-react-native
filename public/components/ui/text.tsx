@@ -1,4 +1,11 @@
-import { StyleProp, StyleSheet, Text, TextStyle } from "react-native";
+import { useState } from "react";
+import {
+  Pressable,
+  StyleProp,
+  StyleSheet,
+  Text,
+  TextStyle,
+} from "react-native";
 import Theme from "../interfaces/themes";
 
 export const ThemedText = ({
@@ -53,6 +60,39 @@ export const LightText = ({
     />
   );
 };
+
+export const PressableText = ({
+  content,
+  theme,
+  style,
+  onPress,
+}: {
+  content: string;
+  theme: Theme;
+  style?: StyleProp<TextStyle>;
+  onPress: () => void;
+}) => {
+  const [bg, setBg] = useState(theme.textColor);
+  return (
+    <Pressable
+      onPress={() => {
+        setBg(theme.primaryColor);
+        setTimeout(() => {
+          setBg(theme.textColor);
+          onPress();
+        }, 150);
+      }}
+      style={[styles.pressable]}
+    >
+      <ThemedText
+        theme={theme}
+        content={content}
+        style={[styles.btnText, { color: bg }]}
+      />
+    </Pressable>
+  );
+};
+
 const styles = StyleSheet.create({
   text: {},
   boldText: {
@@ -60,5 +100,16 @@ const styles = StyleSheet.create({
   },
   lightText: {
     fontWeight: "light",
+  },
+  pressable: {
+    alignItems: "center",
+    justifyContent: "center",
+    padding: 15,
+  },
+  btnText: {
+    fontWeight: "bold",
+    fontSize: 14,
+    textAlign: "center",
+    paddingHorizontal: 10,
   },
 });

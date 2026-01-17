@@ -14,7 +14,7 @@ CREATE TABLE
         password VARCHAR(255) NOT NULL,
         role ENUM ('customer', 'admin') DEFAULT 'customer',
         phone VARCHAR(20) NOT NULL UNIQUE,
-        profileImgUrl VARCHAR() NULL,
+        profileImgUrl VARCHAR(255) NULL,
         createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
         updatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
     ) ENGINE = InnoDB;
@@ -28,6 +28,7 @@ CREATE TABLE
         name VARCHAR(100) NOT NULL,
         description TEXT,
         parentId INT DEFAULT NULL,
+        icon VARCHAR(50) NOT NULL,
         createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
         updatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
         CONSTRAINT fk_category_parent FOREIGN KEY (parentId) REFERENCES categories (id)

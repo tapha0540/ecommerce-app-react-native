@@ -15,6 +15,9 @@ const TabsLayout = () => {
         },
         tabBarActiveTintColor: theme.primaryColor,
         tabBarInactiveTintColor: theme.iconColor,
+        tabBarStyle: {
+          backgroundColor: theme.backgroundColor,
+        },
       }}
     >
       <Tabs.Screen

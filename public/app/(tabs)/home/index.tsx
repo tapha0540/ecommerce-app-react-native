@@ -3,6 +3,7 @@ import Theme from "@/components/interfaces/themes";
 import ProductsCategoriesFilter from "@/components/ui/categories_filter_bar";
 import SearchBar from "@/components/ui/search_bar";
 import { BoldText, LightText } from "@/components/ui/text";
+import { ThemedCard } from "@/components/ui/themed_card";
 import { useTheme } from "@/hooks/useColorsheme";
 import { useUser } from "@/hooks/userHooks";
 import { Feather } from "@expo/vector-icons";
@@ -10,7 +11,6 @@ import { Feather } from "@expo/vector-icons";
 import { Redirect } from "expo-router";
 import { BellIcon, SquareUserRoundIcon } from "lucide-react-native";
 import { Image, ScrollView, StyleSheet, View } from "react-native";
-import { Card } from "react-native-paper";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 const HomeScreen = () => {
@@ -26,10 +26,11 @@ const HomeScreen = () => {
       style={[styles.container, { backgroundColor: theme.backgroundColor }]}
     >
       <ScrollView style={{ flex: 1 }} showsVerticalScrollIndicator={false}>
-        <View style={styles.body}>
           <TopContainer user={user} theme={theme} />
+
+          <ProductsCategoriesFilter theme={theme}  />
+        
           <MiddleContainer theme={theme} />
-        </View>
       </ScrollView>
     </SafeAreaView>
   );
@@ -37,13 +38,13 @@ const HomeScreen = () => {
 
 const TopContainer = ({ user, theme }: { user: User; theme: Theme }) => {
   return (
-    <View style={styles.topContainer}>
+    <View style={[styles.topContainer, styles.body]}>
       <View style={styles.profileContainer}>
         <View style={styles.profile}>
-          {false ? (
+          {user.profileImgUrl ? (
             <View style={styles.profileImgContainer}>
               <Image
-                source={require("@/assets/images/react-logo.png")}
+                source={{ uri: user.profileImgUrl }}
                 style={styles.profileImg}
               />
             </View>
@@ -56,10 +57,10 @@ const TopContainer = ({ user, theme }: { user: User; theme: Theme }) => {
           )}
           <View style={styles.profileTexts}>
             <View style={{ flexDirection: "row" }}>
-              <LightText content="Salut  " theme={theme} />
+              <LightText content="Salut " theme={theme} />
               <BoldText
                 style={[styles.profileUserName, { color: theme.primaryColor }]}
-                content={`${user.firstName} ${user.lastName}`}
+                content={`${user.firstName}`}
                 theme={theme}
               />
             </View>
@@ -72,18 +73,17 @@ const TopContainer = ({ user, theme }: { user: User; theme: Theme }) => {
         </View>
 
         <View style={styles.iconsContainer}>
-          <Card
-            style={[styles.card, { backgroundColor: theme.secondaryColor }]}
-            onPress={() => {}}
+          <ThemedCard
+            theme={theme}
+            style={styles.card}
+            // onPress={() => {}}
           >
             <BellIcon size={25} color={theme.iconColor} />
-          </Card>
+          </ThemedCard>
 
-          <Card
-            style={[styles.card, { backgroundColor: theme.secondaryColor }]}
-          >
+          <ThemedCard theme={theme} style={styles.card} onPress={() => {}}>
             <Feather name="shopping-bag" color={theme.iconColor} size={25} />
-          </Card>
+          </ThemedCard>
         </View>
       </View>
       <SearchBar theme={theme} />
@@ -92,11 +92,7 @@ const TopContainer = ({ user, theme }: { user: User; theme: Theme }) => {
 };
 
 const MiddleContainer = ({ theme }: { theme: Theme }) => {
-  return (
-    <View>
-      <ProductsCategoriesFilter theme={theme} />
-    </View>
-  );
+  return <View></View>;
 };
 
 const styles = StyleSheet.create({
@@ -107,7 +103,7 @@ const styles = StyleSheet.create({
     flex: 1,
     marginTop: 5,
     marginHorizontal: 15,
-    padding: 5,
+    padding: 3,
     rowGap: 25,
   },
   topContainer: {
@@ -115,7 +111,7 @@ const styles = StyleSheet.create({
     height: "auto",
     rowGap: 15,
     alignItems: "center",
-    justifyContent: "space-between",
+    justifyContent: "space-around",
     padding: 3,
   },
   profileContainer: {
@@ -124,13 +120,13 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    columnGap: 15,
+    columnGap: 10,
   },
   profileImg: { width: "100%", height: "100%" },
   profileImgContainer: { width: 60, height: 60 },
   iconsContainer: {
     flexDirection: "row",
-    columnGap: 15,
+    columnGap: 10,
     justifyContent: "space-between",
     padding: 5,
   },
@@ -154,7 +150,8 @@ const styles = StyleSheet.create({
     fontWeight: "900",
   },
   profileUserName: {
-    letterSpacing: 1.5
+    letterSpacing: 1.5,
+    fontSize: 14,
   },
 });
 export default HomeScreen;

@@ -2,11 +2,12 @@ import getAllProductsCategories from "@/services/products_categories/get_all_pro
 import { SearchX } from "lucide-react-native";
 import { useEffect, useState } from "react";
 import { FlatList, Pressable, StyleSheet, View } from "react-native";
-import { Card } from "react-native-paper";
 import ProductsCategorie from "../interfaces/api/products_categorie";
 import Theme from "../interfaces/themes";
 import ThemeActivityIndicator from "./activity_indicator_container";
-import { BoldText, LightText } from "./text";
+import GetIcon from "./get_icon";
+import { BoldText, LightText, PressableText } from "./text";
+import { ThemedCard } from "./themed_card";
 
 const ProductsCategoriesFilter = ({ theme }: { theme: Theme }) => {
   const [productsCategorie, setProductsCategorie] = useState<
@@ -14,6 +15,7 @@ const ProductsCategoriesFilter = ({ theme }: { theme: Theme }) => {
   >(null);
   const [isLoading, setIsLoading] = useState(true);
   const [selectedCategorieId, setSelectedCategorieId] = useState<number>(-1);
+  const [seeAll, setSeeAll] = useState(false);
 
   useEffect(() => {
     const fn = async () => {
@@ -48,7 +50,13 @@ const ProductsCategoriesFilter = ({ theme }: { theme: Theme }) => {
           style={styles.HeadingTxt}
         />
         <Pressable>
-          <LightText content="Voir plus" theme={theme} />
+          <PressableText
+            onPress={() => {
+              setSeeAll(!seeAll);
+            }}
+            content="Voir plus"
+            theme={theme}
+          />
         </Pressable>
       </View>
 
@@ -67,14 +75,16 @@ const ProductsCategoriesFilter = ({ theme }: { theme: Theme }) => {
             {
               id: -1,
               name: "Tous",
-              // description: "Categorie par défaut.",
+              icon: "FontAwesome6:circle-dot",
+              description: "Categorie par défaut.",
             } as ProductsCategorie,
             ...productsCategorie,
           ]}
           renderItem={({ item }) => {
             const isSelected = selectedCategorieId === item.id;
             return (
-              <Card
+              <ThemedCard
+                theme={theme}
                 onPress={() => {
                   setSelectedCategorieId(item.id);
                 }}
@@ -84,9 +94,16 @@ const ProductsCategoriesFilter = ({ theme }: { theme: Theme }) => {
                     backgroundColor: isSelected
                       ? theme.primaryColor
                       : theme.secondaryColor,
+                    borderColor: theme.primaryColor,
                   },
                 ]}
               >
+                <GetIcon
+                  size={24}
+                  theme={theme}
+                  icon={item.icon}
+                  isSelected={isSelected}
+                />
                 <LightText
                   style={[
                     styles.categoriesTxt,
@@ -97,7 +114,7 @@ const ProductsCategoriesFilter = ({ theme }: { theme: Theme }) => {
                   content={item.name}
                   theme={theme}
                 />
-              </Card>
+              </ThemedCard>
             );
           }}
           keyExtractor={({ id }) => {
@@ -125,23 +142,36 @@ const styles = StyleSheet.create({
     rowGap: 15,
   },
   headingTxtContainer: {
+    flex: 1,
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
+    marginHorizontal: 15,
   },
   HeadingTxt: {
     fontSize: 18,
   },
   categoriesCard: {
-    padding: 12,
+    flexDirection: "row",
+    paddingVertical: 10,
+    paddingHorizontal: 15,
     borderRadius: 15,
+    justifyContent: "center",
+    alignContent: "center",
+    maxWidth: 200,
+    borderWidth: 1,
   },
-  categoriesTxt: {},
+  categoriesTxt: {
+    marginTop: 3,
+    fontSize: 12,
+  },
   flatList: { padding: 5 },
   flatListContentContainerStyle: {
-    marginTop: 15,
-    columnGap: 15,
+    marginTop: 5,
+    gap: 15,
     padding: 10,
+    justifyContent: "center",
+    alignContent: "center",
   },
 });
 

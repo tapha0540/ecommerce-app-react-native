@@ -3,6 +3,7 @@ export default interface User {
     firstName: string;
     lastName: string;
     email: string;
+    profileImgUrl: string;
     createdAt: string;
     updatedAt: string;
 };
