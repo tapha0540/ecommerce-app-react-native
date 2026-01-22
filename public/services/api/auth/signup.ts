@@ -19,9 +19,9 @@ const signUp = async ({
       body: JSON.stringify({ firstName, lastName, email, phone, password }),
     });
 
-    const data = await response.json();
+    const data = (await response.json()) as SignUpResponse;
 
-    return data as SignUpResponse;
+    return data;
   } catch (error: any) {
     console.error("Error during signup:", error);
 

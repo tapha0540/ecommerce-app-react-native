@@ -2,8 +2,8 @@ import {
   LoginData,
   LoginResponse,
 } from "@/components/interfaces/api/requestResponses";
-import saveSession from "../../session/save_session_token";
 import ip from "../../ip";
+import saveSession from "../../session/save_session_token";
 
 const logIn = async ({
   email,
@@ -24,7 +24,7 @@ const logIn = async ({
         message: "Vérifier votre connexion !",
       } as LoginResponse;
     }
-    const data: LoginResponse = await response.json();
+    const data: LoginResponse = (await response.json()) as LoginResponse;
 
     if (data.success && data.token) {
       saveSession(data.token);

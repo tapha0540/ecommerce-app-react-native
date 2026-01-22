@@ -63,7 +63,7 @@ const SignUpScreen = () => {
         setMessage(response.message);
         setSuccess(response.success);
         if (response.success) {
-          setTimeout(() => router.push("/signin/login"), 3500);
+          setTimeout(() => router.push("/(auth)/login"), 3500);
         }
       });
 

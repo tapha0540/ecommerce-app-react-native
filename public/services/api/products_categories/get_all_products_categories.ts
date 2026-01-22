@@ -17,7 +17,7 @@ const getAllProductsCategories = async (): Promise<ServerResponse> => {
       throw new Error();
     }
 
-    return await res.json();
+    return (await res.json()) as ServerResponse;
   } catch {
     return {
       message: "Problème de connexion.",

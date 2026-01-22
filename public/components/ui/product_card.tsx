@@ -1,6 +1,10 @@
+import formatPrice from "@/services/helpers/format_price";
+import ip from "@/services/ip";
 import { MaterialIcons } from "@expo/vector-icons";
+import { router } from "expo-router";
 import { useState } from "react";
-import { Image, StyleSheet, View } from "react-native";
+import { Image, StyleSheet, Vibration, View } from "react-native";
+import { Card } from "react-native-paper";
 import Product from "../interfaces/api/product";
 import Theme from "../interfaces/themes";
 import PressableIcon from "./Pressable_icon_card";
@@ -9,15 +13,40 @@ import { BoldText } from "./text";
 const ProductCard = ({
   product,
   theme,
+  AddToCart,
 }: {
   product: Product;
   theme: Theme;
+  AddToCart: () => void;
 }) => {
   const [iconColor, setIconColor] = useState(theme.iconColor);
+  const [isSelected, setIsSelected] = useState(false);
+
   return (
-    <View style={[styles.container, { borderColor: theme.primaryColor }]}>
+    <Card
+      style={[
+        styles.container,
+        {
+          backgroundColor: theme.backgroundColor,
+          borderColor: theme.primaryColor,
+        },
+      ]}
+      onPress={() => {
+        Vibration.vibrate(55);
+        router.push({
+          pathname: "/product/[id]",
+          params: { ...product },
+        });
+      }}
+    >
       <View style={styles.imageCard}>
-        <Image source={{ uri: product.imageUrl }} style={[styles.image, {}]} />
+        <Image
+          source={{
+            // uri: `http://${ip}/uploads/products/images/${product.imageUrl}`
+            uri: `http://${ip}/uploads/products/images/tshirt_homme_classique.jpg`,
+          }}
+          style={[styles.image, {}]}
+        />
       </View>
 
       <View style={[styles.detailsContainer]}>
@@ -27,12 +56,12 @@ const ProductCard = ({
             content={product.name}
             style={[
               styles.productName,
-              { color: theme.primaryColor, fontSize: 14 },
+              { color: theme.textColor, fontSize: 14 },
             ]}
           />
           <BoldText
             theme={theme}
-            content={`${Number(product.price).toFixed(0)} FCFA`}
+            content={`${formatPrice(product.price)} FCFA`}
             style={[
               styles.productPrice,
               { color: theme.primaryColor, fontSize: 12 },
@@ -42,7 +71,11 @@ const ProductCard = ({
 
         <PressableIcon
           theme={theme}
-          onPress={() => setIconColor(theme.backgroundColor)}
+          onPress={() => {
+            setIsSelected((prev) => !prev);
+            setIconColor(isSelected ? theme.iconColor : theme.backgroundColor);
+            AddToCart();
+          }}
           style={styles.addCartIconContainer}
           icon={
             <MaterialIcons
@@ -51,9 +84,10 @@ const ProductCard = ({
               color={iconColor}
             />
           }
+          isSelected={isSelected}
         />
       </View>
-    </View>
+    </Card>
   );
 };
 

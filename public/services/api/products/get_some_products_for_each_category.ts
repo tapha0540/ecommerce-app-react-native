@@ -21,7 +21,7 @@ const getSomeProductsForEachCategories = async (): Promise<
 
     const data: ServerResponse = (await res.json()) as ServerResponse;
 
-    return data.products;
+    return data.products as Product[];
   } catch (err) {
     console.error(err);
     return null;

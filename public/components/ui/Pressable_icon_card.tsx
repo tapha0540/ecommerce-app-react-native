@@ -1,31 +1,32 @@
-import { ReactNode, useState } from "react";
+import { ReactNode } from "react";
 import { StyleProp, Vibration } from "react-native";
 import Theme from "../interfaces/themes";
 import { ThemedCard } from "./themed_card";
-
 
 const PressableIcon = ({
   icon,
   theme,
   onPress,
   style,
+  isSelected,
 }: {
   icon: ReactNode;
   theme: Theme;
   onPress: () => void;
   style: StyleProp<any>;
+  isSelected: boolean;
 }) => {
-  const [bgColor, setBgColor] = useState(theme.backgroundColor);
-
   return (
     <ThemedCard
-      style={{ ...style, backgroundColor: bgColor }}
+      style={{
+        ...style,
+        backgroundColor: isSelected
+          ? theme.primaryColor
+          : theme.backgroundColor,
+      }}
       onPress={() => {
-        setTimeout(() => {
-          setBgColor(theme.primaryColor);
-          Vibration.vibrate(70);
-          onPress();
-        }, 200);
+        Vibration.vibrate(45);
+        onPress();
       }}
       theme={theme}
     >

@@ -7,12 +7,13 @@ import ProductCard from "@/components/ui/product_card";
 import SearchBar from "@/components/ui/search_bar";
 import { BoldText, LightText } from "@/components/ui/text";
 import { ThemedCard } from "@/components/ui/themed_card";
+import { useCart } from "@/hooks/cart";
 import { useTheme } from "@/hooks/useColorsheme";
 import { useUser } from "@/hooks/userHooks";
 import getSomeProductsForEachCategories from "@/services/api/products/get_some_products_for_each_category";
 import { filterProductsByCategorieId } from "@/services/helpers/filter_search";
+import ip from "@/services/ip";
 import { Feather } from "@expo/vector-icons";
-
 import { Redirect } from "expo-router";
 import { BellIcon, SquareUserRoundIcon } from "lucide-react-native";
 import { useEffect, useState } from "react";
@@ -27,7 +28,7 @@ const TopContainer = ({ user, theme }: { user: User; theme: Theme }) => {
           {user.profileImgUrl ? (
             <View style={styles.profileImgContainer}>
               <Image
-                source={{ uri: user.profileImgUrl }}
+                source={{ uri: `http://${ip}/uploads/users/` }}
                 style={styles.profileImg}
               />
             </View>
@@ -77,6 +78,8 @@ const TopContainer = ({ user, theme }: { user: User; theme: Theme }) => {
 const HomeScreen = () => {
   const user = useUser()!.user;
   const theme = useTheme()!.theme;
+  const cartHook = useCart();
+
   const [isLoading, setIsLoading] = useState(true);
   const [products, setProducts] = useState<Product[] | null>(null);
   const [selectedCategorieId, setSelectedCategorieId] = useState<number>(-1);
@@ -88,48 +91,66 @@ const HomeScreen = () => {
       if (data) {
         setTimeout(() => {
           setIsLoading(false);
-        }, 1500);
+        }, 1000);
       }
     };
     fn();
   }, []);
+  const filteredProducts = filterProductsByCategorieId(
+    products,
+    selectedCategorieId,
+  );
 
   if (!user) {
     return <Redirect href="/(auth)/login" />;
   }
+
+  const Loading = () => (
+    <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
+      <ThemeActivityIndicator
+        loading={isLoading}
+        size="large"
+        text="Chargement..."
+        theme={theme}
+      />
+    </View>
+  );
 
   return (
     <SafeAreaView
       style={[styles.container, { backgroundColor: theme.backgroundColor }]}
     >
       {isLoading ? (
-        <View
-          style={{ flex: 1, alignItems: "center", justifyContent: "center" }}
-        >
-          <ThemeActivityIndicator
-            loading={isLoading}
-            size="large"
-            text="Chargement..."
-            theme={theme}
-          />
-        </View>
+        <Loading />
       ) : (
         <FlatList
-          data={filterProductsByCategorieId(products, selectedCategorieId)}
+          data={filteredProducts}
           renderItem={({ item }) => (
-            <ProductCard theme={theme} product={item} />
+            <ProductCard
+              theme={theme}
+              product={item}
+              AddToCart={() => {
+                cartHook?.setCart([...cartHook.cart, item]);
+                console.log(cartHook?.cart);
+              }}
+            />
           )}
           keyExtractor={(item) => item.id.toString()}
           ListHeaderComponent={
             <>
               <TopContainer user={user} theme={theme} />
-              <ProductsCategoriesFilter theme={theme} selectedCategorieId={selectedCategorieId} setSelectedCategorieId={setSelectedCategorieId}/>
+              <ProductsCategoriesFilter
+                theme={theme}
+                selectedCategorieId={selectedCategorieId}
+                setSelectedCategorieId={setSelectedCategorieId}
+              />
             </>
           }
           numColumns={2}
           contentContainerStyle={styles.productsCardContainer}
           columnWrapperStyle={styles.row}
           showsVerticalScrollIndicator={false}
+          ListEmptyComponent={<Loading />}
         />
       )}
     </SafeAreaView>
