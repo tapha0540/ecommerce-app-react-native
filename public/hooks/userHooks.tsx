@@ -1,5 +1,5 @@
 import User from "@/components/interfaces/api/user";
-import getCurrentUser from "@/services/auth/get_current_user";
+import getCurrentUser from "@/services/api/auth/get_current_user";
 import { createContext, useContext, useEffect, useState } from "react";
 
 const userContext = createContext<{

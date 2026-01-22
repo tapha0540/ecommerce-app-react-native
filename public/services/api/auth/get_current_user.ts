@@ -1,7 +1,7 @@
 import { SessionResponse } from "@/components/interfaces/api/requestResponses";
 import User from "@/components/interfaces/api/user";
-import ip from "../ip";
-import getSessionToken from "./session/get_session_token";
+import getSessionToken from "../../session/get_session_token";
+import ip from "../../ip";
 
 const getCurrentUser = async (): Promise<User | null> => {
   const token = await getSessionToken();

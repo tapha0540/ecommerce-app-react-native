@@ -1,7 +1,7 @@
 import SignUpResponse, {
   SignUpData,
 } from "@/components/interfaces/api/requestResponses";
-import ip from "../ip";
+import ip from "../../ip";
 
 const signUp = async ({
   firstName,

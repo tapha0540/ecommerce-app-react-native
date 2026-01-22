@@ -4,7 +4,7 @@ import ThemeActivityIndicator from "@/components/ui/activity_indicator_container
 import { BoldText, ThemedText } from "@/components/ui/text";
 import { COUNTRY_CODES } from "@/constants/contry_calling_codes";
 import { useTheme } from "@/hooks/useColorsheme";
-import signUp from "@/services/auth/signup";
+import signUp from "@/services/api/auth/signup";
 import validateSignupData from "@/services/validation/auth/signup_data_validation";
 import AntDesign from "@expo/vector-icons/AntDesign";
 import { router } from "expo-router";

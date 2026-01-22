@@ -1,5 +1,5 @@
 import ProductsCategorie from "@/components/interfaces/api/products_categorie";
-import ip from "../ip";
+import ip from "../../ip";
 
 interface ServerResponse {
   message: string;

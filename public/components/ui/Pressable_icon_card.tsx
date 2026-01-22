@@ -1,7 +1,8 @@
 import { ReactNode, useState } from "react";
-import { StyleProp } from "react-native";
+import { StyleProp, Vibration } from "react-native";
 import Theme from "../interfaces/themes";
 import { ThemedCard } from "./themed_card";
+
 
 const PressableIcon = ({
   icon,
@@ -22,8 +23,9 @@ const PressableIcon = ({
       onPress={() => {
         setTimeout(() => {
           setBgColor(theme.primaryColor);
+          Vibration.vibrate(70);
           onPress();
-        }, 250);
+        }, 200);
       }}
       theme={theme}
     >

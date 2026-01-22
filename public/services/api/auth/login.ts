@@ -2,8 +2,8 @@ import {
   LoginData,
   LoginResponse,
 } from "@/components/interfaces/api/requestResponses";
-import ip from "../ip";
-import saveSession from "./session/save_session_token";
+import saveSession from "../../session/save_session_token";
+import ip from "../../ip";
 
 const logIn = async ({
   email,

@@ -9,7 +9,8 @@ import { BoldText, LightText } from "@/components/ui/text";
 import { ThemedCard } from "@/components/ui/themed_card";
 import { useTheme } from "@/hooks/useColorsheme";
 import { useUser } from "@/hooks/userHooks";
-import getSomeProductsForEachCategories from "@/services/products/get_some_products_for_each_category";
+import getSomeProductsForEachCategories from "@/services/api/products/get_some_products_for_each_category";
+import { filterProductsByCategorieId } from "@/services/helpers/filter_search";
 import { Feather } from "@expo/vector-icons";
 
 import { Redirect } from "expo-router";
@@ -78,14 +79,17 @@ const HomeScreen = () => {
   const theme = useTheme()!.theme;
   const [isLoading, setIsLoading] = useState(true);
   const [products, setProducts] = useState<Product[] | null>(null);
+  const [selectedCategorieId, setSelectedCategorieId] = useState<number>(-1);
 
   useEffect(() => {
     const fn = async () => {
       const data: Product[] | null = await getSomeProductsForEachCategories();
-      setTimeout(() => {
-        setProducts(data);
-        setIsLoading(false);
-      }, 1500);
+      setProducts(data);
+      if (data) {
+        setTimeout(() => {
+          setIsLoading(false);
+        }, 1500);
+      }
     };
     fn();
   }, []);
@@ -111,7 +115,7 @@ const HomeScreen = () => {
         </View>
       ) : (
         <FlatList
-          data={products}
+          data={filterProductsByCategorieId(products, selectedCategorieId)}
           renderItem={({ item }) => (
             <ProductCard theme={theme} product={item} />
           )}
@@ -119,7 +123,7 @@ const HomeScreen = () => {
           ListHeaderComponent={
             <>
               <TopContainer user={user} theme={theme} />
-              <ProductsCategoriesFilter theme={theme} />
+              <ProductsCategoriesFilter theme={theme} selectedCategorieId={selectedCategorieId} setSelectedCategorieId={setSelectedCategorieId}/>
             </>
           }
           numColumns={2}
@@ -203,7 +207,6 @@ const styles = StyleSheet.create({
   productsCardContainer: {
     padding: 8,
     rowGap: 15,
-    flexWrap: 'wrap',
   },
   row: {
     justifyContent: "space-between", // espace égal entre les cartes

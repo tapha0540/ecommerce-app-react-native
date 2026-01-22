@@ -1,5 +1,5 @@
 import Product from "@/components/interfaces/api/product";
-import ip from "../ip";
+import ip from "../../ip";
 
 interface ServerResponse {
   message: string;

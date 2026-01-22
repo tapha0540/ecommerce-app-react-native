@@ -1,7 +1,7 @@
-import getAllProductsCategories from "@/services/products_categories/get_all_products_categories";
+import getAllProductsCategories from "@/services/api/products_categories/get_all_products_categories";
 import { SearchX } from "lucide-react-native";
 import { useEffect, useState } from "react";
-import { FlatList, Pressable, StyleSheet, View } from "react-native";
+import { FlatList, Pressable, StyleSheet, Vibration, View } from "react-native";
 import ProductsCategorie from "../interfaces/api/products_categorie";
 import Theme from "../interfaces/themes";
 import ThemeActivityIndicator from "./activity_indicator_container";
@@ -9,12 +9,20 @@ import GetIcon from "./get_icon";
 import { BoldText, LightText, PressableText } from "./text";
 import { ThemedCard } from "./themed_card";
 
-const ProductsCategoriesFilter = ({ theme }: { theme: Theme }) => {
+const ProductsCategoriesFilter = ({
+  theme,
+  selectedCategorieId,
+  setSelectedCategorieId,
+}: {
+  theme: Theme;
+  selectedCategorieId: number;
+  setSelectedCategorieId: React.Dispatch<React.SetStateAction<number>>;
+}) => {
   const [productsCategorie, setProductsCategorie] = useState<
     ProductsCategorie[] | null
   >(null);
   const [isLoading, setIsLoading] = useState(true);
-  const [selectedCategorieId, setSelectedCategorieId] = useState<number>(-1);
+
   const [seeAll, setSeeAll] = useState(false);
 
   useEffect(() => {
@@ -22,10 +30,10 @@ const ProductsCategoriesFilter = ({ theme }: { theme: Theme }) => {
       const data = await getAllProductsCategories();
       if (data.productsCategories) {
         setProductsCategorie(data.productsCategories);
-        setTimeout(() => {
-          setIsLoading(false);
-        }, 1000);
       }
+      setTimeout(() => {
+        setIsLoading(false);
+      }, 1500);
     };
     fn();
   }, []);
@@ -87,6 +95,7 @@ const ProductsCategoriesFilter = ({ theme }: { theme: Theme }) => {
                 theme={theme}
                 onPress={() => {
                   setSelectedCategorieId(item.id);
+                  Vibration.vibrate(45);
                 }}
                 style={[
                   styles.categoriesCard,
