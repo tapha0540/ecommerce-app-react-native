@@ -1,5 +1,5 @@
 import { useTheme } from "@/hooks/useColorsheme";
-import { Entypo, Feather, FontAwesome, Octicons } from "@expo/vector-icons";
+import { FontAwesome, Ionicons, Octicons } from "@expo/vector-icons";
 import { Tabs } from "expo-router";
 import { CircleUser, HeartIcon } from "lucide-react-native";
 
@@ -34,14 +34,14 @@ const TabsLayout = () => {
         }}
       />
       <Tabs.Screen
-        name="shopping"
+        name="cart"
         options={{
-          tabBarLabel: "Shopping",
+          tabBarLabel: "Panier",
           tabBarIcon: ({ focused, size, color }) =>
             focused ? (
-              <Entypo name="shopping-bag" color={color} size={size} />
+              <Ionicons name="cart" color={color} size={size} />
             ) : (
-              <Feather name="shopping-bag" color={color} size={size} />
+              <Ionicons name="cart-outline" color={color} size={size} />
             ),
         }}
       />

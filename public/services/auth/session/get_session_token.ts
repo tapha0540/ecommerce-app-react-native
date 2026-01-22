@@ -1,7 +1,7 @@
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import { getItemAsync } from "expo-secure-store";
 
 const getSessionToken = async () => {
-  return await AsyncStorage.getItem("session_token");
+  return await getItemAsync("session_token");
 };
 
 export default getSessionToken;

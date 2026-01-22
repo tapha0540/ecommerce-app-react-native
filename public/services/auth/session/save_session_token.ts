@@ -1,7 +1,7 @@
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import { setItemAsync } from "expo-secure-store";
 
 const saveSession = (token: string) => {
-  AsyncStorage.setItem("session_token", token);
+  setItemAsync("session_token", token);
 };
 
 export default saveSession;

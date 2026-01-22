@@ -6,13 +6,12 @@ import {
   FontAwesome5,
   FontAwesome6,
   Ionicons,
+  MaterialCommunityIcons,
   MaterialIcons,
   SimpleLineIcons,
 } from "@expo/vector-icons";
-import { SearchXIcon } from "lucide-react-native";
 import { StyleSheet } from "react-native";
 import Theme from "../interfaces/themes";
-
 
 // This fonction take parameter icon with the following format 'iconLibrary:iconName'
 const GetIcon = ({
@@ -33,6 +32,15 @@ const GetIcon = ({
     case "MaterialIcons":
       return (
         <MaterialIcons
+          name={iconName as any}
+          size={size}
+          color={color}
+          style={styles.icons}
+        />
+      );
+    case "MaterialDesignIcons":
+      return (
+        <MaterialCommunityIcons
           name={iconName as any}
           size={size}
           color={color}
@@ -111,15 +119,9 @@ const GetIcon = ({
           style={styles.icons}
         />
       );
+
     default:
-      return (
-        <SearchXIcon
-          size={size}
-          color={color}
-          style={styles.icons}
-          fill={color}
-        />
-      );
+      return <MaterialIcons name="question-mark" size={size} color={color} />;
   }
 };
 const styles = StyleSheet.create({

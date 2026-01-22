@@ -28,6 +28,7 @@ const ThemeActivityIndicator = ({
 
 const styles = StyleSheet.create({
   activityIndicatorContainer: {
+    alignSelf: 'center',
     alignItems: "center",
     justifyContent: "center",
     marginTop: 20,

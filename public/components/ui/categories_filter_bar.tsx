@@ -153,8 +153,8 @@ const styles = StyleSheet.create({
   },
   categoriesCard: {
     flexDirection: "row",
-    paddingVertical: 10,
-    paddingHorizontal: 15,
+    paddingVertical: 5,
+    paddingHorizontal: 10,
     borderRadius: 15,
     justifyContent: "center",
     alignContent: "center",
@@ -169,7 +169,7 @@ const styles = StyleSheet.create({
   flatListContentContainerStyle: {
     marginTop: 5,
     gap: 15,
-    padding: 10,
+    padding: 5,
     justifyContent: "center",
     alignContent: "center",
   },

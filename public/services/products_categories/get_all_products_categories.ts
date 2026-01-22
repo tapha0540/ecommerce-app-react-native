@@ -1,5 +1,5 @@
 import ProductsCategorie from "@/components/interfaces/api/products_categorie";
-import ip from "../auth/ip";
+import ip from "../ip";
 
 interface ServerResponse {
   message: string;
@@ -7,11 +7,10 @@ interface ServerResponse {
   productsCategories?: ProductsCategorie[];
 }
 
-
 const getAllProductsCategories = async (): Promise<ServerResponse> => {
   try {
     const res = await fetch(
-      `http://${ip}/controllers/products_categories/get_all_products_categories.php`
+      `http://${ip}/controllers/products_categories/get_all_products_categories.php`,
     );
 
     if (!res.ok) {

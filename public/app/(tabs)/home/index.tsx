@@ -1,40 +1,22 @@
+import Product from "@/components/interfaces/api/product";
 import User from "@/components/interfaces/api/user";
 import Theme from "@/components/interfaces/themes";
+import ThemeActivityIndicator from "@/components/ui/activity_indicator_container";
 import ProductsCategoriesFilter from "@/components/ui/categories_filter_bar";
+import ProductCard from "@/components/ui/product_card";
 import SearchBar from "@/components/ui/search_bar";
 import { BoldText, LightText } from "@/components/ui/text";
 import { ThemedCard } from "@/components/ui/themed_card";
 import { useTheme } from "@/hooks/useColorsheme";
 import { useUser } from "@/hooks/userHooks";
+import getSomeProductsForEachCategories from "@/services/products/get_some_products_for_each_category";
 import { Feather } from "@expo/vector-icons";
 
 import { Redirect } from "expo-router";
 import { BellIcon, SquareUserRoundIcon } from "lucide-react-native";
-import { Image, ScrollView, StyleSheet, View } from "react-native";
+import { useEffect, useState } from "react";
+import { FlatList, Image, StyleSheet, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-
-const HomeScreen = () => {
-  const user = useUser()!.user;
-  const theme = useTheme()!.theme;
-
-  if (!user) {
-    return <Redirect href="/signin/login" />;
-  }
-
-  return (
-    <SafeAreaView
-      style={[styles.container, { backgroundColor: theme.backgroundColor }]}
-    >
-      <ScrollView style={{ flex: 1 }} showsVerticalScrollIndicator={false}>
-          <TopContainer user={user} theme={theme} />
-
-          <ProductsCategoriesFilter theme={theme}  />
-        
-          <MiddleContainer theme={theme} />
-      </ScrollView>
-    </SafeAreaView>
-  );
-};
 
 const TopContainer = ({ user, theme }: { user: User; theme: Theme }) => {
   return (
@@ -91,8 +73,63 @@ const TopContainer = ({ user, theme }: { user: User; theme: Theme }) => {
   );
 };
 
-const MiddleContainer = ({ theme }: { theme: Theme }) => {
-  return <View></View>;
+const HomeScreen = () => {
+  const user = useUser()!.user;
+  const theme = useTheme()!.theme;
+  const [isLoading, setIsLoading] = useState(true);
+  const [products, setProducts] = useState<Product[] | null>(null);
+
+  useEffect(() => {
+    const fn = async () => {
+      const data: Product[] | null = await getSomeProductsForEachCategories();
+      setTimeout(() => {
+        setProducts(data);
+        setIsLoading(false);
+      }, 1500);
+    };
+    fn();
+  }, []);
+
+  if (!user) {
+    return <Redirect href="/(auth)/login" />;
+  }
+
+  return (
+    <SafeAreaView
+      style={[styles.container, { backgroundColor: theme.backgroundColor }]}
+    >
+      {isLoading ? (
+        <View
+          style={{ flex: 1, alignItems: "center", justifyContent: "center" }}
+        >
+          <ThemeActivityIndicator
+            loading={isLoading}
+            size="large"
+            text="Chargement..."
+            theme={theme}
+          />
+        </View>
+      ) : (
+        <FlatList
+          data={products}
+          renderItem={({ item }) => (
+            <ProductCard theme={theme} product={item} />
+          )}
+          keyExtractor={(item) => item.id.toString()}
+          ListHeaderComponent={
+            <>
+              <TopContainer user={user} theme={theme} />
+              <ProductsCategoriesFilter theme={theme} />
+            </>
+          }
+          numColumns={2}
+          contentContainerStyle={styles.productsCardContainer}
+          columnWrapperStyle={styles.row}
+          showsVerticalScrollIndicator={false}
+        />
+      )}
+    </SafeAreaView>
+  );
 };
 
 const styles = StyleSheet.create({
@@ -152,6 +189,25 @@ const styles = StyleSheet.create({
   profileUserName: {
     letterSpacing: 1.5,
     fontSize: 14,
+  },
+  middleContainer: {},
+  noResult: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    rowGap: 15,
+  },
+  headingTxt: {
+    fontSize: 18,
+  },
+  productsCardContainer: {
+    padding: 8,
+    rowGap: 15,
+    flexWrap: 'wrap',
+  },
+  row: {
+    justifyContent: "space-between", // espace égal entre les cartes
+    marginBottom: 15,
   },
 });
 export default HomeScreen;

@@ -12,7 +12,7 @@ const RootLayout = () => {
           }}
         >
           <Stack.Screen name="index" />
-          <Stack.Screen name="signin" />
+          <Stack.Screen name="(auth)" />
           <Stack.Screen name="(tabs)" />
         </Stack>
       </UserContextProvider>

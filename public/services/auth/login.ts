@@ -2,7 +2,7 @@ import {
   LoginData,
   LoginResponse,
 } from "@/components/interfaces/api/requestResponses";
-import ip from "./ip";
+import ip from "../ip";
 import saveSession from "./session/save_session_token";
 
 const logIn = async ({
@@ -26,8 +26,6 @@ const logIn = async ({
     }
     const data: LoginResponse = await response.json();
 
-    console.log(data);
-
     if (data.success && data.token) {
       saveSession(data.token);
     }
@@ -35,6 +33,15 @@ const logIn = async ({
     return data;
   } catch (error) {
     console.error("Error during login:", error);
+    // Verifier si c'est une erreur de connexion.
+    if (error instanceof TypeError && error.message === "Failed to fetch") {
+      return {
+        success: false,
+        message:
+          "Impossible de se connecter au serveur. Vérifiez votre connexion ou réessayez plus tard.",
+      } as LoginResponse;
+    }
+
     return {
       success: false,
       message: "Erreur coté serveur !",
