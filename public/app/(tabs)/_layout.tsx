@@ -1,7 +1,7 @@
 import { useTheme } from "@/hooks/useColorsheme";
 import { FontAwesome, Ionicons, Octicons } from "@expo/vector-icons";
 import { Tabs } from "expo-router";
-import { CircleUser, HeartIcon } from "lucide-react-native";
+import { CircleUser, HeartIcon, ListOrdered } from "lucide-react-native";
 
 const TabsLayout = () => {
   const theme = useTheme()!.theme;
@@ -46,11 +46,11 @@ const TabsLayout = () => {
         }}
       />
       <Tabs.Screen
-        name="favourite"
+        name="order"
         options={{
-          tabBarLabel: "Favoris",
+          tabBarLabel: "Commandes",
           tabBarIcon: ({ color, focused, size }) => (
-            <HeartIcon
+            <ListOrdered
               size={size}
               color={color}
               fill={focused ? color : theme.backgroundColor}

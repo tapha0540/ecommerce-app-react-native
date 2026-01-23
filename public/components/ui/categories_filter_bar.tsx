@@ -2,7 +2,7 @@ import getAllProductsCategories from "@/services/api/products_categories/get_all
 import { SearchX } from "lucide-react-native";
 import { useEffect, useState } from "react";
 import { FlatList, Pressable, StyleSheet, Vibration, View } from "react-native";
-import ProductsCategorie from "../interfaces/api/products_categorie";
+import ProductsCategory from "../interfaces/api/products_categorie";
 import Theme from "../interfaces/themes";
 import ThemeActivityIndicator from "./activity_indicator_container";
 import GetIcon from "./get_icon";
@@ -19,7 +19,7 @@ const ProductsCategoriesFilter = ({
   setSelectedCategorieId: React.Dispatch<React.SetStateAction<number>>;
 }) => {
   const [productsCategorie, setProductsCategorie] = useState<
-    ProductsCategorie[] | null
+    ProductsCategory[] | null
   >(null);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -29,7 +29,9 @@ const ProductsCategoriesFilter = ({
     const fn = async () => {
       const data = await getAllProductsCategories();
       if (data.productsCategories) {
-        setProductsCategorie(data.productsCategories);
+        setProductsCategorie(
+          data.productsCategories.sort((a, b) => a.name.localeCompare(b.name)),
+        );
       }
       setTimeout(() => {
         setIsLoading(false);
@@ -85,7 +87,7 @@ const ProductsCategoriesFilter = ({
               name: "Tous",
               icon: "FontAwesome6:circle-dot",
               description: "Categorie par défaut.",
-            } as ProductsCategorie,
+            } as ProductsCategory,
             ...productsCategorie,
           ]}
           renderItem={({ item }) => {

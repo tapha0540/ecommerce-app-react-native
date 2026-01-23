@@ -19,7 +19,6 @@ const ProductCard = ({
   theme: Theme;
   AddToCart: () => void;
 }) => {
-  const [iconColor, setIconColor] = useState(theme.iconColor);
   const [isSelected, setIsSelected] = useState(false);
 
   return (
@@ -43,7 +42,6 @@ const ProductCard = ({
         <Image
           source={{
             uri: `http://${ip}/uploads/products/images/${product.imageUrl}`,
-            // uri: `http://${ip}/uploads/products/images/tshirt_homme_classique.jpg`,
           }}
           style={[styles.image, {}]}
         />
@@ -73,18 +71,16 @@ const ProductCard = ({
           theme={theme}
           onPress={() => {
             setIsSelected((prev) => !prev);
-            setIconColor(isSelected ? theme.iconColor : theme.backgroundColor);
             AddToCart();
           }}
           style={styles.addCartIconContainer}
           icon={
             <MaterialIcons
               name="add-shopping-cart"
-              size={24}
-              color={iconColor}
+              size={28}
+              color={isSelected ? theme.backgroundColor : theme.iconColor}
             />
           }
-          isSelected={isSelected}
         />
       </View>
     </Card>

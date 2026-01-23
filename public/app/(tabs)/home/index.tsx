@@ -5,7 +5,7 @@ import ThemeActivityIndicator from "@/components/ui/activity_indicator_container
 import ProductsCategoriesFilter from "@/components/ui/categories_filter_bar";
 import ProductCard from "@/components/ui/product_card";
 import SearchBar from "@/components/ui/search_bar";
-import { BoldText, LightText } from "@/components/ui/text";
+import { LightText } from "@/components/ui/text";
 import { ThemedCard } from "@/components/ui/themed_card";
 import { useCart } from "@/hooks/cart";
 import { useTheme } from "@/hooks/useColorsheme";
@@ -17,7 +17,7 @@ import { Feather } from "@expo/vector-icons";
 import { Redirect } from "expo-router";
 import { BellIcon, SquareUserRoundIcon } from "lucide-react-native";
 import { useEffect, useState } from "react";
-import { FlatList, Image, StyleSheet, View } from "react-native";
+import { FlatList, Image, StyleSheet, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 const TopContainer = ({ user, theme }: { user: User; theme: Theme }) => {
@@ -40,19 +40,12 @@ const TopContainer = ({ user, theme }: { user: User; theme: Theme }) => {
             />
           )}
           <View style={styles.profileTexts}>
-            <View style={{ flexDirection: "row" }}>
-              <LightText content="Salut " theme={theme} />
-              <BoldText
-                style={[styles.profileUserName, { color: theme.primaryColor }]}
-                content={`${user.firstName}`}
-                theme={theme}
-              />
-            </View>
-            <BoldText
-              style={styles.greeting}
-              content={new Date().getHours() < 13 ? "Bonjour" : "Bonsoir"}
-              theme={theme}
-            />
+            <LightText content="Bienvenue " theme={theme} />
+            <Text
+              style={[styles.profileUserName, { color: theme.primaryColor }]}
+              numberOfLines={1}
+              ellipsizeMode="tail"
+            >{`${user.firstName} ${user.lastName}`}</Text>
           </View>
         </View>
 
@@ -131,7 +124,7 @@ const HomeScreen = () => {
               product={item}
               AddToCart={() => {
                 cartHook?.setCart([...cartHook.cart, item]);
-                console.log(cartHook?.cart);
+                // console.log(cartHook?.cart);
               }}
             />
           )}
@@ -200,7 +193,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    columnGap: 10,
+    columnGap: 8,
   },
   profileTexts: {
     display: "flex",

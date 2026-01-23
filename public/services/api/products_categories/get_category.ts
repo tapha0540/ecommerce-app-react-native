@@ -1,16 +1,22 @@
 import ProductsCategory from "@/components/interfaces/api/products_categorie";
-import ip from "../../ip";
+import ip from "@/services/ip";
 
 interface ServerResponse {
   message: string;
   success: boolean;
-  productsCategories?: ProductsCategory[];
+  category?: ProductsCategory;
 }
 
-const getAllProductsCategories = async (): Promise<ServerResponse> => {
+const getProductCategory = async (
+  categoryId: number,
+): Promise<ServerResponse> => {
   try {
     const res = await fetch(
-      `http://${ip}/controllers/products_categories/get_all_products_categories.php`,
+      `http://${ip}/controllers/products_categories/get_product_category.php`,
+      {
+        method: "POST",
+        body: JSON.stringify({ categoryId }),
+      },
     );
 
     if (!res.ok) {
@@ -18,9 +24,9 @@ const getAllProductsCategories = async (): Promise<ServerResponse> => {
     }
 
     return (await res.json()) as ServerResponse;
-  } catch(err) {
+  } catch (err) {
     console.error(err);
-    
+
     return {
       message: "Problème de connexion.",
       success: false,
@@ -28,4 +34,4 @@ const getAllProductsCategories = async (): Promise<ServerResponse> => {
   }
 };
 
-export default getAllProductsCategories;
+export default getProductCategory;
