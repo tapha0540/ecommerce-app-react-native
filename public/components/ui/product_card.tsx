@@ -42,8 +42,8 @@ const ProductCard = ({
       <View style={styles.imageCard}>
         <Image
           source={{
-            // uri: `http://${ip}/uploads/products/images/${product.imageUrl}`
-            uri: `http://${ip}/uploads/products/images/tshirt_homme_classique.jpg`,
+            uri: `http://${ip}/uploads/products/images/${product.imageUrl}`,
+            // uri: `http://${ip}/uploads/products/images/tshirt_homme_classique.jpg`,
           }}
           style={[styles.image, {}]}
         />
