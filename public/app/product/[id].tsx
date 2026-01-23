@@ -40,7 +40,7 @@ const ProductScreen = () => {
       }
     };
     fn();
-  }, []);
+  }, [product.categoryId]);
 
   return (
     <>
@@ -71,64 +71,76 @@ const ProductScreen = () => {
               resizeMode="cover"
             />
           </Card>
-          <View style={styles.productDetails}>
-            <View style={{ rowGap: 10 }}>
-              <BoldText theme={theme} content={product.name} />
-              <LightText
-                theme={theme}
-                content={`${productCategorie?.name ?? ""}`}
-                style={styles.categoryName}
-              />
-            </View>
-
-            <Text style={[styles.price, { color: theme.primaryColor }]}>
-              {`${formatPrice(product.price)} FCFA`}
-            </Text>
-          </View>
-
-          <View style={styles.inputs}>
-            <View>
-              {/* Pour mettre des inputs pour choisir la couleur du produit. */}
-            </View>
-
-            <ThemedCard style={styles.quantityCard} theme={theme}>
-              <View style={styles.quantityRow}>
-                <PressableIcon
-                  icon={<MinusIcon size={30} color={theme.iconColor} />}
-                  onPress={() => {
-                    setQuantity(String(Number(quantity) - 1));
-                  }}
+          <View style={styles.content}>
+            <View style={styles.productDetails}>
+              <View style={{ rowGap: 10 }}>
+                <BoldText
                   theme={theme}
-                  style={styles.iconCard}
+                  content={product.name}
+                  style={styles.productName}
                 />
-                <TextInput
-                  value={quantity}
-                  onChangeText={setQuantity}
-                  style={[
-                    styles.quantityTextInput,
-                    { color: theme.primaryColor },
-                  ]}
-                  keyboardType="number-pad"
-                  numberOfLines={1}
-                />
-
-                <PressableIcon
-                  icon={<PlusIcon size={30} color={theme.iconColor} />}
-                  onPress={() => {
-                    setQuantity(String(Number(quantity) + 1));
-                  }}
+                <LightText
                   theme={theme}
-                  style={styles.iconCard}
+                  content={`${productCategorie?.name ?? ""}`}
+                  style={styles.categoryName}
                 />
               </View>
-            </ThemedCard>
-          </View>
-          <View style={styles.descriptionContainer}>
-            <BoldText
-              content="Description"
-              theme={theme}
-              style={styles.descriptionHeading}
-            />
+
+              <Text style={[styles.price, { color: theme.primaryColor }]}>
+                {`${formatPrice(product.price)} FCFA`}
+              </Text>
+            </View>
+
+            <View style={styles.inputs}>
+              <View>
+                {/* Pour mettre des inputs pour choisir la couleur du produit. */}
+              </View>
+
+              <ThemedCard style={styles.quantityCard} theme={theme}>
+                <View style={styles.quantityRow}>
+                  <PressableIcon
+                    icon={<MinusIcon size={30} color={theme.iconColor} />}
+                    onPress={() => {
+                      setQuantity(String(Number(quantity) - 1));
+                    }}
+                    theme={theme}
+                    style={styles.iconCard}
+                  />
+                  <TextInput
+                    value={quantity}
+                    onChangeText={setQuantity}
+                    style={[
+                      styles.quantityTextInput,
+                      { color: theme.primaryColor },
+                    ]}
+                    keyboardType="number-pad"
+                    numberOfLines={1}
+                  />
+
+                  <PressableIcon
+                    icon={<PlusIcon size={30} color={theme.iconColor} />}
+                    onPress={() => {
+                      setQuantity(String(Number(quantity) + 1));
+                    }}
+                    theme={theme}
+                    style={styles.iconCard}
+                  />
+                </View>
+              </ThemedCard>
+            </View>
+            <View style={styles.descriptionContainer}>
+              <BoldText
+                content="Description"
+                theme={theme}
+                style={styles.descriptionHeading}
+              />
+              <LightText
+                content={product.description}
+                theme={theme}
+                style={styles.description}
+              />
+            </View>
+            
           </View>
         </ScrollView>
       </SafeAreaView>
@@ -142,17 +154,19 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   scrollViewContentContainer: {
-    maxWidth: 500,
-    justifyContent: "space-around",
-    alignItems: "center",
     padding: 3,
     rowGap: 15,
+    maxWidth: 500,
+  },
+  content: {
     marginHorizontal: 15,
+    alignItems: "center",
   },
   imageCard: {
-    width: "100%",
+    width: "98%",
     borderRadius: 15,
     overflow: "hidden",
+    alignSelf: "center",
   },
   image: {
     width: "100%",
@@ -170,6 +184,10 @@ const styles = StyleSheet.create({
   price: {
     fontWeight: "900",
     fontSize: 16,
+  },
+  productName: {
+    fontSize: 18,
+    maxWidth: '80%'
   },
   categoryName: {
     opacity: 0.5,
@@ -208,9 +226,14 @@ const styles = StyleSheet.create({
   },
   descriptionContainer: {
     width: "100%",
+    rowGap: 15,
   },
   descriptionHeading: {
-    fontSize: 16
+    fontSize: 16,
+  },
+  description: {
+    fontSize: 14,
+    opacity: 0.5,
   },
 });
 

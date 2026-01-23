@@ -7,20 +7,23 @@ import { Image, StyleSheet, Vibration, View } from "react-native";
 import { Card } from "react-native-paper";
 import Product from "../interfaces/api/product";
 import Theme from "../interfaces/themes";
-import PressableIcon from "./Pressable_icon_card";
 import { BoldText } from "./text";
+import { ThemedCard } from "./themed_card";
+import { useCart } from "@/hooks/cart";
 
 const ProductCard = ({
   product,
   theme,
   AddToCart,
+  removeFromCart,
 }: {
   product: Product;
   theme: Theme;
   AddToCart: () => void;
+  removeFromCart: () => void;
 }) => {
   const [isSelected, setIsSelected] = useState(false);
-
+  const cartHook = useCart();
   return (
     <Card
       style={[
@@ -67,21 +70,24 @@ const ProductCard = ({
           />
         </View>
 
-        <PressableIcon
+        <ThemedCard
           theme={theme}
           onPress={() => {
+            if (isSelected) removeFromCart();
+            else AddToCart();
+
             setIsSelected((prev) => !prev);
-            AddToCart();
+            console.log(cartHook?.cart);
+            
           }}
           style={styles.addCartIconContainer}
-          icon={
-            <MaterialIcons
-              name="add-shopping-cart"
-              size={28}
-              color={isSelected ? theme.backgroundColor : theme.iconColor}
-            />
-          }
-        />
+        >
+          <MaterialIcons
+            name="add-shopping-cart"
+            size={28}
+            color={isSelected ? theme.backgroundColor : theme.iconColor}
+          />
+        </ThemedCard>
       </View>
     </Card>
   );

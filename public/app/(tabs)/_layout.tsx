@@ -38,10 +38,8 @@ const TabsLayout = () => {
         options={{
           tabBarLabel: "Panier",
           tabBarIcon: ({ focused, size, color }) =>
-            focused ? (
-              <Ionicons name="cart" color={color} size={size} />
-            ) : (
-              <Ionicons name="cart-outline" color={color} size={size} />
+             (
+              <Ionicons name={focused ? 'cart' : 'cart-outline'} color={color} size={size} />
             ),
         }}
       />

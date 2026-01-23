@@ -20,6 +20,7 @@ export const ThemedText = ({
   return (
     <Text
       style={[{ color: theme.textColor, fontFamily: theme.fontFamily }, style]}
+      ellipsizeMode="tail"
     >
       {content}
     </Text>

@@ -3,21 +3,21 @@ import User from "@/components/interfaces/api/user";
 import Theme from "@/components/interfaces/themes";
 import ThemeActivityIndicator from "@/components/ui/activity_indicator_container";
 import ProductsCategoriesFilter from "@/components/ui/categories_filter_bar";
-import ProductCard from "@/components/ui/product_card";
+import PressableIcon from "@/components/ui/Pressable_icon_card";
+import ProductsCards from "@/components/ui/products_cards";
 import SearchBar from "@/components/ui/search_bar";
 import { LightText } from "@/components/ui/text";
-import { ThemedCard } from "@/components/ui/themed_card";
 import { useCart } from "@/hooks/cart";
 import { useTheme } from "@/hooks/useColorsheme";
 import { useUser } from "@/hooks/userHooks";
 import getSomeProductsForEachCategories from "@/services/api/products/get_some_products_for_each_category";
 import { filterProductsByCategorieId } from "@/services/helpers/filter_search";
 import ip from "@/services/ip";
-import { Feather } from "@expo/vector-icons";
+import { Ionicons } from "@expo/vector-icons";
 import { Redirect } from "expo-router";
 import { BellIcon, SquareUserRoundIcon } from "lucide-react-native";
 import { useEffect, useState } from "react";
-import { FlatList, Image, StyleSheet, Text, View } from "react-native";
+import { Image, StyleSheet, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 const TopContainer = ({ user, theme }: { user: User; theme: Theme }) => {
@@ -30,6 +30,7 @@ const TopContainer = ({ user, theme }: { user: User; theme: Theme }) => {
               <Image
                 source={{ uri: `http://${ip}/uploads/users/` }}
                 style={styles.profileImg}
+                resizeMode="cover"
               />
             </View>
           ) : (
@@ -50,17 +51,21 @@ const TopContainer = ({ user, theme }: { user: User; theme: Theme }) => {
         </View>
 
         <View style={styles.iconsContainer}>
-          <ThemedCard
+          <PressableIcon
+            icon={<BellIcon size={25} color={theme.iconColor} />}
             theme={theme}
+            onPress={() => {}}
             style={styles.card}
-            // onPress={() => {}}
-          >
-            <BellIcon size={25} color={theme.iconColor} />
-          </ThemedCard>
+          />
 
-          <ThemedCard theme={theme} style={styles.card} onPress={() => {}}>
-            <Feather name="shopping-bag" color={theme.iconColor} size={25} />
-          </ThemedCard>
+          <PressableIcon
+            icon={
+              <Ionicons name="cart-outline" color={theme.iconColor} size={25} />
+            }
+            theme={theme}
+            onPress={() => {}}
+            style={styles.card}
+          />
         </View>
       </View>
       <SearchBar theme={theme} />
@@ -71,7 +76,6 @@ const TopContainer = ({ user, theme }: { user: User; theme: Theme }) => {
 const HomeScreen = () => {
   const user = useUser()!.user;
   const theme = useTheme()!.theme;
-  const cartHook = useCart();
 
   const [isLoading, setIsLoading] = useState(true);
   const [products, setProducts] = useState<Product[] | null>(null);
@@ -116,19 +120,7 @@ const HomeScreen = () => {
       {isLoading ? (
         <Loading />
       ) : (
-        <FlatList
-          data={filteredProducts}
-          renderItem={({ item }) => (
-            <ProductCard
-              theme={theme}
-              product={item}
-              AddToCart={() => {
-                cartHook?.setCart([...cartHook.cart, item]);
-                // console.log(cartHook?.cart);
-              }}
-            />
-          )}
-          keyExtractor={(item) => item.id.toString()}
+        <ProductsCards
           ListHeaderComponent={
             <>
               <TopContainer user={user} theme={theme} />
@@ -139,11 +131,9 @@ const HomeScreen = () => {
               />
             </>
           }
-          numColumns={2}
-          contentContainerStyle={styles.productsCardContainer}
-          columnWrapperStyle={styles.row}
-          showsVerticalScrollIndicator={false}
-          ListEmptyComponent={<Loading />}
+          Loading={Loading}
+          filteredProducts={filteredProducts}
+          theme={theme}
         />
       )}
     </SafeAreaView>
@@ -218,13 +208,6 @@ const styles = StyleSheet.create({
   headingTxt: {
     fontSize: 18,
   },
-  productsCardContainer: {
-    padding: 8,
-    rowGap: 15,
-  },
-  row: {
-    justifyContent: "space-between", // espace égal entre les cartes
-    marginBottom: 15,
-  },
+ 
 });
 export default HomeScreen;
