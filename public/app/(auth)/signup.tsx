@@ -5,6 +5,7 @@ import { BoldText, ThemedText } from "@/components/ui/text";
 import { COUNTRY_CODES } from "@/constants/contry_calling_codes";
 import { useTheme } from "@/hooks/useColorsheme";
 import signUp from "@/services/api/auth/signup";
+import saveEmail from "@/services/email/save_email";
 import validateSignupData from "@/services/validation/auth/signup_data_validation";
 import AntDesign from "@expo/vector-icons/AntDesign";
 import { router } from "expo-router";
@@ -63,6 +64,7 @@ const SignUpScreen = () => {
         setMessage(response.message);
         setSuccess(response.success);
         if (response.success) {
+          saveEmail(email);
           setTimeout(() => router.push("/(auth)/login"), 3500);
         }
       });
@@ -232,12 +234,12 @@ const DropdownComponent = ({
         styles.selectedTextStyle,
         { color: theme.primaryColor },
       ]}
-      inputSearchStyle={[
-        styles.inputSearchStyle,
-        { backgroundColor: theme.backgroundColor },
-      ]}
-      data={COUNTRY_CODES}
-      search
+      // inputSearchStyle={[
+      //   styles.inputSearchStyle,
+      //   { backgroundColor: theme.backgroundColor, color: theme.textColor},
+      // ]}
+      data={COUNTRY_CODES.sort((a, b) => Number(a.value) - Number(b.value))}
+      // search
       maxHeight={300}
       labelField="label"
       valueField="value"
@@ -303,16 +305,15 @@ const styles = StyleSheet.create({
     marginRight: "5%",
   },
   phone: {
-    width: "55%",
+    width: "60%",
     backgroundColor: "transparent",
   },
   dropdown: {
-    width: "40%",
+    width: "35%",
     marginRight: "5%",
     alignSelf: "center",
     height: 50,
     borderRadius: 5,
-    shadowColor: "#633c3c",
     shadowOffset: {
       width: 0,
       height: 1,
@@ -321,7 +322,7 @@ const styles = StyleSheet.create({
     shadowRadius: 1.41,
     elevation: 2,
     borderWidth: 1,
-    borderColor: "grey",
+    borderColor: "lightgrey",
   },
   icon: {
     marginRight: 5,
@@ -338,20 +339,21 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
   placeholderStyle: {
-    fontSize: 16,
-    color: "gray",
+    fontSize: 14,
+    color: "lightgrey",
     textAlign: "center",
   },
   selectedTextStyle: {
-    fontSize: 16,
+    fontSize: 14,
+    padding: 5,
   },
   iconStyle: {
     width: 20,
     height: 20,
   },
-  inputSearchStyle: {
-    fontSize: 16,
-  },
+  // inputSearchStyle: {
+  //   fontSize: 14,
+  // },
 });
 
 export default SignUpScreen;

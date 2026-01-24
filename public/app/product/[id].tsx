@@ -11,17 +11,22 @@ import formatPrice from "@/services/helpers/format_price";
 import ip from "@/services/ip";
 import { Ionicons } from "@expo/vector-icons";
 import { router, Stack, useLocalSearchParams } from "expo-router";
-import { MinusIcon, PlusIcon, PlusSquare } from "lucide-react-native";
+import {
+  MinusIcon,
+  MinusSquareIcon,
+  PlusIcon,
+  PlusSquareIcon,
+} from "lucide-react-native";
 import { useEffect, useState } from "react";
 import {
   Image,
-  ScrollView,
   StyleSheet,
   Text,
   TextInput,
   Vibration,
   View,
 } from "react-native";
+import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import { Card } from "react-native-paper";
 import { SafeAreaView } from "react-native-safe-area-context";
 
@@ -83,9 +88,13 @@ const ProductScreen = () => {
           { backgroundColor: theme.backgroundColor },
         ]}
       >
-        <ScrollView
+        <KeyboardAwareScrollView
           style={styles.container}
           contentContainerStyle={styles.scrollViewContentContainer}
+          enableOnAndroid={true}
+          extraScrollHeight={20}
+          keyboardShouldPersistTaps="handled"
+          showsVerticalScrollIndicator={false}
         >
           <Card style={styles.imageCard}>
             <Image
@@ -149,8 +158,13 @@ const ProductScreen = () => {
                   <TextInput
                     value={quantity}
                     onChangeText={(value) => {
-                      if (Number(value) <= Number(product.stock)) {
-                        setQuantity(value);
+                      setQuantity(value);
+                      const n = Number(value);
+                      const notNumber = /\D/;
+                      if (n > Number(product.stock) || n <= 0 || notNumber.test(value)) {
+                        setTimeout(() => {
+                          setQuantity("1");
+                        }, 250);
                       }
                     }}
                     style={[
@@ -209,24 +223,18 @@ const ProductScreen = () => {
                 }
                 setIsAddedToCart(!isAddedToCart);
               }}
-              text="Ajouter au panier"
+              text={isAddedToCart ? "Supprimer" : "Ajouter au panier"}
               textStyle={{
-                color: isAddedToCart ? theme.textColor : theme.primaryColor,
+                color: theme.primaryColor,
               }}
               icon={
-                <PlusSquare
-                  size={24}
-                  color={isAddedToCart ? theme.iconColor : theme.primaryColor}
-                />
+                isAddedToCart ? (
+                  <MinusSquareIcon size={24} color={theme.primaryColor} />
+                ) : (
+                  <PlusSquareIcon size={24} color={theme.primaryColor} />
+                )
               }
-              style={[
-                styles.btn,
-                {
-                  backgroundColor: isAddedToCart
-                    ? theme.primaryColor
-                    : theme.backgroundColor,
-                },
-              ]}
+              style={styles.btn}
             />
             <ThemedButton
               theme={theme}
@@ -236,7 +244,7 @@ const ProductScreen = () => {
               style={styles.btn}
             />
           </View>
-        </ScrollView>
+        </KeyboardAwareScrollView>
       </SafeAreaView>
     </>
   );

@@ -13,7 +13,7 @@ const SearchBar = ({ theme }: { theme: Theme }) => {
           styles.txtInputContainer,
           {
             backgroundColor: theme.secondaryColor,
-            borderWidth: 1,
+            borderWidth: 0.5,
             borderColor: theme.primaryColor,
           },
         ]}

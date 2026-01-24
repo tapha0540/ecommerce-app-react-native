@@ -51,32 +51,28 @@ export const OutlineButton = ({
   style,
   textStyle
 }: ButtonProps) => {
-  const [activeBgColor, setActiveBgColor] = useState(theme.backgroundColor);
-  const [activeTxtColor, setActiveTxtColor] = useState(theme.primaryColor);
+  const [isPressed, setIsPressed] = useState(false);
   return (
     <Pressable
       style={[
         styles.buttons,
         {
-          backgroundColor: activeBgColor,
+          backgroundColor:isPressed ? theme.primaryColor : theme.backgroundColor,
           borderWidth: 1,
           borderColor: theme.primaryColor,
         },
         style,
       ]}
       onPress={() => {
-        setActiveBgColor(theme.primaryColor);
-        setActiveTxtColor(theme.backgroundColor);
-        setTimeout(() => {
-          setActiveBgColor(theme.backgroundColor);
-          setActiveTxtColor(theme.primaryColor);
-        }, 200);
+        
         Vibration.vibrate(100);
+        setIsPressed(true);
+        setTimeout(() => setIsPressed(false), 250);
         onPress();
       }}
     >
       {icon}
-      <Text style={[styles.buttonText, { color: activeTxtColor }, textStyle]}>{text}</Text>
+      <Text style={[styles.buttonText, { color: isPressed ? theme.backgroundColor : theme.primaryColor }, textStyle]}>{text}</Text>
     </Pressable>
   );
 };

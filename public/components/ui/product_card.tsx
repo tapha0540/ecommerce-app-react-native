@@ -103,7 +103,7 @@ const styles = StyleSheet.create({
     margin: "1%",
     rowGap: 10,
     borderRadius: 8,
-    borderWidth: 1,
+    borderWidth: 0.3,
   },
   imageCard: {
     borderRadius: 12,

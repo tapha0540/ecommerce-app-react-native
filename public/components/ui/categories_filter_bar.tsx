@@ -170,7 +170,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignContent: "center",
     maxWidth: 200,
-    borderWidth: 1,
+    borderWidth: 0.3,
   },
   categoriesTxt: {
     marginTop: 3,

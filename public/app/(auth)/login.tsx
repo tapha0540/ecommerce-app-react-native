@@ -6,9 +6,11 @@ import { useTheme } from "@/hooks/useColorsheme";
 import { useUser } from "@/hooks/userHooks";
 import getCurrentUser from "@/services/api/auth/get_current_user";
 import logIn from "@/services/api/auth/login";
+import getSavedEmail from "@/services/email/get_email";
+import saveEmail from "@/services/email/save_email";
 import validateLogInData from "@/services/validation/auth/login_data_validation";
 import { router } from "expo-router";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { StyleSheet, View } from "react-native";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -24,6 +26,11 @@ const LoginScreen = () => {
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
+
+  useEffect(() => {
+    const fn = async () => setEmail((await getSavedEmail()) ?? "");
+    fn();
+  }, []);
 
   const handleSubmit = async () => {
     setLoading(true);
@@ -45,6 +52,7 @@ const LoginScreen = () => {
         setMessage(response.message);
         setSuccess(response.success);
         if (response.success) {
+          saveEmail(email);
           setTimeout(async () => {
             userHook?.setUser(await getCurrentUser());
             router.push("/(tabs)/home");

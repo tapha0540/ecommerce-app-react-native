@@ -204,9 +204,6 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     rowGap: 10,
   },
-  greeting: {
-    fontWeight: "900",
-  },
   profileUserName: {
     letterSpacing: 1.5,
     fontSize: 14,
