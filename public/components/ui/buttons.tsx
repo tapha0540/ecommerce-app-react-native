@@ -1,5 +1,12 @@
 import { useState } from "react";
-import { Pressable, StyleSheet, Vibration } from "react-native";
+import {
+  Pressable,
+  StyleProp,
+  StyleSheet,
+  TextStyle,
+  Vibration,
+  ViewStyle,
+} from "react-native";
 import { Text } from "react-native-paper";
 import Theme from "../interfaces/themes";
 
@@ -8,27 +15,41 @@ interface ButtonProps {
   icon?: React.ReactNode;
   onPress: () => void;
   theme: Theme;
+  style?: StyleProp<ViewStyle>;
+  textStyle?: StyleProp<TextStyle>;
 }
 
-export const ThemeButton = ({ text, icon, onPress, theme }: ButtonProps) => {
+export const ThemedButton = ({
+  text,
+  icon,
+  onPress,
+  theme,
+  style,
+  textStyle
+}: ButtonProps) => {
   return (
     <Pressable
-      style={[styles.buttons, { backgroundColor: theme.primaryColor }]}
-      onPress={onPress}
+      style={[styles.buttons, { backgroundColor: theme.primaryColor }, style]}
+      onPress={() => {
+        Vibration.vibrate(100);
+        onPress();
+      }}
     >
       {icon}
-      <Text style={[styles.buttonText, { color: theme.backgroundColor }]}>
+      <Text style={[styles.buttonText, { color: theme.textColor }, textStyle]}>
         {text}
       </Text>
     </Pressable>
   );
 };
 
-export const OutlineThemeButton = ({
+export const OutlineButton = ({
   text,
   icon,
   onPress,
   theme,
+  style,
+  textStyle
 }: ButtonProps) => {
   const [activeBgColor, setActiveBgColor] = useState(theme.backgroundColor);
   const [activeTxtColor, setActiveTxtColor] = useState(theme.primaryColor);
@@ -41,6 +62,7 @@ export const OutlineThemeButton = ({
           borderWidth: 1,
           borderColor: theme.primaryColor,
         },
+        style,
       ]}
       onPress={() => {
         setActiveBgColor(theme.primaryColor);
@@ -54,7 +76,7 @@ export const OutlineThemeButton = ({
       }}
     >
       {icon}
-      <Text style={[styles.buttonText, { color: activeTxtColor }]}>{text}</Text>
+      <Text style={[styles.buttonText, { color: activeTxtColor }, textStyle]}>{text}</Text>
     </Pressable>
   );
 };
@@ -75,7 +97,7 @@ const styles = StyleSheet.create({
   },
   buttonText: {
     fontWeight: "bold",
-    fontSize: 16,
+    fontSize: 14,
     textAlign: "center",
     paddingHorizontal: 10,
   },

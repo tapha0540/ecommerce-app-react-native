@@ -12,7 +12,7 @@ import { useState } from "react";
 import { StyleSheet, View } from "react-native";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { OutlineThemeButton } from "../../components/ui/buttons";
+import { OutlineButton } from "../../components/ui/buttons";
 
 const LoginScreen = () => {
   const userHook = useUser();
@@ -117,7 +117,7 @@ const LoginScreen = () => {
             {message}
           </Text>
         )}
-        <OutlineThemeButton
+        <OutlineButton
           text="Se connecter"
           onPress={handleSubmit}
           theme={theme}

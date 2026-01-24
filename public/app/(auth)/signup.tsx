@@ -14,7 +14,7 @@ import { Dropdown } from "react-native-element-dropdown";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import { TextInput } from "react-native-paper";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { OutlineThemeButton } from "../../components/ui/buttons";
+import { OutlineButton } from "../../components/ui/buttons";
 
 const SignUpScreen = () => {
   const theme = useTheme()!.theme;
@@ -189,11 +189,7 @@ const SignUpScreen = () => {
             theme={theme}
           />
         )}
-        <OutlineThemeButton
-          text="S'inscrire"
-          onPress={handleSubmit}
-          theme={theme}
-        />
+        <OutlineButton text="S'inscrire" onPress={handleSubmit} theme={theme} />
       </KeyboardAwareScrollView>
     </SafeAreaView>
   );

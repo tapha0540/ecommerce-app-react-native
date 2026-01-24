@@ -1,3 +1,4 @@
+import { useCart } from "@/hooks/cart";
 import formatPrice from "@/services/helpers/format_price";
 import ip from "@/services/ip";
 import { MaterialIcons } from "@expo/vector-icons";
@@ -9,7 +10,6 @@ import Product from "../interfaces/api/product";
 import Theme from "../interfaces/themes";
 import { BoldText } from "./text";
 import { ThemedCard } from "./themed_card";
-import { useCart } from "@/hooks/cart";
 
 const ProductCard = ({
   product,
@@ -22,8 +22,8 @@ const ProductCard = ({
   AddToCart: () => void;
   removeFromCart: () => void;
 }) => {
-  const [isSelected, setIsSelected] = useState(false);
   const cartHook = useCart();
+  const [isAddedToCart, setIsAddedToCart] = useState(cartHook?.cart.some(any => any.id === product.id));
   return (
     <Card
       style={[
@@ -73,19 +73,23 @@ const ProductCard = ({
         <ThemedCard
           theme={theme}
           onPress={() => {
-            if (isSelected) removeFromCart();
+            Vibration.vibrate(85);
+            if (isAddedToCart) removeFromCart();
             else AddToCart();
 
-            setIsSelected((prev) => !prev);
-            console.log(cartHook?.cart);
-            
+            setIsAddedToCart(!isAddedToCart);
           }}
-          style={styles.addCartIconContainer}
+          style={{
+            ...styles.addCartIconContainer,
+            backgroundColor: isAddedToCart
+              ? theme.primaryColor
+              : theme.backgroundColor,
+          }}
         >
           <MaterialIcons
             name="add-shopping-cart"
             size={28}
-            color={isSelected ? theme.backgroundColor : theme.iconColor}
+            color={isAddedToCart ? theme.backgroundColor : theme.iconColor}
           />
         </ThemedCard>
       </View>
@@ -118,7 +122,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
     paddingVertical: 8,
     paddingHorizontal: 10,
-    // backgroundColor: "#f5f5f5", // fallback background
   },
   txtContainer: {
     flex: 1,
