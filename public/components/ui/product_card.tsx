@@ -1,7 +1,6 @@
 import { useCart } from "@/hooks/cart";
 import formatPrice from "@/services/helpers/format_price";
 import ip from "@/services/ip";
-import { MaterialIcons } from "@expo/vector-icons";
 import { router } from "expo-router";
 import { useState } from "react";
 import { Image, StyleSheet, Vibration, View } from "react-native";
@@ -9,7 +8,6 @@ import { Card } from "react-native-paper";
 import Product from "../interfaces/api/product";
 import Theme from "../interfaces/themes";
 import { BoldText } from "./text";
-import { ThemedCard } from "./themed_card";
 
 const ProductCard = ({
   product,
@@ -23,7 +21,9 @@ const ProductCard = ({
   removeFromCart: () => void;
 }) => {
   const cartHook = useCart();
-  const [isAddedToCart, setIsAddedToCart] = useState(cartHook?.cart.some(any => any.id === product.id));
+  const [isAddedToCart, setIsAddedToCart] = useState(
+    cartHook?.cart.some((any) => any.product.id === product.id),
+  );
   return (
     <Card
       style={[
@@ -46,7 +46,7 @@ const ProductCard = ({
           source={{
             uri: `http://${ip}/uploads/products/images/${product.imageUrl}`,
           }}
-          style={[styles.image, {}]}
+          style={styles.image}
         />
       </View>
 
@@ -70,7 +70,7 @@ const ProductCard = ({
           />
         </View>
 
-        <ThemedCard
+        {/* <ThemedCard
           theme={theme}
           onPress={() => {
             Vibration.vibrate(85);
@@ -91,7 +91,7 @@ const ProductCard = ({
             size={28}
             color={isAddedToCart ? theme.backgroundColor : theme.iconColor}
           />
-        </ThemedCard>
+        </ThemedCard> */}
       </View>
     </Card>
   );

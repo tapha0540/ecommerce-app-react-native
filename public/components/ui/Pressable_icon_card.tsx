@@ -19,7 +19,7 @@ const PressableIcon = ({
     <ThemedCard
       style={{
         ...style,
-        backgroundColor: pressed ? theme.primaryColor : theme.backgroundColor,
+        backgroundColor: pressed ? theme.primaryColor : theme.secondaryColor,
       }}
       onPress={() => {
         Vibration.vibrate(55);

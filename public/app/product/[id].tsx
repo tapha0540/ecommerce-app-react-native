@@ -10,7 +10,7 @@ import getProductCategory from "@/services/api/products_categories/get_category"
 import formatPrice from "@/services/helpers/format_price";
 import ip from "@/services/ip";
 import { Ionicons } from "@expo/vector-icons";
-import { Stack, useLocalSearchParams } from "expo-router";
+import { router, Stack, useLocalSearchParams } from "expo-router";
 import { MinusIcon, PlusIcon, PlusSquare } from "lucide-react-native";
 import { useEffect, useState } from "react";
 import {
@@ -19,6 +19,7 @@ import {
   StyleSheet,
   Text,
   TextInput,
+  Vibration,
   View,
 } from "react-native";
 import { Card } from "react-native-paper";
@@ -34,7 +35,7 @@ const ProductScreen = () => {
 
   const [quantity, setQuantity] = useState("1");
   const [isAddedToCart, setIsAddedToCart] = useState(
-    false
+    cartHook?.cart.some((item) => item.product.id === product.id),
   );
 
   useEffect(() => {
@@ -48,7 +49,7 @@ const ProductScreen = () => {
     };
     fn();
   }, [product.categoryId]);
-  
+
   return (
     <>
       <Stack.Screen
@@ -57,6 +58,23 @@ const ProductScreen = () => {
           headerStyle: { backgroundColor: theme.backgroundColor },
           headerTitleStyle: { fontSize: 16, color: theme.primaryColor },
           headerTintColor: theme.textColor,
+          headerRight: () => (
+            <PressableIcon
+              icon={
+                <Ionicons
+                  name="cart-outline"
+                  color={theme.iconColor}
+                  size={25}
+                />
+              }
+              theme={theme}
+              onPress={() => {
+                Vibration.vibrate(55);
+                router.push("/(tabs)/cart");
+              }}
+              style={{ padding: 5, width: 45, height: 45 }}
+            />
+          ),
         }}
       />
       <SafeAreaView
@@ -74,7 +92,7 @@ const ProductScreen = () => {
               source={{
                 uri: `http://${ip}/uploads/products/images/${product.imageUrl}`,
               }}
-              style={[styles.image, {}]}
+              style={styles.image}
               resizeMode="cover"
             />
           </Card>
@@ -179,17 +197,36 @@ const ProductScreen = () => {
               onPress={() => {
                 if (isAddedToCart)
                   cartHook?.setCart(
-                    cartHook.cart.filter((each) => each.id !== product.id),
+                    cartHook.cart.filter(
+                      (each) => each.product.id !== product.id,
+                    ),
                   );
                 else {
-                  cartHook?.setCart([...cartHook.cart, product]);
+                  cartHook?.setCart([
+                    ...cartHook.cart,
+                    { quantity: Number(quantity), product },
+                  ]);
                 }
                 setIsAddedToCart(!isAddedToCart);
               }}
               text="Ajouter au panier"
-              textStyle={{ color: isAddedToCart ? theme.textColor : theme.primaryColor}}
-              icon={<PlusSquare size={24} color={isAddedToCart ? theme.iconColor : theme.primaryColor} />}
-              style={[styles.btn, { backgroundColor: isAddedToCart ? theme.primaryColor : theme.backgroundColor}]}
+              textStyle={{
+                color: isAddedToCart ? theme.textColor : theme.primaryColor,
+              }}
+              icon={
+                <PlusSquare
+                  size={24}
+                  color={isAddedToCart ? theme.iconColor : theme.primaryColor}
+                />
+              }
+              style={[
+                styles.btn,
+                {
+                  backgroundColor: isAddedToCart
+                    ? theme.primaryColor
+                    : theme.backgroundColor,
+                },
+              ]}
             />
             <ThemedButton
               theme={theme}

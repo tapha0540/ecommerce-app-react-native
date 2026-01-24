@@ -11,13 +11,14 @@ import { useCart } from "@/hooks/cart";
 import { useTheme } from "@/hooks/useColorsheme";
 import { useUser } from "@/hooks/userHooks";
 import getSomeProductsForEachCategories from "@/services/api/products/get_some_products_for_each_category";
+import saveCart from "@/services/cart/save_cart";
 import { filterProductsByCategorieId } from "@/services/helpers/filter_search";
 import ip from "@/services/ip";
 import { Ionicons } from "@expo/vector-icons";
 import { Redirect } from "expo-router";
 import { BellIcon, SquareUserRoundIcon } from "lucide-react-native";
 import { useEffect, useState } from "react";
-import { Image, StyleSheet, Text, View } from "react-native";
+import { AppState, Image, StyleSheet, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 const TopContainer = ({ user, theme }: { user: User; theme: Theme }) => {
@@ -76,6 +77,7 @@ const TopContainer = ({ user, theme }: { user: User; theme: Theme }) => {
 const HomeScreen = () => {
   const user = useUser()!.user;
   const theme = useTheme()!.theme;
+  const cart = useCart()!.cart;
 
   const [isLoading, setIsLoading] = useState(true);
   const [products, setProducts] = useState<Product[] | null>(null);
@@ -93,14 +95,21 @@ const HomeScreen = () => {
     };
     fn();
   }, []);
+
+  useEffect(() => {
+    const sub = AppState.addEventListener("change", (state) => {
+      if (state === "background" || state === "inactive") {
+        saveCart(cart);
+      }
+    });
+
+    return () => sub.remove();
+  }, [cart]);
+
   const filteredProducts = filterProductsByCategorieId(
     products,
     selectedCategorieId,
   );
-
-  if (!user) {
-    return <Redirect href="/(auth)/login" />;
-  }
 
   const Loading = () => (
     <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
@@ -112,6 +121,10 @@ const HomeScreen = () => {
       />
     </View>
   );
+
+  if (!user) {
+    return <Redirect href="/(auth)/login" />;
+  }
 
   return (
     <SafeAreaView
@@ -208,6 +221,5 @@ const styles = StyleSheet.create({
   headingTxt: {
     fontSize: 18,
   },
- 
 });
 export default HomeScreen;
