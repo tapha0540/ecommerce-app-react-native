@@ -24,12 +24,13 @@ const ProductCard = ({
   const [isAddedToCart, setIsAddedToCart] = useState(
     cartHook?.cart.some((any) => any.product.id === product.id),
   );
+  
   return (
     <Card
       style={[
         styles.container,
         {
-          backgroundColor: theme.backgroundColor,
+          backgroundColor: theme.secondaryColor,
           borderColor: theme.primaryColor,
         },
       ]}
@@ -37,7 +38,7 @@ const ProductCard = ({
         Vibration.vibrate(55);
         router.push({
           pathname: "/product/[id]",
-          params: { ...product },
+          params: { id: product.id },
         });
       }}
     >

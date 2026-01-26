@@ -25,11 +25,11 @@ const ProductsCards = ({
           theme={theme}
           product={item}
           AddToCart={() => {
-            cartHook?.setCart([...cartHook.cart, item]);
+            cartHook?.setCart([...cartHook.cart, { product: item, quantity: 1}]);
           }}
           removeFromCart={() => {
             cartHook?.setCart(
-              cartHook!.cart.filter((each) => each.id !== item.id),
+              cartHook!.cart.filter((each) => each.product.id !== item.id),
             );
           }}
         />

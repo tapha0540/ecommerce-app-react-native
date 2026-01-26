@@ -4,4 +4,4 @@ interface CartItem {
   product: Product;
   quantity: number;
 }
-export default  CartItem;
+export default CartItem;

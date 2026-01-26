@@ -25,7 +25,7 @@ export const ThemedButton = ({
   onPress,
   theme,
   style,
-  textStyle
+  textStyle,
 }: ButtonProps) => {
   return (
     <Pressable
@@ -49,7 +49,7 @@ export const OutlineButton = ({
   onPress,
   theme,
   style,
-  textStyle
+  textStyle,
 }: ButtonProps) => {
   const [isPressed, setIsPressed] = useState(false);
   return (
@@ -57,14 +57,15 @@ export const OutlineButton = ({
       style={[
         styles.buttons,
         {
-          backgroundColor:isPressed ? theme.primaryColor : theme.backgroundColor,
+          backgroundColor: isPressed
+            ? theme.primaryColor
+            : theme.secondaryColor,
           borderWidth: 1,
           borderColor: theme.primaryColor,
         },
         style,
       ]}
       onPress={() => {
-        
         Vibration.vibrate(100);
         setIsPressed(true);
         setTimeout(() => setIsPressed(false), 250);
@@ -72,7 +73,15 @@ export const OutlineButton = ({
       }}
     >
       {icon}
-      <Text style={[styles.buttonText, { color: isPressed ? theme.backgroundColor : theme.primaryColor }, textStyle]}>{text}</Text>
+      <Text
+        style={[
+          styles.buttonText,
+          { color: isPressed ? theme.backgroundColor : theme.primaryColor },
+          textStyle,
+        ]}
+      >
+        {text}
+      </Text>
     </Pressable>
   );
 };
@@ -93,7 +102,7 @@ const styles = StyleSheet.create({
   },
   buttonText: {
     fontWeight: "bold",
-    fontSize: 14,
+    fontSize: 13,
     textAlign: "center",
     paddingHorizontal: 10,
   },

@@ -1,60 +1,95 @@
 import Product from "@/components/interfaces/api/product";
 import ProductsCategory from "@/components/interfaces/api/products_categorie";
+import ThemeActivityIndicator from "@/components/ui/activity_indicator_container";
 import { OutlineButton, ThemedButton } from "@/components/ui/buttons";
 import PressableIcon from "@/components/ui/Pressable_icon_card";
+import QuantityInput from "@/components/ui/quantity_input";
 import { BoldText, LightText } from "@/components/ui/text";
-import { ThemedCard } from "@/components/ui/themed_card";
 import { useCart } from "@/hooks/cart";
 import { useTheme } from "@/hooks/useColorsheme";
+import getProduct from "@/services/api/products/get_product";
 import getProductCategory from "@/services/api/products_categories/get_category";
 import formatPrice from "@/services/helpers/format_price";
 import ip from "@/services/ip";
 import { Ionicons } from "@expo/vector-icons";
 import { router, Stack, useLocalSearchParams } from "expo-router";
-import {
-  MinusIcon,
-  MinusSquareIcon,
-  PlusIcon,
-  PlusSquareIcon,
-} from "lucide-react-native";
+import { MinusSquareIcon, PlusSquareIcon } from "lucide-react-native";
 import { useEffect, useState } from "react";
-import {
-  Image,
-  StyleSheet,
-  Text,
-  TextInput,
-  Vibration,
-  View,
-} from "react-native";
+import { Image, StyleSheet, Text, Vibration, View } from "react-native";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import { Card } from "react-native-paper";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 const ProductScreen = () => {
-  const product = useLocalSearchParams() as unknown as Product;
-
+  const { id } = useLocalSearchParams() as unknown as {
+    id: number;
+  };
+  const [product, setProduct] = useState<Product | null>(null);
   const theme = useTheme()!.theme;
   const cartHook = useCart();
   const [productCategorie, setProductCategory] =
     useState<ProductsCategory | null>(null);
 
-  const [quantity, setQuantity] = useState("1");
-  const [isAddedToCart, setIsAddedToCart] = useState(
-    cartHook?.cart.some((item) => item.product.id === product.id),
-  );
+    const [isAddedToCart, setIsAddedToCart] = useState(false);
+    const [quantity, setQuantity] = useState('1');
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const fn = async () => {
-      const data = await getProductCategory(product.categoryId);
-      console.log(data);
+      const getProductData = await getProduct(id);
+      if (getProductData.product) {
+        setProduct(getProductData.product);
 
-      if (data.success && data.category) {
-        setProductCategory(data.category);
+        setIsAddedToCart(
+          cartHook!.cart.some(
+            (cartItem) => cartItem.product.id === product?.id,
+          ),
+        );
+
+        const getProductCategoryData = await getProductCategory(
+          getProductData.product.categoryId,
+        );
+
+        if (getProductCategoryData.success && getProductCategoryData.category) {
+          setProductCategory(getProductCategoryData.category);
+          setTimeout(() => {
+            setIsLoading(false);
+          }, 500);
+        }
+
+        if (isAddedToCart) {
+          const index = cartHook?.cart.findIndex( item => item.product.id === product?.id);
+           if (index && index !== -1) setQuantity(String(cartHook?.cart[index].quantity));
+        } 
       }
     };
     fn();
-  }, [product.categoryId]);
+  }, [product, id, cartHook, isAddedToCart]);
 
+  if (!product || isLoading) {
+    return (
+      <>
+        <Stack.Screen
+          options={{
+            headerTitle: "Chargement",
+            headerStyle: { backgroundColor: theme.backgroundColor },
+            headerTitleStyle: { fontSize: 16, color: theme.primaryColor },
+            headerTintColor: theme.textColor,
+          }}
+        />
+        <View
+          style={[styles.container, { backgroundColor: theme.backgroundColor }]}
+        >
+          <ThemeActivityIndicator
+            loading={isLoading}
+            size="large"
+            text=""
+            theme={theme}
+          />
+        </View>
+      </>
+    );
+  }
   return (
     <>
       <Stack.Screen
@@ -89,7 +124,7 @@ const ProductScreen = () => {
         ]}
       >
         <KeyboardAwareScrollView
-          style={styles.container}
+          style={{ flex: 1 }}
           contentContainerStyle={styles.scrollViewContentContainer}
           enableOnAndroid={true}
           extraScrollHeight={20}
@@ -140,56 +175,12 @@ const ProductScreen = () => {
                 {/* Pour mettre des inputs pour choisir la couleur du produit. */}
               </View>
 
-              <ThemedCard style={styles.quantityCard} theme={theme}>
-                <View style={styles.quantityRow}>
-                  <PressableIcon
-                    icon={<MinusIcon size={30} color={theme.iconColor} />}
-                    onPress={() => {
-                      const value = Number(quantity) ?? 1;
-                      if (value > 1) {
-                        setQuantity(String(value - 1));
-                      } else {
-                        setQuantity(String(product.stock));
-                      }
-                    }}
-                    theme={theme}
-                    style={styles.iconCard}
-                  />
-                  <TextInput
-                    value={quantity}
-                    onChangeText={(value) => {
-                      setQuantity(value);
-                      const n = Number(value);
-                      const notNumber = /\D/;
-                      if (n > Number(product.stock) || n <= 0 || notNumber.test(value)) {
-                        setTimeout(() => {
-                          setQuantity("1");
-                        }, 250);
-                      }
-                    }}
-                    style={[
-                      styles.quantityTextInput,
-                      { color: theme.primaryColor },
-                    ]}
-                    keyboardType="number-pad"
-                    numberOfLines={1}
-                  />
-
-                  <PressableIcon
-                    icon={<PlusIcon size={30} color={theme.iconColor} />}
-                    onPress={() => {
-                      const value = Number(quantity) ?? 1;
-                      if (value < Number(product.stock)) {
-                        setQuantity(String(value + 1));
-                      } else {
-                        setQuantity("1");
-                      }
-                    }}
-                    theme={theme}
-                    style={styles.iconCard}
-                  />
-                </View>
-              </ThemedCard>
+              <QuantityInput
+                product={product}
+                quantity={quantity}
+                setQuantity={setQuantity}
+                theme={theme}
+              />
             </View>
             <View style={styles.descriptionContainer}>
               <BoldText
@@ -251,18 +242,24 @@ const ProductScreen = () => {
 };
 
 const styles = StyleSheet.create({
-  safeAreaView: { flex: 1 },
+  safeAreaView: {
+    flex: 1,
+
+    padding: 3,
+    maxWidth: 500,
+  },
   container: {
     flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
   },
   scrollViewContentContainer: {
-    padding: 3,
     rowGap: 15,
-    maxWidth: 500,
   },
   content: {
     marginHorizontal: 15,
     alignItems: "center",
+    padding: 2,
   },
   imageCard: {
     width: "98%",
@@ -289,7 +286,7 @@ const styles = StyleSheet.create({
   },
   productName: {
     fontSize: 18,
-    maxWidth: "80%",
+    maxWidth: "70%",
   },
   categoryName: {
     opacity: 0.5,
@@ -300,27 +297,6 @@ const styles = StyleSheet.create({
     width: "100%",
     alignContent: "center",
     justifyContent: "space-between",
-  },
-  quantityTextInput: {
-    width: 50,
-    height: 50,
-    textAlign: "center",
-  },
-  quantityRow: {
-    maxWidth: 130,
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
-    padding: 3,
-  },
-  quantityCard: {
-    maxWidth: 130,
-    flexDirection: "row",
-    columnGap: 5,
-    alignContent: "center",
-    justifyContent: "space-between",
-    borderRadius: 12,
-    padding: 2,
   },
   quantityIcons: {},
   stock: {
@@ -346,6 +322,8 @@ const styles = StyleSheet.create({
     justifyContent: "space-around",
     alignItems: "center",
     alignSelf: "center",
+    margin: 10,
+    padding: 2,
   },
   btn: {
     width: "48%",

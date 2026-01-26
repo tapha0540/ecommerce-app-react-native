@@ -7,10 +7,14 @@ interface ServerResponse {
   product?: Product | null;
 }
 
-const getProduct = async (): Promise<ServerResponse> => {
+const getProduct = async (productId: number): Promise<ServerResponse> => {
   try {
     const res = await fetch(
       `http://${ip}/controllers/products/get_product.php`,
+      {
+        method: "POST",
+        body: JSON.stringify({ productId }),
+      },
     );
 
     if (!res.ok) {
@@ -23,7 +27,7 @@ const getProduct = async (): Promise<ServerResponse> => {
   } catch (err) {
     console.error(err);
     return {
-      message: "",
+      message: "Error: the sever is not responding !",
       success: false,
     } as ServerResponse;
   }

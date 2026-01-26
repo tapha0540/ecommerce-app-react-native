@@ -1,0 +1,21 @@
+
+ Database connection failed: SQLSTATE[HY000] [2002] Aucune connexion n’a pu être établie car l’ordinateur cible l’a expressément refusée[25-Jan-2026 13:33:14 Europe/Berlin] PHP Fatal error:  Uncaught TypeError: getSomeProductsForEachCategory(): Argument #1 ($pdo) must be of type PDO, null given, called in C:\Users\DELL\Dev\react-native\ecommerce-app-react-native\backend\controllers\products\get_some_products_for_each_category.php on line 19 and defined in C:\Users\DELL\Dev\react-native\ecommerce-app-react-native\backend\services\products\get_some_products_for_each_category.php:11
+Stack trace:
+#0 C:\Users\DELL\Dev\react-native\ecommerce-app-react-native\backend\controllers\products\get_some_products_for_each_category.php(19): getSomeProductsForEachCategory(NULL, 10)
+#1 {main}
+  thrown in C:\Users\DELL\Dev\react-native\ecommerce-app-react-native\backend\services\products\get_some_products_for_each_category.php on line 11
+
+ Database connection failed: SQLSTATE[HY000] [2002] Aucune connexion n’a pu être établie car l’ordinateur cible l’a expressément refusée[25-Jan-2026 13:33:37 Europe/Berlin] PHP Fatal error:  Uncaught TypeError: getSomeProductsForEachCategory(): Argument #1 ($pdo) must be of type PDO, null given, called in C:\Users\DELL\Dev\react-native\ecommerce-app-react-native\backend\controllers\products\get_some_products_for_each_category.php on line 19 and defined in C:\Users\DELL\Dev\react-native\ecommerce-app-react-native\backend\services\products\get_some_products_for_each_category.php:11
+Stack trace:
+#0 C:\Users\DELL\Dev\react-native\ecommerce-app-react-native\backend\controllers\products\get_some_products_for_each_category.php(19): getSomeProductsForEachCategory(NULL, 10)
+#1 {main}
+  thrown in C:\Users\DELL\Dev\react-native\ecommerce-app-react-native\backend\services\products\get_some_products_for_each_category.php on line 11
+[25-Jan-2026 16:24:21 Europe/Berlin] PHP Warning:  Undefined array key "productId" in C:\Users\DELL\Dev\react-native\ecommerce-app-react-native\backend\controllers\products\get_product.php on line 18
+controllers/get_product.php -> No product with an id liek that in the database .[25-Jan-2026 16:24:25 Europe/Berlin] PHP Warning:  Undefined array key "productId" in C:\Users\DELL\Dev\react-native\ecommerce-app-react-native\backend\controllers\products\get_product.php on line 18
+controllers/get_product.php -> No product with an id liek that in the database .[25-Jan-2026 16:24:43 Europe/Berlin] PHP Warning:  Undefined array key "productId" in C:\Users\DELL\Dev\react-native\ecommerce-app-react-native\backend\controllers\products\get_product.php on line 18
+controllers/get_product.php -> No product with an id liek that in the database .
+ Database connection failed: SQLSTATE[HY000] [2002] Aucune connexion n’a pu être établie car l’ordinateur cible l’a expressément refusée[26-Jan-2026 11:49:50 Europe/Berlin] PHP Fatal error:  Uncaught TypeError: getSomeProductsForEachCategory(): Argument #1 ($pdo) must be of type PDO, null given, called in C:\Users\DELL\Dev\react-native\ecommerce-app-react-native\backend\controllers\products\get_some_products_for_each_category.php on line 19 and defined in C:\Users\DELL\Dev\react-native\ecommerce-app-react-native\backend\services\products\get_some_products_for_each_category.php:11
+Stack trace:
+#0 C:\Users\DELL\Dev\react-native\ecommerce-app-react-native\backend\controllers\products\get_some_products_for_each_category.php(19): getSomeProductsForEachCategory(NULL, 10)
+#1 {main}
+  thrown in C:\Users\DELL\Dev\react-native\ecommerce-app-react-native\backend\services\products\get_some_products_for_each_category.php on line 11

@@ -1,36 +1,118 @@
-import { ThemedCard } from "@/components/ui/themed_card";
+import CartItem from "@/components/interfaces/cart_item";
+import QuantityInput from "@/components/ui/quantity_input";
+import { BoldText } from "@/components/ui/text";
 import { useCart } from "@/hooks/cart";
 import { useTheme } from "@/hooks/useColorsheme";
+import saveCart from "@/services/cart/save_cart";
+import formatPrice from "@/services/helpers/format_price";
+import ip from "@/services/ip";
+import { Trash2Icon } from "lucide-react-native";
 
-import { useState } from "react";
-import { StyleSheet, Text, View } from "react-native";
-import {
-  GestureHandlerRootView,
-} from "react-native-gesture-handler";
+import { useEffect, useState } from "react";
+import { AppState, Image, StyleSheet, View } from "react-native";
+import { FlatList, GestureHandlerRootView } from "react-native-gesture-handler";
+import Swipeable from "react-native-gesture-handler/ReanimatedSwipeable";
 import { SafeAreaView } from "react-native-safe-area-context";
-import Swipeable from 'react-native-gesture-handler/ReanimatedSwipeable';
 
 const ShoppingScreen = () => {
-  const [isLodaing, setIsloading] = useState(false);
   const cartHook = useCart();
   const theme = useTheme()!.theme;
+  const [isLoading, setIsloading] = useState(false);
+
+  useEffect(() => {
+    const sub = AppState.addEventListener("change", (state) => {
+      if (state === "background" || state === "inactive") {
+        saveCart(cartHook!.cart);
+      }
+    });
+
+    return () => sub.remove();
+  }, [cartHook]);
+
+  const renderRightActions = () => (
+    <View
+      style={[styles.renderRightActions, { backgroundColor: theme.errorColor }]}
+    >
+      <Trash2Icon size={40} color={theme.backgroundColor} />
+    </View>
+  );
+
+  const SwipeableComponent = ({ item }: { item: CartItem }) => {
+    const [quantity, setQuantity] = useState(String(item.quantity));
+
+    return (
+      <Swipeable
+        containerStyle={styles.swipeable}
+        childrenContainerStyle={styles.childrenContainerStyle}
+        renderRightActions={renderRightActions}
+      >
+        <View
+          style={[
+            styles.swipeableCard,
+            {
+              backgroundColor: theme.secondaryColor,
+              borderColor: theme.primaryColor,
+              borderWidth: theme.cardBorderWidth,
+            },
+          ]}
+        >
+          <View style={[styles.imgContainer]}>
+            <Image
+              source={{
+                uri: `http://${ip}/uploads/products/images/${item.product.imageUrl}`,
+              }}
+              style={styles.image}
+              resizeMode="cover"
+            />
+          </View>
+
+          <View style={styles.detailsContainer}>
+            <BoldText
+              theme={theme}
+              content={item.product.name}
+              style={styles.productName}
+            />
+
+            <View
+              style={{
+                justifyContent: "space-between",
+                alignItems: "center",
+                rowGap: 8,
+              }}
+            >
+              <BoldText
+                theme={theme}
+                content={`${formatPrice(item.product.price)} FCFA`}
+                style={styles.productPrice}
+              />
+              <QuantityInput
+                product={item.product}
+                quantity={quantity}
+                setQuantity={(value) => {
+                  item.quantity = Number(value);
+                  setQuantity(value);
+                }}
+                theme={theme}
+                style={styles.quantityInput}
+              />
+            </View>
+          </View>
+        </View>
+      </Swipeable>
+    );
+  };
+
   return (
-    <GestureHandlerRootView>
-      <SafeAreaView style={styles.container}>
-        {cartHook?.cart.map((cartItem, index) => (
-          <Swipeable
-            key={index}
-            renderRightActions={() => (
-              <View>
-                <Text>Delete</Text>
-              </View>
-            )}
-          >
-            <ThemedCard theme={theme} style={styles.card}>
-              <Text>card</Text>
-            </ThemedCard>
-          </Swipeable>
-        ))}
+    <GestureHandlerRootView
+      style={[styles.container, { backgroundColor: theme.backgroundColor }]}
+    >
+      <SafeAreaView>
+        <FlatList
+          data={cartHook?.cart}
+          renderItem={({ item }) => <SwipeableComponent item={item} />}
+          keyExtractor={({ product }) => product.id.toString()}
+          contentContainerStyle={styles.contentContainerStyle}
+        />
       </SafeAreaView>
     </GestureHandlerRootView>
   );
@@ -40,9 +122,63 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
-  card: {
-    width: 100,
-    height: 100,
+  swipeable: {
+    width: "100%",
+    height: 150,
+    alignSelf: "center",
+  },
+  swipeableCard: {
+    flexDirection: "row",
+    width: "100%",
+    maxWidth: 350,
+    height: "100%",
+    justifyContent: "space-around",
+    alignItems: "center",
+    borderRadius: 12,
+    elevation: 5,
+    padding: 5,
+    columnGap: 5,
+  },
+  imgContainer: {
+    width: 125,
+    height: "90%",
+  },
+  detailsContainer: {
+    maxWidth: 250,
+    height: "100%",
+    justifyContent: "space-between",
+    padding: 5,
+  },
+  image: {
+    width: "100%",
+    height: "100%",
+    borderRadius: 15,
+    resizeMode: "cover",
+  },
+  contentContainerStyle: {
+    rowGap: 15,
+    padding: 10,
+  },
+  renderRightActions: {
+    width: "80%",
+    height: 120,
+    alignItems: "flex-end",
+    justifyContent: "center",
+    alignSelf: "center",
+    padding: 25,
+    borderRadius: 15,
+    elevation: 2,
+  },
+  childrenContainerStyle: { justifyContent: "center", alignItems: "center" },
+  productName: {
+    fontSize: 14,
+  },
+  productPrice: {
+    fontSize: 16,
+  },
+  quantityInput: {
+    padding: 2,
+    height: 45,
   },
 });
 
