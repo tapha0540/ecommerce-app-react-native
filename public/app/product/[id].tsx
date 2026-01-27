@@ -30,8 +30,8 @@ const ProductScreen = () => {
   const [productCategorie, setProductCategory] =
     useState<ProductsCategory | null>(null);
 
-    const [isAddedToCart, setIsAddedToCart] = useState(false);
-    const [quantity, setQuantity] = useState('1');
+  const [isAddedToCart, setIsAddedToCart] = useState(false);
+  const [quantity, setQuantity] = useState("1");
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
@@ -58,9 +58,11 @@ const ProductScreen = () => {
         }
 
         if (isAddedToCart) {
-          const index = cartHook?.cart.findIndex( item => item.product.id === product?.id);
-           if (index && index !== -1) setQuantity(String(cartHook?.cart[index].quantity));
-        } 
+          const index: number = cartHook!.cart.findIndex(
+            (item) => item.product.id === product?.id,
+          );
+          if (index !== -1) setQuantity(String(cartHook?.cart[index].quantity));
+        }
       }
     };
     fn();
