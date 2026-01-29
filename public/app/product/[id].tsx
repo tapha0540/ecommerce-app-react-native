@@ -13,7 +13,7 @@ import formatPrice from "@/services/helpers/format_price";
 import ip from "@/services/ip";
 import { Ionicons } from "@expo/vector-icons";
 import { router, Stack, useLocalSearchParams } from "expo-router";
-import { MinusSquareIcon, PlusSquareIcon } from "lucide-react-native";
+import { MinusSquareIcon, PlusSquareIcon, Trash2Icon } from "lucide-react-native";
 import { useEffect, useState } from "react";
 import { Image, StyleSheet, Text, Vibration, View } from "react-native";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
@@ -222,7 +222,7 @@ const ProductScreen = () => {
               }}
               icon={
                 isAddedToCart ? (
-                  <MinusSquareIcon size={24} color={theme.primaryColor} />
+                  <Trash2Icon size={24} color={theme.primaryColor} />
                 ) : (
                   <PlusSquareIcon size={24} color={theme.primaryColor} />
                 )
@@ -231,8 +231,11 @@ const ProductScreen = () => {
             />
             <ThemedButton
               theme={theme}
-              onPress={() => {}}
-              text="Acheter"
+              onPress={() => {
+                
+                setTimeout(() => router.push('/(tabs)/order'), 250);
+              }}
+              text="Commander"
               icon={<Ionicons name="cart" size={24} color={theme.iconColor} />}
               style={styles.btn}
             />

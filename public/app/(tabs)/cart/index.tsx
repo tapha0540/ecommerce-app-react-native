@@ -1,5 +1,6 @@
 import CartItem from "@/components/interfaces/cart_item";
 import ThemeActivityIndicator from "@/components/ui/activity_indicator_container";
+import { OutlineButton, ThemedButton } from "@/components/ui/buttons";
 import QuantityInput from "@/components/ui/quantity_input";
 import { BoldText, LightText } from "@/components/ui/text";
 import { useCart } from "@/hooks/cart";
@@ -7,6 +8,7 @@ import { useTheme } from "@/hooks/useColorsheme";
 import saveCart from "@/services/cart/save_cart";
 import formatPrice from "@/services/helpers/format_price";
 import ip from "@/services/ip";
+import { MaterialIcons } from "@expo/vector-icons";
 import { SearchXIcon, Trash2Icon } from "lucide-react-native";
 
 import { useEffect, useState } from "react";
@@ -124,7 +126,7 @@ const ShoppingScreen = () => {
               <BoldText
                 theme={theme}
                 content={`${formatPrice(item.product.price)} FCFA`}
-                style={styles.productPrice}
+                style={[styles.productPrice, { color: theme.primaryColor }]}
               />
               <QuantityInput
                 product={item.product}
@@ -178,19 +180,42 @@ const ShoppingScreen = () => {
         },
       ]}
     >
-      <View
-        style={{
-          flexDirection: "row",
-          justifyContent: "space-between",
-          width: "100%",
-          padding: 10,
-        }}
-      >
+      <View style={styles.totalTxtConatiner}>
         <LightText theme={theme} content="Total :" />
         <BoldText
           theme={theme}
           style={[styles.productPrice, { color: theme.primaryColor }]}
           content={`${total} FCFA`}
+        />
+      </View>
+
+      <View style={styles.totalTxtConatiner}>
+        <LightText theme={theme} content="Frais de livraison :" />
+        <BoldText
+          theme={theme}
+          style={[styles.productPrice, { color: theme.primaryColor }]}
+          content={`${cartHook!.cart.length * 500} FCFA`}
+        />
+      </View>
+
+      <View style={styles.totalTxtConatiner}>
+        <OutlineButton
+          text="Supprimer tous"
+          icon={<Trash2Icon size={24} color={theme.primaryColor} />}
+          onPress={(): void => cartHook!.setCart([])}
+          theme={theme}
+          style={styles.btns}
+          textStyle={styles.btnsTxt}
+        />
+        <ThemedButton
+          text="Commander tous"
+          icon={
+            <MaterialIcons name="shopping-cart" size={24} color={theme.iconColor} />
+          }
+          style={styles.btns}
+          onPress={function (): void {}}
+          theme={theme}
+          textStyle={styles.btnsTxt}
         />
       </View>
     </View>
@@ -268,6 +293,7 @@ const styles = StyleSheet.create({
   contentContainerStyle: {
     rowGap: 15,
     padding: 3,
+    marginBottom: 20,
   },
   renderRightActions: {
     width: "80%",
@@ -300,10 +326,25 @@ const styles = StyleSheet.create({
   },
   listFooterComponent: {
     width: "100%",
-    backgroundColor: "green",
-    borderRadius: 15,
+    borderTopStartRadius: 15,
+    borderTopEndRadius: 15,
     position: "fixed",
-    bottom: 0,
+    bottom: -15,
+    padding: 5,
+  },
+  totalTxtConatiner: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    width: "100%",
+    padding: 10,
+  },
+  btns: {
+    width: "48%",
+    maxWidth: 320,
+    padding: 5
+  },
+  btnsTxt: {
+    fontSize: 13,
   },
 });
 
