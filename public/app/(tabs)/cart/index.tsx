@@ -5,10 +5,12 @@ import QuantityInput from "@/components/ui/quantity_input";
 import { BoldText, LightText } from "@/components/ui/text";
 import { useCart } from "@/hooks/cart";
 import { useTheme } from "@/hooks/useColorsheme";
+import OrderProducts from "@/services/api/orders/order_products";
 import saveCart from "@/services/cart/save_cart";
 import formatPrice from "@/services/helpers/format_price";
 import ip from "@/services/ip";
 import { MaterialIcons } from "@expo/vector-icons";
+import { router } from "expo-router";
 import { SearchXIcon, Trash2Icon } from "lucide-react-native";
 
 import { useEffect, useState } from "react";
@@ -42,6 +44,14 @@ const ShoppingScreen = () => {
 
     return () => sub.remove();
   }, [cartHook]);
+
+  const orderAllProductsFromCart = async () => {
+    await OrderProducts(
+      cartHook!.cart.map((cartItem) => {
+        return { productId: cartItem.product.id, quantity: cartItem.quantity };
+      }),
+    );
+  };
 
   const renderRightActions = () => (
     <View
@@ -202,7 +212,11 @@ const ShoppingScreen = () => {
         <OutlineButton
           text="Supprimer tous"
           icon={<Trash2Icon size={24} color={theme.primaryColor} />}
-          onPress={(): void => cartHook!.setCart([])}
+          onPress={(): void => {
+            setIsloading(true);
+            setTimeout(() => setIsloading(false), 250);
+            cartHook!.setCart([]);
+          }}
           theme={theme}
           style={styles.btns}
           textStyle={styles.btnsTxt}
@@ -210,10 +224,22 @@ const ShoppingScreen = () => {
         <ThemedButton
           text="Commander tous"
           icon={
-            <MaterialIcons name="shopping-cart" size={24} color={theme.iconColor} />
+            <MaterialIcons
+              name="shopping-cart"
+              size={24}
+              color={theme.iconColor}
+            />
           }
           style={styles.btns}
-          onPress={function (): void {}}
+          onPress={() => {
+            setIsloading(true);
+            setTimeout(() => {
+              setIsloading(false);
+              router.push('/(tabs)/order');
+            }, 500);
+
+            orderAllProductsFromCart();
+          }}
           theme={theme}
           textStyle={styles.btnsTxt}
         />
@@ -261,6 +287,7 @@ const styles = StyleSheet.create({
     width: "100%",
     maxHeight: 150,
     alignSelf: "center",
+    padding: 5
   },
   swipeableCard: {
     flexDirection: "row",
@@ -341,7 +368,7 @@ const styles = StyleSheet.create({
   btns: {
     width: "48%",
     maxWidth: 320,
-    padding: 5
+    padding: 5,
   },
   btnsTxt: {
     fontSize: 13,

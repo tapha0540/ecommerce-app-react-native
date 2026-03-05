@@ -27,7 +27,7 @@ const getProduct = async (productId: number): Promise<ServerResponse> => {
   } catch (err) {
     console.error(err);
     return {
-      message: "Error: the sever is not responding !",
+      message: "Erreur problème de connexion !",
       success: false,
     } as ServerResponse;
   }

@@ -7,13 +7,14 @@ import QuantityInput from "@/components/ui/quantity_input";
 import { BoldText, LightText } from "@/components/ui/text";
 import { useCart } from "@/hooks/cart";
 import { useTheme } from "@/hooks/useColorsheme";
+import OrderProducts from "@/services/api/orders/order_products";
 import getProduct from "@/services/api/products/get_product";
 import getProductCategory from "@/services/api/products_categories/get_category";
 import formatPrice from "@/services/helpers/format_price";
 import ip from "@/services/ip";
 import { Ionicons } from "@expo/vector-icons";
 import { router, Stack, useLocalSearchParams } from "expo-router";
-import { MinusSquareIcon, PlusSquareIcon, Trash2Icon } from "lucide-react-native";
+import { PlusSquareIcon, Trash2Icon } from "lucide-react-native";
 import { useEffect, useState } from "react";
 import { Image, StyleSheet, Text, Vibration, View } from "react-native";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
@@ -67,6 +68,19 @@ const ProductScreen = () => {
     };
     fn();
   }, [product, id, cartHook, isAddedToCart]);
+
+  const order = async () => {
+    setIsLoading(true);
+
+    await OrderProducts([
+      { productId: id, quantity: Number(quantity) },
+    ]);
+
+    setTimeout(() => {
+      setIsLoading(false);
+      router.push("/(tabs)/order");
+    }, 1000);
+  };
 
   if (!product || isLoading) {
     return (
@@ -231,10 +245,7 @@ const ProductScreen = () => {
             />
             <ThemedButton
               theme={theme}
-              onPress={() => {
-                
-                setTimeout(() => router.push('/(tabs)/order'), 250);
-              }}
+              onPress={order}
               text="Commander"
               icon={<Ionicons name="cart" size={24} color={theme.iconColor} />}
               style={styles.btn}
