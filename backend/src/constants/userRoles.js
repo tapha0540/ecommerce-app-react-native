@@ -1,4 +1,6 @@
-export const UserRole = {
+const UserRole = {
   Customer: "customer",
   Admin: "admin",
 };
+
+export default UserRole;
