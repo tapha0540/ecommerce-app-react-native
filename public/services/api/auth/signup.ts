@@ -3,6 +3,8 @@ import SignUpResponse, {
 } from "@/components/interfaces/api/requestResponses";
 import ip from "../../ip";
 
+const SignUpUrl = `http://${ip}/auth/signup`;
+
 const signUp = async ({
   firstName,
   lastName,
@@ -11,12 +13,13 @@ const signUp = async ({
   password,
 }: SignUpData): Promise<SignUpResponse> => {
   try {
-    const response = await fetch(`http://${ip}/controllers/auth/signup.php`, {
+    const response = await fetch(SignUpUrl, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({ firstName, lastName, email, phone, password }),
+      credentials: "include",
     });
 
     const data = (await response.json()) as SignUpResponse;

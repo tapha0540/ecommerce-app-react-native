@@ -1,10 +1,7 @@
 import { DataTypes } from "sequelize";
 import sequelize from "../config/sequelize.js";
+import { UserRole } from "../constants/userRoles.js";
 
-export const UserRole = {
-  Customer: "customer",
-  Admin: "admin",
-};
 
 const User = sequelize.define(
   "User",
@@ -56,6 +53,8 @@ const User = sequelize.define(
         len: [7, 20],
       },
     },
+    created_at: DataTypes.STRING,
+    updated_at: DataTypes.STRING,
   },
   {
     tableName: "users",

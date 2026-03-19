@@ -1,7 +1,8 @@
 import cors from "cors";
 import express from "express";
+import errorHandler from "./middlewares/error.middleware.js";
+import authRoutes from "./routes/auth.routes.js";
 import userRoutes from "./routes/user.routes.js";
-
 
 const app = express();
 
@@ -11,10 +12,10 @@ app.use(express.static("public"));
 app.use(express.json());
 
 // Routes
-
-// app.get("/", (req, res) => {
-//   res.end(`${DB_HOST}, ${DB_NAME}, ${DB_USER}, ${DB_PORT}, ${DB_PASSWORD}`);
-// });
 app.use("/users", userRoutes);
+app.use("/auth", authRoutes);
+
+// middleware d'erreur TOUJOURS en dernier
+app.use(errorHandler);
 
 export default app;
