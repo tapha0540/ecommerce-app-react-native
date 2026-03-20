@@ -25,10 +25,10 @@ const Category = sequelize.define(
       allowNull: true,
       defaultValue: null,
     },
-    icon: {
+    icon_url: {
       type: DataTypes.STRING,
       validate: {
-        len: [1, 50], // remplace max, min, isNull
+        len: [1, 75], // remplace max, min, isNull
       },
     },
     created_at: DataTypes.STRING,

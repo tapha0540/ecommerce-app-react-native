@@ -28,7 +28,7 @@ CREATE TABLE
         name VARCHAR(100) NOT NULL,
         description TEXT,
         parent_id INT DEFAULT NULL,
-        icon VARCHAR(50) NOT NULL,
+        icon_url VARCHAR(75) NOT NULL,
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
         updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
         CONSTRAINT fk_category_parent FOREIGN KEY (parent_id) REFERENCES categories (id)
