@@ -9,6 +9,7 @@ export const validateLogin = (req, res, next) => {
       message: "Email et password requis",
     });
   }
+
   const emailValidation = Validation.email(email);
   const passwordValidation = Validation.password(password);
 
@@ -32,6 +33,7 @@ export const validateSignUp = (req, res, next) => {
       message: "Tous les champs sont requis",
     });
   }
+  
   const firstNameValidation = Validation.name("Prénom", firstName);
   const lastNameValidation = Validation.name("Nom", lastName);
   const emailValidation = Validation.email(email);
