@@ -1,1 +1,5 @@
 {"level":"error","message":"Executing (default): SELECT `id`, `name`, `description`, `parent_id` AS `parentId`, `icon_url` AS `iconUrl`, `created_at` AS `createdAt`, `updated_at` AS `updatedAt` FROM `categories` AS `Category` WHERE `Category`.`id` = '5';"}
+{"level":"error"}
+{"level":"error"}
+{"level":"error"}
+{"level":"error"}

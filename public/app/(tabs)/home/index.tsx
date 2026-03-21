@@ -10,9 +10,8 @@ import { LightText } from "@/components/ui/text";
 import { useCart } from "@/hooks/cart";
 import { useTheme } from "@/hooks/useColorsheme";
 import { useUser } from "@/hooks/userHooks";
-import getSomeProductsForEachCategories from "@/services/api/products/get_some_products_for_each_category";
+import getProductsByCategoryId from "@/services/api/products/search_products_for_category_id";
 import saveCart from "@/services/cart/save_cart";
-import { filterProductsByCategorieId } from "@/services/helpers/filter_search";
 import ip from "@/services/ip";
 import { Ionicons } from "@expo/vector-icons";
 import { Redirect } from "expo-router";
@@ -21,7 +20,17 @@ import { useEffect, useState } from "react";
 import { AppState, Image, StyleSheet, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
-const TopContainer = ({ user, theme }: { user: User; theme: Theme }) => {
+const TopContainer = ({
+  user,
+  search,
+  setSearch,
+  theme,
+}: {
+  user: User;
+  search: string;
+  setSearch: React.Dispatch<React.SetStateAction<string>>;
+  theme: Theme;
+}) => {
   return (
     <View style={[styles.topContainer, styles.body]}>
       <View style={styles.profileContainer}>
@@ -29,7 +38,7 @@ const TopContainer = ({ user, theme }: { user: User; theme: Theme }) => {
           {user.profileImgUrl ? (
             <View style={styles.profileImgContainer}>
               <Image
-                source={{ uri: `http://${ip}/uploads/users/` }}
+                source={{ uri: `http://${ip}/public/images/users/${user.profileImgUrl}` }}
                 style={styles.profileImg}
                 resizeMode="cover"
               />
@@ -69,7 +78,7 @@ const TopContainer = ({ user, theme }: { user: User; theme: Theme }) => {
           />
         </View>
       </View>
-      <SearchBar theme={theme} />
+      <SearchBar search={search} setSearch={setSearch} theme={theme} />
     </View>
   );
 };
@@ -82,10 +91,14 @@ const HomeScreen = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [products, setProducts] = useState<Product[] | null>(null);
   const [selectedCategorieId, setSelectedCategorieId] = useState<number>(-1);
+  const [search, setsearch] = useState<string>("");
 
   useEffect(() => {
     const fn = async () => {
-      const data: Product[] | null = await getSomeProductsForEachCategories();
+      const data: Product[] | null = await getProductsByCategoryId(
+        search,
+        selectedCategorieId,
+      );
       setProducts(data);
       if (data) {
         setTimeout(() => {
@@ -94,7 +107,7 @@ const HomeScreen = () => {
       }
     };
     fn();
-  }, []);
+  }, [search, selectedCategorieId]);
 
   useEffect(() => {
     const sub = AppState.addEventListener("change", (state) => {
@@ -105,11 +118,6 @@ const HomeScreen = () => {
 
     return () => sub.remove();
   }, [cart]);
-
-  const filteredProducts = filterProductsByCategorieId(
-    products,
-    selectedCategorieId,
-  );
 
   const Loading = () => (
     <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
@@ -136,7 +144,12 @@ const HomeScreen = () => {
         <ProductsCards
           ListHeaderComponent={
             <>
-              <TopContainer user={user} theme={theme} />
+              <TopContainer
+                user={user}
+                theme={theme}
+                search={search}
+                setSearch={setsearch}
+              />
               <ProductsCategoriesFilter
                 theme={theme}
                 selectedCategorieId={selectedCategorieId}
@@ -145,7 +158,7 @@ const HomeScreen = () => {
             </>
           }
           Loading={Loading}
-          filteredProducts={filteredProducts}
+          filteredProducts={products}
           theme={theme}
         />
       )}

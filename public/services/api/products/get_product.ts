@@ -9,13 +9,7 @@ interface ServerResponse {
 
 const getProduct = async (productId: number): Promise<ServerResponse> => {
   try {
-    const res = await fetch(
-      `http://${ip}/controllers/products/get_product.php`,
-      {
-        method: "POST",
-        body: JSON.stringify({ productId }),
-      },
-    );
+    const res = await fetch(`http://${ip}/products/${productId}`);
 
     if (!res.ok) {
       throw new Error();

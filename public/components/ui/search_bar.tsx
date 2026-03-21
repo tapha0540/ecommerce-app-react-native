@@ -1,11 +1,18 @@
 import { Search, Settings2Icon } from "lucide-react-native";
-import { useState } from "react";
+import React from "react";
 import { StyleSheet, TextInput, View } from "react-native";
 import Theme from "../interfaces/themes";
 import { ThemedCard } from "./themed_card";
 
-const SearchBar = ({ theme }: { theme: Theme }) => {
-  const [search, setSearch] = useState<string>("");
+const SearchBar = ({
+  search,
+  setSearch,
+  theme,
+}: {
+  search: string;
+  setSearch: React.Dispatch<React.SetStateAction<string>>;
+  theme: Theme;
+}) => {
   return (
     <View style={styles.searchBarContainer}>
       <View
@@ -13,7 +20,7 @@ const SearchBar = ({ theme }: { theme: Theme }) => {
           styles.txtInputContainer,
           {
             backgroundColor: theme.secondaryColor,
-            borderWidth: 0.5,
+            borderWidth: theme.cardBorderWidth,
             borderColor: theme.primaryColor,
           },
         ]}

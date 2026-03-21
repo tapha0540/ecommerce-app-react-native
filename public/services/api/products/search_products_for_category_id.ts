@@ -7,16 +7,15 @@ interface ServerResponse {
   products: Product[];
 }
 
-const getSomeProductsForEachCategories = async (): Promise<
-  Product[] | null
-> => {
+const searchProductsByCategoryId = async (
+  search: string,
+  categoryId: number,
+): Promise<Product[] | null> => {
   try {
-    const res = await fetch(
-      `http://${ip}/controllers/products/get_some_products_for_each_category.php`,
-    );
+    const res = await fetch(`http://${ip}/products?category_id=${categoryId}&search=${search}`);
 
     if (!res.ok) {
-      return null;
+      throw new Error();
     }
 
     const data: ServerResponse = (await res.json()) as ServerResponse;
@@ -28,4 +27,4 @@ const getSomeProductsForEachCategories = async (): Promise<
   }
 };
 
-export default getSomeProductsForEachCategories;
+export default searchProductsByCategoryId;

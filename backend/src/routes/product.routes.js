@@ -1,10 +1,10 @@
-import Router from 'express';
-import asyncHandler from '../middlewares/asyncHandler.middleware.js';
-import CategoryController from '../controllers/category.controller.js';
+import Router from "express";
+import ProductController from "../controllers/product.controller.js";
+import asyncHandler from "../middlewares/asyncHandler.middleware.js";
 
 const productRouter = Router();
 
-
-
+productRouter.get("/:id", asyncHandler(ProductController.getProduct));
+productRouter.get("/", asyncHandler(ProductController.getProducts));
 
 export default productRouter;
