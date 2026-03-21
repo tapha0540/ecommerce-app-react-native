@@ -4,23 +4,25 @@ import ip from "../../ip";
 interface ServerResponse {
   message: string;
   success: boolean;
-  productsCategories?: ProductsCategory[];
+  categories?: ProductsCategory[];
 }
 
 const getAllProductsCategories = async (): Promise<ServerResponse> => {
   try {
-    const res = await fetch(
-      `http://${ip}/categories`,
-    );
+    const res = await fetch(`http://${ip}/categories`);
 
     if (!res.ok) {
       throw new Error();
     }
+    const data = (await res.json()) as ServerResponse;
 
-    return (await res.json()) as ServerResponse;
-  } catch(err) {
-    console.error(err);
+    console.log(data);
     
+
+    return data;
+  } catch (err) {
+    console.error(err);
+
     return {
       message: "Problème de connexion.",
       success: false,

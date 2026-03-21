@@ -7,19 +7,16 @@ const getCurrentUser = async (): Promise<User | null> => {
   const token = await getSessionToken();
   if (!token) return null;
   try {
-    const res = await fetch(
-      `http://${ip}/auth/session`,
-      {
-        headers: {
-          authorization: `Bearer ${token}`,
-        },
+    const res = await fetch(`http://${ip}/auth/session`, {
+      headers: {
+        authorization: `Bearer ${token}`,
       },
-    );
+    });
 
     const data: SessionResponse = (await res.json()) as SessionResponse;
-    console.log(data);
-    
+
     return data.user;
+
   } catch (err) {
     console.error(err);
     return null;

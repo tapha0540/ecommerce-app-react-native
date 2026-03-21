@@ -2,9 +2,9 @@ import cors from "cors";
 import express from "express";
 import errorHandler from "./middlewares/error.middleware.js";
 import authRoutes from "./routes/auth.routes.js";
-import productRoutes from "./routes/product.route.js";
+import productRoutes from "./routes/product.routes.js";
 import userRoutes from "./routes/user.routes.js";
-import categoryRoutes from "./routes/category.route.js";
+import categoryRoutes from "./routes/category.routes.js";
 
 const app = express();
 

@@ -28,9 +28,9 @@ const ProductsCategoriesFilter = ({
   useEffect(() => {
     const fn = async () => {
       const data = await getAllProductsCategories();
-      if (data.productsCategories) {
+      if (data.categories) {
         setProductsCategorie(
-          data.productsCategories.sort((a, b) => a.name.localeCompare(b.name)),
+          data.categories.sort((a, b) => a.name.localeCompare(b.name)),
         );
       }
       setTimeout(() => {
