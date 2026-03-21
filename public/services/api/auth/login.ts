@@ -10,7 +10,7 @@ const logIn = async ({
   password,
 }: LoginData): Promise<LoginResponse> => {
   try {
-    const response = await fetch(`http://${ip}/controllers/auth/login.php`, {
+    const response = await fetch(`http://${ip}/auth/login`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

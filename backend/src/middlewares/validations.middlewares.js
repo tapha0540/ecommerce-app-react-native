@@ -17,7 +17,7 @@ export const validateLogin = (req, res, next) => {
     return res.status(400).json({
       success: false,
       message: [emailValidation?.error, passwordValidation?.error]
-        .filter((v) => !!v)
+        .filter((v) => v !== null)
         .join("\n"),
     });
   }
@@ -33,13 +33,13 @@ export const validateSignUp = (req, res, next) => {
       message: "Tous les champs sont requis",
     });
   }
-  
+
   const firstNameValidation = Validation.name("Prénom", firstName);
   const lastNameValidation = Validation.name("Nom", lastName);
   const emailValidation = Validation.email(email);
   const phoneValidation = Validation.phone(phone);
   const passwordValidation = Validation.password(password);
-
+  
   if (
     !firstNameValidation.valid ||
     !lastNameValidation.valid ||
@@ -56,7 +56,7 @@ export const validateSignUp = (req, res, next) => {
         phoneValidation?.error,
         passwordValidation?.error,
       ]
-        .filter((v) => !!v)
+        .filter((v) => v !== null)
         .join("\n"),
     });
   }

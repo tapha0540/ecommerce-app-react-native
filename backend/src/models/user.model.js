@@ -11,21 +11,21 @@ const User = sequelize.define(
       autoIncrement: true,
     },
     first_name: {
-      type: DataTypes.STRING,
+      type: DataTypes.STRING(50),
       allowNull: false,
       validate: {
         len: [2, 50], // remplace max, min, isNull
       },
     },
     last_name: {
-      type: DataTypes.STRING,
+      type: DataTypes.STRING(50),
       allowNull: false,
       validate: {
         len: [2, 50], // remplace max, min, isNull
       },
     },
     email: {
-      type: DataTypes.STRING,
+      type: DataTypes.STRING(100),
       allowNull: false,
       unique: true,
       validate: {
@@ -33,7 +33,7 @@ const User = sequelize.define(
       },
     },
     password: {
-      type: DataTypes.STRING,
+      type: DataTypes.STRING(255),
       allowNull: false,
       validate: {
         len: [4, 255], // remplace max, min, isNull
@@ -45,12 +45,16 @@ const User = sequelize.define(
       defaultValue: UserRole.Customer,
     },
     phone: {
-      type: DataTypes.STRING,
+      type: DataTypes.STRING(20),
       allowNull: false,
       unique: true,
       validate: {
         len: [7, 20],
       },
+    },
+    profile_url: {
+      type: DataTypes.STRING(75),
+      allowNull: true,
     },
     created_at: DataTypes.STRING,
     updated_at: DataTypes.STRING,

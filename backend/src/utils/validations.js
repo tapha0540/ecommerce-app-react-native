@@ -3,13 +3,13 @@ const Validation = {
     const data = email.replaceAll(" ", "");
     const validEmailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-    if (data.length >= 4 && data.length <= 255) {
+    if (data.length < 4 || data.length > 255) {
       return {
         valid: false,
         error:
           "Email invalide: La longueur de l'email doit être entre 4 et 255 carcatères.",
       };
-    } else if (validEmailRegex.test(data)) {
+    } else if (!validEmailRegex.test(data)) {
       return {
         valid: false,
         error:
@@ -26,7 +26,7 @@ const Validation = {
     const data = password.replaceAll(" ", "");
     const validPasswordRegex = /[0-9][a-z][A-z]/;
 
-    if (data.length >= 4 && data.length <= 255) {
+    if (data.length < 4 || data.length > 255) {
       return {
         valid: false,
         error:
@@ -49,7 +49,7 @@ const Validation = {
     const data = phone.replaceAll(" ", "");
     const validPhoneRegex = /^\+[0-9]/;
 
-    if (data.length >= 8 && data.length <= 15) {
+    if (data.length < 8 || data.length > 15) {
       return {
         valid: false,
         error:
@@ -71,7 +71,7 @@ const Validation = {
   name: (key = "Prénom", name) => {
     const data = name.replaceAll(" ", "");
 
-    if (data.length >= 2 && data.length <= 50) {
+    if (data.length < 2 || data.length > 50) {
       return {
         valid: false,
         error: `${key} invalide: La longueur de votre ${key.toLowerCase()} doit être entre 2 et 50 carcatères.`,

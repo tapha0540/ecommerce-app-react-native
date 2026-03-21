@@ -8,7 +8,7 @@ const getCurrentUser = async (): Promise<User | null> => {
   if (!token) return null;
   try {
     const res = await fetch(
-      `http://${ip}/controllers/auth/get_session_user.php`,
+      `http://${ip}/auth/session`,
       {
         headers: {
           authorization: `Bearer ${token}`,
@@ -17,7 +17,8 @@ const getCurrentUser = async (): Promise<User | null> => {
     );
 
     const data: SessionResponse = (await res.json()) as SessionResponse;
-
+    console.log(data);
+    
     return data.user;
   } catch (err) {
     console.error(err);

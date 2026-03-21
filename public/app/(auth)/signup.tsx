@@ -69,9 +69,9 @@ const SignUpScreen = () => {
         }
       });
 
-      setTimeout(() => {
-        setMessage("");
-      }, 3500);
+      // setTimeout(() => {
+      //   setMessage("");
+      // }, 3500);
     }, 2000);
   };
   return (
@@ -92,7 +92,7 @@ const SignUpScreen = () => {
         />
         <ThemedText
           style={[styles.heading, { color: theme.textColor }]}
-          content="Bienvenue Remplit tous les champs pour créer votre compte."
+          content="Bienvenue remplit tous les champs pour créer votre compte."
           theme={theme}
         />
         <View style={styles.form}>

@@ -1,5 +1,7 @@
 import { Op } from "sequelize";
-import User from "../models/user.model";
+import User from "../models/user.model.js";
+import PasswordHash from "../utils/passwordHash.js";
+import Session from "../utils/session.js";
 
 /**
  * @param req
@@ -32,12 +34,15 @@ const AuthController = {
     }
 
     // Tout est bon.On peut creer le compte utilisateur.
+
+    const hashedPassword = await PasswordHash.hash(password);
+
     const newUser = await User.create({
-      first_name: firstName,
-      last_name: lastName,
-      email,
-      phone,
-      password,
+      first_name: firstName.trim(),
+      last_name: lastName.trim(),
+      email: email.trim(),
+      phone: phone.trim(),
+      password: hashedPassword,
     });
 
     if (newUser) {
@@ -48,12 +53,51 @@ const AuthController = {
     } else {
       return res.status(500).json({
         success: false,
-        message: "Erreur coté serveur."
-      })
+        message: "Erreur coté serveur.",
+      });
     }
   },
-  logIn: async () => {},
-  getSession: async () => {},
+  logIn: async (req, res) => {
+    const { email, password } = req.body;
+
+    const filteredEmail = email.trim();
+
+    const user = await User.findOne({ where: { email: filteredEmail } });
+
+    // S'il n'y a pas d'utilisateur avec un tel email.
+    if (!user) {
+      return res.status(400).json({
+        success: false,
+        message: "Pas de compte avec un tel email.",
+      });
+    }
+    // si un utilisateur avec un tel email existe.
+    // Je vérifie que le mot de passe est correct.
+    const isMatch = PasswordHash.compare(password, user.password);
+
+    if (isMatch) {
+      const token = Session.generateToken({ id: user.id });
+
+      return res.status(200).json({
+        success: true,
+        message: "Connexion réussie.",
+        token,
+      });
+    } else {
+      return res.status(400).json({
+        success: false,
+        message: "Mot de passe incorrect.",
+      });
+    }
+  },
+  getUserSession: async (req, res) => {
+    // Si tous s'est bien passé.
+    return res.status(200).json({
+      success: true,
+      message: "Session retrouvé",
+      user: req.user,
+    });
+  },
 };
 
 export default AuthController;

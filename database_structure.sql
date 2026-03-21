@@ -14,7 +14,7 @@ CREATE TABLE
         password VARCHAR(255) NOT NULL,
         role ENUM ('customer', 'admin') DEFAULT 'customer',
         phone VARCHAR(20) NOT NULL UNIQUE,
-        profile_url VARCHAR(255) NULL,
+        profile_url VARCHAR(75) NULL,
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
         updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
     ) ENGINE = InnoDB;

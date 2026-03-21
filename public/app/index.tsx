@@ -8,11 +8,13 @@ const Index = () => {
   const userHook = useUser();
   const theme = useTheme()!.theme;
 
-  if (!userHook || userHook.loading) {
+  if (!userHook) return null;
+
+  if (userHook.loading) {
     return (
       <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
         <ThemeActivityIndicator
-          loading={userHook!.loading}
+          loading={true}
           size="large"
           text="Chargement..."
           theme={theme}
