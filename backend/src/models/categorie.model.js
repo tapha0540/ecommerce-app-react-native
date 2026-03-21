@@ -20,19 +20,19 @@ const Category = sequelize.define(
       type: DataTypes.TEXT,
       allowNull: false,
     },
-    parent_id: {
+    parentId: {
       type: DataTypes.INTEGER,
       allowNull: true,
       defaultValue: null,
     },
-    icon_url: {
+    iconUrl: {
       type: DataTypes.STRING,
       validate: {
         len: [1, 75], // remplace max, min, isNull
       },
     },
-    created_at: DataTypes.STRING,
-    updated_at: DataTypes.STRING,
+    createdAt: DataTypes.STRING,
+    updatedAt: DataTypes.STRING,
   },
   {
     tableName: "categories",

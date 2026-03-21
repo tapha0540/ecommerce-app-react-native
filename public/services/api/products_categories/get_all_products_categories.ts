@@ -10,7 +10,7 @@ interface ServerResponse {
 const getAllProductsCategories = async (): Promise<ServerResponse> => {
   try {
     const res = await fetch(
-      `http://${ip}/controllers/products_categories/get_all_products_categories.php`,
+      `http://${ip}/categories`,
     );
 
     if (!res.ok) {

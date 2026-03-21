@@ -9,8 +9,8 @@ const OrderItem = sequelize.define(
       primaryKey: true,
       autoIncrement: true,
     },
-    order_id: DataTypes.INTEGER,
-    product_id: DataTypes.INTEGER,
+    orderId: DataTypes.INTEGER,
+    productId: DataTypes.INTEGER,
     quantity: {
       type: DataTypes.INTEGER,
       allowNull: false,

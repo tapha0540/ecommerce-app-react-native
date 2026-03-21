@@ -24,12 +24,12 @@ const authMiddleware = async (req, res, next) => {
 
     req.user = {
       id: user.id,
-      firstName: user.first_name,
-      lastName: user.last_name,
+      firstName: user.firstName,
+      lastName: user.lastName,
       email: user.email,
-      profileImgUrl: user.profile_url,
-      createdAt: user.created_at,
-      updatedAt: user.updated_at,
+      profileImgUrl: user.profileUrl,
+      createdAt: user.createdAt,
+      updatedAt: user.updatedAt,
     };
 
     next();

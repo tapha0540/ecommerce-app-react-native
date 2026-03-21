@@ -10,14 +10,14 @@ const User = sequelize.define(
       primaryKey: true,
       autoIncrement: true,
     },
-    first_name: {
+    firstName: {
       type: DataTypes.STRING(50),
       allowNull: false,
       validate: {
         len: [2, 50], // remplace max, min, isNull
       },
     },
-    last_name: {
+    lastName: {
       type: DataTypes.STRING(50),
       allowNull: false,
       validate: {
@@ -52,12 +52,12 @@ const User = sequelize.define(
         len: [7, 20],
       },
     },
-    profile_url: {
+    profileUrl: {
       type: DataTypes.STRING(75),
       allowNull: true,
     },
-    created_at: DataTypes.STRING,
-    updated_at: DataTypes.STRING,
+    createdAt: DataTypes.STRING,
+    updatedAt: DataTypes.STRING,
   },
   {
     tableName: "users",

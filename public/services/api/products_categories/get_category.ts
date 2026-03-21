@@ -11,13 +11,7 @@ const getProductCategory = async (
   categoryId: number,
 ): Promise<ServerResponse> => {
   try {
-    const res = await fetch(
-      `http://${ip}/controllers/products_categories/get_product_category.php`,
-      {
-        method: "POST",
-        body: JSON.stringify({ categoryId }),
-      },
-    );
+    const res = await fetch(`http://${ip}/categories/${categoryId}`);
 
     if (!res.ok) {
       throw new Error();

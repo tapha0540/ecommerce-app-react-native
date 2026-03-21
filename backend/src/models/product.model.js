@@ -29,15 +29,15 @@ const Product = sequelize.define(
       allowNull: false,
       defaultValue: 0,
     },
-    category_id: DataTypes.INTEGER,
-    image_url: {
+    categoryId: DataTypes.INTEGER,
+    imageUrl: {
       type: DataTypes.STRING,
       validate: {
         len: [1, 255], // remplace max, min, isNull
       },
     },
-    created_at: DataTypes.STRING,
-    updated_at: DataTypes.STRING,
+    createdAt: DataTypes.STRING,
+    updatedAt: DataTypes.STRING,
   },
   {
     tableName: "products",

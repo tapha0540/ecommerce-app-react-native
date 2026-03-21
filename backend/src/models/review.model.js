@@ -9,8 +9,8 @@ const Review = sequelize.define(
       primaryKey: true,
       autoIncrement: true,
     },
-    product_id: DataTypes.INTEGER,
-    user_id: DataTypes.INTEGER,
+    productId: DataTypes.INTEGER,
+    userId: DataTypes.INTEGER,
     rating: {
       type: DataTypes.INTEGER,
       allowNull: false,
@@ -19,8 +19,8 @@ const Review = sequelize.define(
         min: 0,
       },
     },
-    created_at: DataTypes.STRING,
-    updated_at: DataTypes.STRING,
+    createdAt: DataTypes.STRING,
+    updatedAt: DataTypes.STRING,
   },
   {
     tableName: "reviews",

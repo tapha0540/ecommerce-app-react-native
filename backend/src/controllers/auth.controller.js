@@ -38,8 +38,8 @@ const AuthController = {
     const hashedPassword = await PasswordHash.hash(password);
 
     const newUser = await User.create({
-      first_name: firstName.trim(),
-      last_name: lastName.trim(),
+      firstName: firstName.trim(),
+      lastName: lastName.trim(),
       email: email.trim(),
       phone: phone.trim(),
       password: hashedPassword,

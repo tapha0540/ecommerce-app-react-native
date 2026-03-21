@@ -10,7 +10,7 @@ const Order = sequelize.define(
       primaryKey: true,
       autoIncrement: true,
     },
-    user_id: DataTypes.INTEGER,
+    userId: DataTypes.INTEGER,
     status: {
       type: DataTypes.ENUM(
         OrderStatus.Pending,
@@ -26,8 +26,8 @@ const Order = sequelize.define(
       type: DataTypes.DECIMAL(10, 2),
       allowNull: false,
     },
-    created_at: DataTypes.STRING,
-    updated_at: DataTypes.STRING,
+    createdAt: DataTypes.STRING,
+    updatedAt: DataTypes.STRING,
   },
   {
     tableName: "orders",

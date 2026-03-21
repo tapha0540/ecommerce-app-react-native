@@ -8,7 +8,8 @@ const Session = {
     return token;
   },
   decodeToken: (token) => {
-    const decoded = jwt.decode(token, SECRET_KEY);
+    const decoded = jwt.verify(token, SECRET_KEY);
+
     return decoded;
   },
 };

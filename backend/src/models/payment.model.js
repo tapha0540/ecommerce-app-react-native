@@ -11,7 +11,7 @@ const Payment = sequelize.define(
       primaryKey: true,
       autoIncrement: true,
     },
-    order_id: DataTypes.INTEGER,
+    orderId: DataTypes.INTEGER,
     amount: {
       type: DataTypes.DECIMAL(10, 2),
       allowNull: false,
@@ -33,7 +33,7 @@ const Payment = sequelize.define(
       ),
       defaultValue: PaymentStatus.Pending,
     },
-    created_at: DataTypes.STRING,
+    createdAt: DataTypes.STRING,
   },
   {
     tableName: "payments",

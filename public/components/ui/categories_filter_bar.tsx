@@ -85,7 +85,7 @@ const ProductsCategoriesFilter = ({
             {
               id: -1,
               name: "Tous",
-              icon: "FontAwesome6:circle-dot",
+              iconUrl: "FontAwesome6:circle-dot",
               description: "Categorie par défaut.",
             } as ProductsCategory,
             ...productsCategorie,
@@ -112,7 +112,7 @@ const ProductsCategoriesFilter = ({
                 <GetIcon
                   size={24}
                   theme={theme}
-                  icon={item.icon}
+                  icon={item.iconUrl}
                   isSelected={isSelected}
                 />
                 <LightText
