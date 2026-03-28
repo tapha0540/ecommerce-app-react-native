@@ -7,7 +7,7 @@ const CategoryController = {
     if (!categories) {
       return res.status(500).json({
         success: false,
-        message: "Auncune Categories de produits trouvé:",
+        message: "Auncune Categories de produits trouvé.",
       });
     }
 

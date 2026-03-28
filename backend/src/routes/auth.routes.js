@@ -1,19 +1,26 @@
 import { Router } from "express";
 import AuthController from "../controllers/auth.controller.js";
 import asyncHandler from "../middlewares/asyncHandler.middleware.js";
-import authMiddleware from "../middlewares/auth.middleware.js";
-import {
-  validateLogin,
-  validateSignUp,
-} from "../middlewares/validations.middlewares.js";
+import AuthMiddlewares from "../middlewares/auth.middlewares.js";
+import getSessionMiddleware from "../middlewares/getSession.middleware.js";
 
 const authRouter = Router();
 
-authRouter.post("/signup", validateSignUp, asyncHandler(AuthController.signUp));
-authRouter.post("/login", validateLogin, asyncHandler(AuthController.logIn));
+authRouter.post(
+  "/signup",
+  AuthMiddlewares.signUp,
+  asyncHandler(AuthController.signUp),
+);
+
+authRouter.post(
+  "/login",
+  AuthMiddlewares.login,
+  asyncHandler(AuthController.logIn),
+);
+
 authRouter.get(
   "/session",
-  authMiddleware,
+  getSessionMiddleware,
   asyncHandler(AuthController.getUserSession),
 );
 

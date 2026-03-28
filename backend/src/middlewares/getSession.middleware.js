@@ -1,13 +1,13 @@
 import User from "../models/user.model.js";
 import Session from "../utils/session.js";
 
-const authMiddleware = async (req, res, next) => {
+const getSessionMiddleware = async (req, res, next) => {
   const token = req.headers.authorization?.split(" ")[1];
 
   if (!token) {
     return res.status(401).json({
       success: false,
-      message: "Token maquant.",
+      message: "Token maquant vous devez vous connecté en premier.",
     });
   }
 
@@ -41,4 +41,4 @@ const authMiddleware = async (req, res, next) => {
   }
 };
 
-export default authMiddleware;
+export default getSessionMiddleware;

@@ -4,18 +4,18 @@ interface ServerResponse {
   message: string;
   success: boolean;
 }
-interface Order {
+interface Item {
   productId: number;
   quantity: number;
 }
 
-const OrderProducts = async (orders: Order[]) => {
+const OrderProducts = async (orderData: Item[]) => {
   try {
     const res = await fetch(
-      `http://${ip}/controllers/orders/order_products.php`,
+      `http://${ip}/orders/`,
       {
         method: "POST",
-        body: JSON.stringify({ orders }),
+        body: JSON.stringify({ orderData }),
       },
     );
     const data = (await res.json()) as ServerResponse;
