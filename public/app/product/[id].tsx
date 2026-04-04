@@ -150,7 +150,7 @@ const ProductScreen = () => {
           <Card style={styles.imageCard}>
             <Image
               source={{
-                uri: `http://${ip}/uploads/products/images/${product.imageUrl}`,
+                uri: `http://${ip}/public/images/products/${product.imageUrl}`,
               }}
               style={styles.image}
               resizeMode="cover"

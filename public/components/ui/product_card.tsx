@@ -1,8 +1,6 @@
-import { useCart } from "@/hooks/cart";
 import formatPrice from "@/services/helpers/format_price";
 import ip from "@/services/ip";
 import { router } from "expo-router";
-import { useState } from "react";
 import { Image, StyleSheet, Vibration, View } from "react-native";
 import { Card } from "react-native-paper";
 import Product from "../interfaces/api/product";
@@ -20,11 +18,11 @@ const ProductCard = ({
   AddToCart: () => void;
   removeFromCart: () => void;
 }) => {
-  const cartHook = useCart();
-  const [isAddedToCart, setIsAddedToCart] = useState(
-    cartHook?.cart.some((any) => any.product.id === product.id),
-  );
-  
+  // const cartHook = useCart();
+  // const [isAddedToCart, setIsAddedToCart] = useState(
+  //   cartHook?.cart.some((any) => any.product.id === product.id),
+  // );
+
   return (
     <Card
       style={[
@@ -45,7 +43,7 @@ const ProductCard = ({
       <View style={styles.imageCard}>
         <Image
           source={{
-            uri: `http://${ip}/uploads/products/images/${product.imageUrl}`,
+            uri: `http://${ip}/public/images/products/${product.imageUrl}`,
           }}
           style={styles.image}
         />
