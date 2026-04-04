@@ -16,10 +16,10 @@ const app = express();
 
 // Middelewares
 app.use(cors());
-
-app.use("/public", express.static(path.join(__dirname, "../public")));
-
 app.use(express.json());
+
+// donner l'acces au assets dans le dossier /public
+app.use("/public", express.static(path.join(__dirname, "../public")));
 
 // Routes
 app.use("/users", userRoutes);

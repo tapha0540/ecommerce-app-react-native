@@ -1,22 +1,23 @@
-
-
 const OrderMiddlewares = {
-    ordersProducts: (req, res, next) => {
-    const { orderData } = req.body;
+  ordersProducts: (req, res, next) => {
+    const { orderData } = req.body || {};
+
+    console.log("BODY RAW:", req.body);
 
     if (
-      !orderItems ||
-      orderItems.length === 0 ||
-      !orderItems[0].quantity ||
-      !orderItems[0].productId
+      !orderData ||
+      !Array.isArray(orderData) ||
+      orderData.length === 0 ||
+      !orderData[0]?.quantity ||
+      !orderData[0]?.productId
     ) {
-        return res.status(400).json({
-            success: false,
-            message: "Error: orders est null ou vide."
-        });
+      return res.status(400).json({
+        success: false,
+        message: "orderData invalide",
+      });
     }
     next();
-  }
+  },
 };
 
 export default OrderMiddlewares;

@@ -31,8 +31,6 @@ const Category = sequelize.define(
         len: [1, 75], // remplace max, min, isNull
       },
     },
-    createdAt: DataTypes.STRING,
-    updatedAt: DataTypes.STRING,
   },
   {
     tableName: "categories",

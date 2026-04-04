@@ -56,8 +56,6 @@ const User = sequelize.define(
       type: DataTypes.STRING(75),
       allowNull: true,
     },
-    createdAt: DataTypes.STRING,
-    updatedAt: DataTypes.STRING,
   },
   {
     tableName: "users",

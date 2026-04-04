@@ -38,43 +38,31 @@ const ProductScreen = () => {
   useEffect(() => {
     const fn = async () => {
       const getProductData = await getProduct(id);
+
       if (getProductData.product) {
-        setProduct(getProductData.product);
+        const p = getProductData.product;
+        setProduct(p);
 
         setIsAddedToCart(
-          cartHook!.cart.some(
-            (cartItem) => cartItem.product.id === product?.id,
-          ),
+          cartHook!.cart.some((cartItem) => cartItem.product.id === p.id),
         );
 
-        const getProductCategoryData = await getProductCategory(
-          getProductData.product.categoryId,
-        );
+        const cat = await getProductCategory(p.categoryId);
 
-        if (getProductCategoryData.success && getProductCategoryData.category) {
-          setProductCategory(getProductCategoryData.category);
-          setTimeout(() => {
-            setIsLoading(false);
-          }, 500);
-        }
-
-        if (isAddedToCart) {
-          const index: number = cartHook!.cart.findIndex(
-            (item) => item.product.id === product?.id,
-          );
-          if (index !== -1) setQuantity(String(cartHook?.cart[index].quantity));
+        if (cat.success && cat.category) {
+          setProductCategory(cat.category);
+          setIsLoading(false);
         }
       }
     };
+
     fn();
-  }, [product, id, cartHook, isAddedToCart]);
+  }, [id]); // seulement id
 
   const order = async () => {
     setIsLoading(true);
 
-    await OrderProducts([
-      { productId: id, quantity: Number(quantity) },
-    ]);
+    await OrderProducts([{ productId: id, quantity: Number(quantity) }]);
 
     setTimeout(() => {
       setIsLoading(false);
@@ -106,6 +94,24 @@ const ProductScreen = () => {
       </>
     );
   }
+
+  const addOrdeleteFromCart = () => {
+    setIsAddedToCart(
+      cartHook!.cart.some((cartItem) => cartItem.product.id === product.id),
+    );
+    if (isAddedToCart)
+      cartHook?.setCart(
+        cartHook.cart.filter((each) => each.product.id !== product.id),
+      );
+    else {
+      cartHook?.setCart([
+        ...cartHook.cart,
+        { quantity: Number(quantity), product },
+      ]);
+    }
+    setIsAddedToCart(!isAddedToCart);
+  };
+
   return (
     <>
       <Stack.Screen
@@ -190,13 +196,6 @@ const ProductScreen = () => {
               <View>
                 {/* Pour mettre des inputs pour choisir la couleur du produit. */}
               </View>
-
-              <QuantityInput
-                product={product}
-                quantity={quantity}
-                setQuantity={setQuantity}
-                theme={theme}
-              />
             </View>
             <View style={styles.descriptionContainer}>
               <BoldText
@@ -212,44 +211,41 @@ const ProductScreen = () => {
             </View>
           </View>
 
-          <View style={styles.btns}>
-            <OutlineButton
+          <View>
+            <QuantityInput
+              product={product}
+              quantity={quantity}
+              setQuantity={setQuantity}
               theme={theme}
-              onPress={() => {
-                if (isAddedToCart)
-                  cartHook?.setCart(
-                    cartHook.cart.filter(
-                      (each) => each.product.id !== product.id,
-                    ),
-                  );
-                else {
-                  cartHook?.setCart([
-                    ...cartHook.cart,
-                    { quantity: Number(quantity), product },
-                  ]);
+              style={styles.quantityInput}
+            />
+            <View style={styles.btns}>
+              <OutlineButton
+                theme={theme}
+                onPress={addOrdeleteFromCart}
+                text={isAddedToCart ? "Supprimer" : "Ajouter au panier"}
+                textStyle={{
+                  color: theme.primaryColor,
+                }}
+                icon={
+                  isAddedToCart ? (
+                    <Trash2Icon size={24} color={theme.primaryColor} />
+                  ) : (
+                    <PlusSquareIcon size={24} color={theme.primaryColor} />
+                  )
                 }
-                setIsAddedToCart(!isAddedToCart);
-              }}
-              text={isAddedToCart ? "Supprimer" : "Ajouter au panier"}
-              textStyle={{
-                color: theme.primaryColor,
-              }}
-              icon={
-                isAddedToCart ? (
-                  <Trash2Icon size={24} color={theme.primaryColor} />
-                ) : (
-                  <PlusSquareIcon size={24} color={theme.primaryColor} />
-                )
-              }
-              style={styles.btn}
-            />
-            <ThemedButton
-              theme={theme}
-              onPress={order}
-              text="Commander"
-              icon={<Ionicons name="cart" size={24} color={theme.iconColor} />}
-              style={styles.btn}
-            />
+                style={styles.btn}
+              />
+              <ThemedButton
+                theme={theme}
+                onPress={order}
+                text="Commander"
+                icon={
+                  <Ionicons name="cart" size={24} color={theme.iconColor} />
+                }
+                style={styles.btn}
+              />
+            </View>
           </View>
         </KeyboardAwareScrollView>
       </SafeAreaView>
@@ -347,6 +343,7 @@ const styles = StyleSheet.create({
     maxWidth: 300,
     elevation: 3,
   },
+  quantityInput: { alignSelf: "flex-end", marginRight: 15 },
 });
 
 export default ProductScreen;

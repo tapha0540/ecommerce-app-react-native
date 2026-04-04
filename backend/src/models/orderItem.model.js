@@ -22,6 +22,7 @@ const OrderItem = sequelize.define(
   },
   {
     tableName: "order_items",
+    timestamps: false,
     underscored: true,
   },
 );

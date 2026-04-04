@@ -14,7 +14,14 @@ import { router } from "expo-router";
 import { SearchXIcon, Trash2Icon } from "lucide-react-native";
 
 import { useEffect, useState } from "react";
-import { AppState, Image, StyleSheet, View } from "react-native";
+import {
+  AppState,
+  Image,
+  StyleSheet,
+  TouchableOpacity,
+  Vibration,
+  View,
+} from "react-native";
 import { FlatList, GestureHandlerRootView } from "react-native-gesture-handler";
 import Swipeable, {
   SwipeDirection,
@@ -25,15 +32,7 @@ const ShoppingScreen = () => {
   const cartHook = useCart();
   const theme = useTheme()!.theme;
   const [isLoading, setIsloading] = useState(false);
-  const [total, setTotal] = useState(
-    formatPrice(
-      cartHook!.cart.reduce(
-        (total, cartItem) =>
-          total + cartItem.quantity * Number(cartItem.product.price),
-        0,
-      ),
-    ),
-  );
+  const [total, setTotal] = useState("0");
 
   useEffect(() => {
     const sub = AppState.addEventListener("change", (state) => {
@@ -41,16 +40,24 @@ const ShoppingScreen = () => {
         saveCart(cartHook!.cart);
       }
     });
+    setTotal(
+      formatPrice(
+        cartHook!.cart.reduce(
+          (total, cartItem) =>
+            total + cartItem.quantity * Number(cartItem.product.price),
+          0,
+        ),
+      ),
+    );
 
     return () => sub.remove();
   }, [cartHook]);
 
   const orderAllProductsFromCart = async () => {
-    await OrderProducts(
-      cartHook!.cart.map((cartItem) => {
-        return { productId: cartItem.product.id, quantity: cartItem.quantity };
-      }),
-    );
+    const orderData = cartHook!.cart.map((cartItem) => {
+      return { productId: cartItem.product.id, quantity: cartItem.quantity };
+    });
+    await OrderProducts(orderData);
   };
 
   const renderRightActions = () => (
@@ -98,8 +105,10 @@ const ShoppingScreen = () => {
           setIsloading(true);
           setTimeout(() => setIsloading(false), 500);
         }}
+        friction={2}
       >
-        <View
+        <TouchableOpacity
+          activeOpacity={1}
           style={[
             styles.swipeableCard,
             {
@@ -108,11 +117,18 @@ const ShoppingScreen = () => {
               borderWidth: theme.cardBorderWidth,
             },
           ]}
+          onPress={() => {
+            Vibration.vibrate(55);
+            router.push({
+              pathname: "/product/[id]",
+              params: { id: item.product.id },
+            });
+          }}
         >
           <View style={[styles.imgContainer]}>
             <Image
               source={{
-                uri: `http://${ip}/uploads/products/images/${item.product.imageUrl}`,
+                uri: `http://${ip}/public/images/products/${item.product.imageUrl}`,
               }}
               style={styles.image}
               resizeMode="cover"
@@ -161,7 +177,7 @@ const ShoppingScreen = () => {
               />
             </View>
           </View>
-        </View>
+        </TouchableOpacity>
       </Swipeable>
     );
   };
@@ -231,14 +247,14 @@ const ShoppingScreen = () => {
             />
           }
           style={styles.btns}
-          onPress={() => {
+          onPress={async () => {
             setIsloading(true);
+            Vibration.vibrate(75);
+            await orderAllProductsFromCart();
             setTimeout(() => {
               setIsloading(false);
-              router.push('/(tabs)/order');
+              router.push("/(tabs)/order");
             }, 500);
-
-            orderAllProductsFromCart();
           }}
           theme={theme}
           textStyle={styles.btnsTxt}
@@ -287,7 +303,7 @@ const styles = StyleSheet.create({
     width: "100%",
     maxHeight: 150,
     alignSelf: "center",
-    padding: 5
+    padding: 5,
   },
   swipeableCard: {
     flexDirection: "row",
@@ -300,6 +316,18 @@ const styles = StyleSheet.create({
     elevation: 5,
     padding: 5,
     columnGap: 5,
+  },
+  renderRightActions: {
+    maxHeight: 150,
+    maxWidth: 350,
+    width: "90%",
+    height: "90%",
+    alignItems: "flex-end",
+    justifyContent: "center",
+    alignSelf: "center",
+    padding: 25,
+    borderRadius: 15,
+    elevation: 2,
   },
   imgContainer: {
     width: 125,
@@ -321,16 +349,6 @@ const styles = StyleSheet.create({
     rowGap: 15,
     padding: 3,
     marginBottom: 20,
-  },
-  renderRightActions: {
-    width: "80%",
-    height: "100%",
-    alignItems: "flex-end",
-    justifyContent: "center",
-    alignSelf: "center",
-    padding: 25,
-    borderRadius: 15,
-    elevation: 2,
   },
   childrenContainerStyle: { justifyContent: "center", alignItems: "center" },
   productName: {

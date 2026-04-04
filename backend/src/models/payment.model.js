@@ -33,7 +33,10 @@ const Payment = sequelize.define(
       ),
       defaultValue: PaymentStatus.Pending,
     },
-    createdAt: DataTypes.STRING,
+    createdAt: {
+      type: DataTypes.DATE,
+      allowNull: false,
+    },
   },
   {
     tableName: "payments",

@@ -71,7 +71,7 @@ const OrderController = {
       // n'enregistrer les changements parce qu'il y'a eu probablement un erreur.
       await transaction.rollback();
 
-      Logger.log(err);
+      Logger.error(err);
 
       return res.status(500).json({
         success: false,

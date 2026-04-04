@@ -9,7 +9,7 @@ const getCurrentUser = async (): Promise<User | null> => {
   try {
     const res = await fetch(`http://${ip}/auth/session`, {
       headers: {
-        authorization: `Bearer ${token}`,
+        Authorization: `Bearer ${token}`,
       },
     });
 

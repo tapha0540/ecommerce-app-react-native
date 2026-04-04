@@ -20,8 +20,8 @@ export const CartContextProvider = ({ children }: { children: ReactNode }) => {
 
   useEffect(() => {
     const fn = async () => {
-      setCart(await getSavedCart())
-    }
+      setCart(await getSavedCart());
+    };
     fn();
   }, []);
   return (

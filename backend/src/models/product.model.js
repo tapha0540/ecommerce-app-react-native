@@ -36,8 +36,6 @@ const Product = sequelize.define(
         len: [1, 255], // remplace max, min, isNull
       },
     },
-    createdAt: DataTypes.STRING,
-    updatedAt: DataTypes.STRING,
   },
   {
     tableName: "products",

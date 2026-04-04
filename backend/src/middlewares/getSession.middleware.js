@@ -3,6 +3,7 @@ import Session from "../utils/session.js";
 
 const getSessionMiddleware = async (req, res, next) => {
   const token = req.headers.authorization?.split(" ")[1];
+  console.log("BODY RAW:", req.body);
 
   if (!token) {
     return res.status(401).json({

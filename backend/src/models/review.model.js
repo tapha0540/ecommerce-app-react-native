@@ -19,8 +19,6 @@ const Review = sequelize.define(
         min: 0,
       },
     },
-    createdAt: DataTypes.STRING,
-    updatedAt: DataTypes.STRING,
   },
   {
     tableName: "reviews",

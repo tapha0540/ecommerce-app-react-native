@@ -26,8 +26,6 @@ const Order = sequelize.define(
       type: DataTypes.DECIMAL(10, 2),
       allowNull: false,
     },
-    createdAt: DataTypes.STRING,
-    updatedAt: DataTypes.STRING,
   },
   {
     tableName: "orders",

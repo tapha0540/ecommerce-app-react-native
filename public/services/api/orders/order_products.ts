@@ -1,4 +1,5 @@
 import ip from "@/services/ip";
+import getSessionToken from "@/services/session/get_session_token";
 
 interface ServerResponse {
   message: string;
@@ -10,15 +11,24 @@ interface Item {
 }
 
 const OrderProducts = async (orderData: Item[]) => {
+  const token = await getSessionToken();
+
   try {
-    const res = await fetch(
-      `http://${ip}/orders/`,
-      {
-        method: "POST",
-        body: JSON.stringify({ orderData }),
+    const res = await fetch(`http://${ip}/orders`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
       },
-    );
+      body: JSON.stringify({
+        orderData,
+      }),
+    });
     const data = (await res.json()) as ServerResponse;
+    console.log("Order: ");
+    console.log(data);
+    console.log("token: ");
+    console.log(token);
 
     return data;
   } catch (err) {

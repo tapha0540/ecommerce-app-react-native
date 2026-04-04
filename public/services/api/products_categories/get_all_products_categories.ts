@@ -15,10 +15,7 @@ const getAllProductsCategories = async (): Promise<ServerResponse> => {
       throw new Error();
     }
     const data = (await res.json()) as ServerResponse;
-
-    console.log(data);
     
-
     return data;
   } catch (err) {
     console.error(err);
