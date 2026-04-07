@@ -99,11 +99,11 @@ const ProductScreen = () => {
     setIsAddedToCart(
       cartHook!.cart.some((cartItem) => cartItem.product.id === product.id),
     );
-    if (isAddedToCart)
+    if (isAddedToCart) {
       cartHook?.setCart(
         cartHook.cart.filter((each) => each.product.id !== product.id),
       );
-    else {
+    } else {
       cartHook?.setCart([
         ...cartHook.cart,
         { quantity: Number(quantity), product },

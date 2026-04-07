@@ -27,8 +27,6 @@ const OrderProducts = async (orderData: Item[]) => {
     const data = (await res.json()) as ServerResponse;
     console.log("Order: ");
     console.log(data);
-    console.log("token: ");
-    console.log(token);
 
     return data;
   } catch (err) {

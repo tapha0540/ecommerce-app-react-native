@@ -255,6 +255,7 @@ const ShoppingScreen = () => {
               setIsloading(false);
               router.push("/(tabs)/order");
             }, 500);
+            cartHook!.setCart([]);
           }}
           theme={theme}
           textStyle={styles.btnsTxt}
@@ -310,11 +311,11 @@ const styles = StyleSheet.create({
     width: "100%",
     maxWidth: 350,
     height: "100%",
-    justifyContent: "space-around",
+    justifyContent: "space-between",
     alignItems: "center",
     borderRadius: 12,
     elevation: 5,
-    padding: 5,
+    padding: 3,
     columnGap: 5,
   },
   renderRightActions: {
@@ -330,8 +331,8 @@ const styles = StyleSheet.create({
     elevation: 2,
   },
   imgContainer: {
-    width: 125,
-    height: "90%",
+    width: 145,
+    height: "100%",
   },
   detailsContainer: {
     maxWidth: 250,

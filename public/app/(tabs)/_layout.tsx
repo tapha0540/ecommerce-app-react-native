@@ -1,7 +1,7 @@
 import { useTheme } from "@/hooks/useColorsheme";
 import { FontAwesome, Ionicons, Octicons } from "@expo/vector-icons";
 import { Tabs } from "expo-router";
-import { CircleUser, HeartIcon, ListOrdered } from "lucide-react-native";
+import { CircleUser, ListOrdered } from "lucide-react-native";
 
 const TabsLayout = () => {
   const theme = useTheme()!.theme;
@@ -37,10 +37,13 @@ const TabsLayout = () => {
         name="cart"
         options={{
           tabBarLabel: "Panier",
-          tabBarIcon: ({ focused, size, color }) =>
-             (
-              <Ionicons name={focused ? 'cart' : 'cart-outline'} color={color} size={size} />
-            ),
+          tabBarIcon: ({ focused, size, color }) => (
+            <Ionicons
+              name={focused ? "cart" : "cart-outline"}
+              color={color}
+              size={size}
+            />
+          ),
         }}
       />
       <Tabs.Screen

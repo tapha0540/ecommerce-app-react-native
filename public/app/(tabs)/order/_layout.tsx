@@ -1,6 +1,6 @@
 import { Stack } from "expo-router";
 
-const FavouriteLayout = () => {
+const OrderScreenLayout = () => {
   return (
     <Stack
       screenOptions={{
@@ -12,4 +12,4 @@ const FavouriteLayout = () => {
   );
 };
 
-export default FavouriteLayout;
+export default OrderScreenLayout;
